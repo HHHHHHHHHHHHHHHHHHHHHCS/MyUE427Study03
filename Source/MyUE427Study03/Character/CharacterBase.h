@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "CharacterBase.generated.h"
 
@@ -15,15 +16,21 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
+	UCameraComponent* followCamera;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	virtual void MoveForward(float val);
+
+	virtual void MoveRight(float val);
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
