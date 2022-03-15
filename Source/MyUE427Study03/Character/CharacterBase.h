@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -15,6 +16,9 @@ class MYUE427STUDY03_API ACharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
+	USpringArmComponent* cameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* followCamera;
