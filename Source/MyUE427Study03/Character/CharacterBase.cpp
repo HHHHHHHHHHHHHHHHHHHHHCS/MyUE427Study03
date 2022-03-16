@@ -22,6 +22,8 @@ ACharacterBase::ACharacterBase()
 	bUseControllerRotationYaw = false;
 	cameraBoom->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	mouseRightHold = false;
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +34,11 @@ void ACharacterBase::BeginPlay()
 
 void ACharacterBase::MoveForward(float val)
 {
+	if (val == 0 || Controller == nullptr)
+	{
+		return;
+	}
+
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
@@ -40,10 +47,43 @@ void ACharacterBase::MoveForward(float val)
 
 void ACharacterBase::MoveRight(float val)
 {
+	if (val == 0 || Controller == nullptr)
+	{
+		return;
+	}
+
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(direction, val);
+}
+
+void ACharacterBase::MouseRightPressed()
+{
+	mouseRightHold = true;
+}
+
+void ACharacterBase::MouseRightReleased()
+{
+	mouseRightHold = false;
+}
+
+void ACharacterBase::AddControllerYawInput(float val)
+{
+	if (val == 0 || mouseRightHold == false)
+	{
+		return;
+	}
+	Super::AddControllerYawInput(val);
+}
+
+void ACharacterBase::AddControllerPitchInput(float val)
+{
+	if (val == 0 || mouseRightHold == false)
+	{
+		return;
+	}
+	Super::AddControllerPitchInput(val);
 }
 
 // Called every frame
@@ -58,4 +98,10 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterBase::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, &ACharacterBase::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Lookup", this, &ACharacterBase::AddControllerPitchInput);
+	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Pressed, this, &ACharacterBase::MouseRightPressed);
+	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
 }

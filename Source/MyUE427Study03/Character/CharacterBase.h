@@ -23,6 +23,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* followCamera;
 
+private:
+	bool mouseRightHold;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,6 +34,15 @@ protected:
 
 	virtual void MoveRight(float val);
 
+	virtual void MouseRightPressed();
+
+	virtual void MouseRightReleased();
+	
+	virtual void AddControllerYawInput(float val) override;
+
+	virtual void AddControllerPitchInput(float val) override;
+
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
