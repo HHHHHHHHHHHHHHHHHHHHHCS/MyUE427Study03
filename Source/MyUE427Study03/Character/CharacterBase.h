@@ -23,6 +23,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* followCamera;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
+	APlayerController* playerController;
+
 private:
 	bool mouseRightHold;
 

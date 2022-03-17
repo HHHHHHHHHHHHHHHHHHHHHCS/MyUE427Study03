@@ -30,6 +30,9 @@ ACharacterBase::ACharacterBase()
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	playerController = Cast<APlayerController>(GetController());
+	playerController->bShowMouseCursor = true;
 }
 
 void ACharacterBase::MoveForward(float val)
