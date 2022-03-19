@@ -3,27 +3,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Actor.h"
 #include "CursorDecal.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API ACursorDecal : public ACharacter
+class MYUE427STUDY03_API ACursorDecal : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	// Sets default values for this actor's properties
 	ACursorDecal();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cursor")
+	USceneComponent* sceneRoot;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cursor")
+	UDecalComponent* cursorToWorld;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
