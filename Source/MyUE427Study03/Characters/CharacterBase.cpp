@@ -4,6 +4,7 @@
 #include "CharacterBase.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "MyUE427Study03/MyUE427Study03.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -89,6 +90,16 @@ void ACharacterBase::AddControllerPitchInput(float val)
 	Super::AddControllerPitchInput(val);
 }
 
+void ACharacterBase::OnSetDestinationPressed()
+{
+	FHitResult hitResult;
+	playerController->GetHitResultUnderCursor(CursorTraceChannel, false, hitResult);
+	if(hitResult.bBlockingHit)
+	{
+		GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location, FRotator::ZeroRotator);
+	}
+}
+
 // Called every frame
 void ACharacterBase::Tick(float DeltaTime)
 {
@@ -107,4 +118,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this, &ACharacterBase::OnSetDestinationPressed);
+
 }

@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "MyUE427Study03/Others/CursorDecal.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -26,6 +27,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
 	APlayerController* playerController;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mouse")
+	TSubclassOf<ACursorDecal> cursorDecal;
+
 private:
 	bool mouseRightHold;
 
@@ -40,12 +44,13 @@ protected:
 	virtual void MouseRightPressed();
 
 	virtual void MouseRightReleased();
-	
+
 	virtual void AddControllerYawInput(float val) override;
 
 	virtual void AddControllerPitchInput(float val) override;
 
-	
+	virtual void OnSetDestinationPressed();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
