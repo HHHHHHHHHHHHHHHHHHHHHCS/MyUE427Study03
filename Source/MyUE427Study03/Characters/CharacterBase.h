@@ -27,9 +27,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
 	APlayerController* playerController;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mouse")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
 	TSubclassOf<ACursorDecal> cursorDecal;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
+	float canMoveDistance;
+	
 private:
 	bool mouseRightHold;
 
@@ -49,7 +52,9 @@ protected:
 
 	virtual void AddControllerPitchInput(float val) override;
 
-	virtual void OnSetDestinationPressed();
+	void OnSetDestinationPressed();
+
+	void SetNewMoveDestination(const FVector& desLocation) const;
 
 public:
 	// Called every frame

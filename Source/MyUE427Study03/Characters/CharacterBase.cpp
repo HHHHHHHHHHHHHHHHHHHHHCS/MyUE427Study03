@@ -3,6 +3,7 @@
 
 #include "CharacterBase.h"
 
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 
@@ -25,6 +26,7 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	mouseRightHold = false;
+	canMoveDistance = 120.0f;
 }
 
 // Called when the game starts or when spawned
@@ -93,10 +95,26 @@ void ACharacterBase::AddControllerPitchInput(float val)
 void ACharacterBase::OnSetDestinationPressed()
 {
 	FHitResult hitResult;
-	playerController->GetHitResultUnderCursor(CursorTraceChannel, false, hitResult);
-	if(hitResult.bBlockingHit)
+	playerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+	if (hitResult.bBlockingHit)
 	{
-		GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location, FRotator::ZeroRotator);
+		if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel)
+			== ECollisionResponse::ECR_Block)
+		{
+			FActorSpawnParameters parameters;
+			parameters.Owner = this;
+			GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location, FRotator::ZeroRotator, parameters);
+			SetNewMoveDestination(hitResult.Location);
+		}
+	}
+}
+
+void ACharacterBase::SetNewMoveDestination(const FVector& desLocation) const
+{
+	const float dist = FVector::Dist(desLocation, GetActorLocation());
+	if (dist >= canMoveDistance)
+	{
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(playerController, desLocation);
 	}
 }
 
@@ -118,6 +136,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
-	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this, &ACharacterBase::OnSetDestinationPressed);
-
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
+	                                 &ACharacterBase::OnSetDestinationPressed);
 }

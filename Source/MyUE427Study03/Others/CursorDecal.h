@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "CursorDecal.generated.h"
 
@@ -18,10 +19,13 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cursor")
 	USceneComponent* sceneRoot;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cursor")
 	UDecalComponent* cursorToWorld;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cursor")
+	UBoxComponent* boxComponent;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,4 +33,6 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

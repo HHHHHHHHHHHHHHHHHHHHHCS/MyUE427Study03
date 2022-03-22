@@ -26,6 +26,10 @@ ACursorDecal::ACursorDecal()
 	{
 		cursorToWorld->SetDecalMaterial(materialFinder.Object);
 	}
+
+	boxComponent = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
+	boxComponent->SetBoxExtent(FVector(32.0f, 32.0f, 20.0f));
+	boxComponent->SetupAttachment(sceneRoot);
 }
 
 // Called when the game starts or when spawned
@@ -38,4 +42,14 @@ void ACursorDecal::BeginPlay()
 void ACursorDecal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACursorDecal::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	if (OtherActor == GetOwner())
+	{
+		Destroy();
+	}
 }
