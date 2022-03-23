@@ -32,9 +32,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
 	float canMoveDistance;
-	
+
 private:
-	bool mouseRightHold;
+	bool bMouseRightHold;
+
+	bool bMouseMoving;
+
+	ACursorDecal* currCursorDecal;
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,7 +58,7 @@ protected:
 
 	void OnSetDestinationPressed();
 
-	void SetNewMoveDestination(const FVector& desLocation) const;
+	void SetNewMoveDestination(const FVector& desLocation);
 
 public:
 	// Called every frame
@@ -62,4 +66,6 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	void CancelMoveToCursor();
 };

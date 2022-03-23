@@ -4,6 +4,7 @@
 #include "CursorDecal.h"
 
 #include "Components/DecalComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 ACursorDecal::ACursorDecal()
@@ -36,6 +37,9 @@ ACursorDecal::ACursorDecal()
 void ACursorDecal::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//不能在构造函数中
+	boxComponent->OnComponentBeginOverlap.AddDynamic(this, &ACursorDecal::OnBeginOverlap);
 }
 
 // Called every frame
@@ -44,9 +48,22 @@ void ACursorDecal::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ACursorDecal::NotifyActorBeginOverlap(AActor* OtherActor)
+// 不用通知模式的 碰撞 触发
+// void ACursorDecal::NotifyActorBeginOverlap(AActor* OtherActor)
+// {
+// 	Super::NotifyActorBeginOverlap(OtherActor);
+//
+// 	if (OtherActor == GetOwner())
+// 	{
+// 		Destroy();
+// 	}
+// }
+
+void ACursorDecal::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                  const FHitResult& SweepResult)
 {
-	Super::NotifyActorBeginOverlap(OtherActor);
+	// GEngine->AddOnScreenDebugMessage(0, 1.0f, FColor::Red, TEXT("!!!!!!"));
 
 	if (OtherActor == GetOwner())
 	{

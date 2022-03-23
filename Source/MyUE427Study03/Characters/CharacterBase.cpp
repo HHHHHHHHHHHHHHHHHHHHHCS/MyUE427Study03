@@ -25,8 +25,16 @@ ACharacterBase::ACharacterBase()
 	cameraBoom->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	mouseRightHold = false;
-	canMoveDistance = 120.0f;
+	//FClassFinder 的path 不需要前缀和后缀
+	ConstructorHelpers::FClassFinder<ACursorDecal> cursorDecalCls(TEXT("'/Game/Blueprints/Others/BP_CursorDecal'"));
+	if (cursorDecalCls.Succeeded())
+	{
+		cursorDecal = cursorDecalCls.Class;
+	}
+
+	bMouseRightHold = false;
+	canMoveDistance = 0.0f;
+	bMouseMoving = false;
 }
 
 // Called when the game starts or when spawned
@@ -45,6 +53,13 @@ void ACharacterBase::MoveForward(float val)
 		return;
 	}
 
+	//val==0 也在调用
+	if (bMouseMoving)
+	{
+		CancelMoveToCursor();
+	}
+
+
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
@@ -58,6 +73,13 @@ void ACharacterBase::MoveRight(float val)
 		return;
 	}
 
+	//val==0 也在调用
+	if (bMouseMoving)
+	{
+		CancelMoveToCursor();
+	}
+
+
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
@@ -66,17 +88,17 @@ void ACharacterBase::MoveRight(float val)
 
 void ACharacterBase::MouseRightPressed()
 {
-	mouseRightHold = true;
+	bMouseRightHold = true;
 }
 
 void ACharacterBase::MouseRightReleased()
 {
-	mouseRightHold = false;
+	bMouseRightHold = false;
 }
 
 void ACharacterBase::AddControllerYawInput(float val)
 {
-	if (val == 0 || mouseRightHold == false)
+	if (val == 0 || bMouseRightHold == false)
 	{
 		return;
 	}
@@ -85,7 +107,7 @@ void ACharacterBase::AddControllerYawInput(float val)
 
 void ACharacterBase::AddControllerPitchInput(float val)
 {
-	if (val == 0 || mouseRightHold == false)
+	if (val == 0 || bMouseRightHold == false)
 	{
 		return;
 	}
@@ -98,22 +120,26 @@ void ACharacterBase::OnSetDestinationPressed()
 	playerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
 	if (hitResult.bBlockingHit)
 	{
+		CancelMoveToCursor();
 		if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel)
 			== ECollisionResponse::ECR_Block)
 		{
 			FActorSpawnParameters parameters;
 			parameters.Owner = this;
-			GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location, FRotator::ZeroRotator, parameters);
+			currCursorDecal = GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location,
+			                                                       FRotator::ZeroRotator,
+			                                                       parameters);
 			SetNewMoveDestination(hitResult.Location);
 		}
 	}
 }
 
-void ACharacterBase::SetNewMoveDestination(const FVector& desLocation) const
+void ACharacterBase::SetNewMoveDestination(const FVector& desLocation)
 {
 	const float dist = FVector::Dist(desLocation, GetActorLocation());
 	if (dist >= canMoveDistance)
 	{
+		bMouseMoving = true;
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(playerController, desLocation);
 	}
 }
@@ -138,4 +164,15 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
 	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
 	                                 &ACharacterBase::OnSetDestinationPressed);
+}
+
+void ACharacterBase::CancelMoveToCursor()
+{
+	bMouseMoving = false;
+	GetCharacterMovement()->StopMovementImmediately();
+	if (currCursorDecal && IsValid(currCursorDecal))
+	{
+		currCursorDecal->Destroy();
+		currCursorDecal = nullptr;
+	}
 }
