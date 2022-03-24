@@ -24,6 +24,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	UCameraComponent* followCamera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float minCameraZoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float maxCameraZoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float camerZoomStep;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
 	APlayerController* playerController;
 
@@ -32,6 +41,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
 	float canMoveDistance;
+
 
 private:
 	bool bMouseRightHold;
@@ -60,12 +70,17 @@ protected:
 
 	void SetNewMoveDestination(const FVector& desLocation);
 
+	void CameraZoomIn();
+
+	void CameraZoomOut();
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	void CancelMoveToCursor();
 };

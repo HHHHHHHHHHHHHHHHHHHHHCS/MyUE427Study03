@@ -17,6 +17,9 @@ ACharacterBase::ACharacterBase()
 	cameraBoom->SetupAttachment(GetRootComponent());
 	cameraBoom->TargetArmLength = 600.0f;
 	cameraBoom->SetRelativeRotation(FRotator(-30, 0, 0));
+	minCameraZoom = 75.0f;
+	maxCameraZoom = 1000.0f;
+	camerZoomStep = 25.0f;
 
 	followCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	followCamera->SetupAttachment(cameraBoom);
@@ -78,7 +81,6 @@ void ACharacterBase::MoveRight(float val)
 	{
 		CancelMoveToCursor();
 	}
-
 
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
@@ -144,6 +146,16 @@ void ACharacterBase::SetNewMoveDestination(const FVector& desLocation)
 	}
 }
 
+void ACharacterBase::CameraZoomIn()
+{
+	cameraBoom->TargetArmLength = FMath::Max(cameraBoom->TargetArmLength - camerZoomStep, minCameraZoom);
+}
+
+void ACharacterBase::CameraZoomOut()
+{
+	cameraBoom->TargetArmLength = FMath::Min(cameraBoom->TargetArmLength + camerZoomStep, maxCameraZoom);
+}
+
 // Called every frame
 void ACharacterBase::Tick(float DeltaTime)
 {
@@ -164,6 +176,10 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
 	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
 	                                 &ACharacterBase::OnSetDestinationPressed);
+	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this,
+	                                 &ACharacterBase::CameraZoomIn);
+	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this,
+	                                 &ACharacterBase::CameraZoomOut);
 }
 
 void ACharacterBase::CancelMoveToCursor()
