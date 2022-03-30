@@ -13,5 +13,4 @@ UCLASS()
 class MYUE427STUDY03_API AMyUE427Study03GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };

@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
+#include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
@@ -43,12 +44,14 @@ public:
 	float canMoveDistance;
 
 
-private:
+protected:
 	bool bMouseRightHold;
 
 	bool bMouseMoving;
 
 	ACursorDecal* currCursorDecal;
+
+	UUserWidget_Main* mainUI;
 
 protected:
 	// Called when the game starts or when spawned

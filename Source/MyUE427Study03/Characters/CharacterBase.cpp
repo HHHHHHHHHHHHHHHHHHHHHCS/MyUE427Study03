@@ -6,6 +6,7 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -47,6 +48,12 @@ void ACharacterBase::BeginPlay()
 
 	playerController = Cast<APlayerController>(GetController());
 	playerController->bShowMouseCursor = true;
+
+	//查找UserWidget这种 需要在路径地址末尾加_C
+	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
+		                                        this,TEXT(
+			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
+	mainUI->AddToViewport();
 }
 
 void ACharacterBase::MoveForward(float val)

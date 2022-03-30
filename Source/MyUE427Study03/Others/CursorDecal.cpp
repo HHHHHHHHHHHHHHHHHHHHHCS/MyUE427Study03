@@ -21,7 +21,7 @@ ACursorDecal::ACursorDecal()
 	cursorToWorld->SetRelativeRotation(FRotator(90, 0, 0));
 
 	const auto materialFinder = ConstructorHelpers::FObjectFinder<UMaterial>(
-		TEXT("Material'/Game/Textures/Others/M_Cursor_Decal.M_Cursor_Decal'"));
+		TEXT("Material'/Game/Materials/Others/Mat_Cursor_Decal.Mat_Cursor_Decal'"));
 
 	if (materialFinder.Succeeded())
 	{
