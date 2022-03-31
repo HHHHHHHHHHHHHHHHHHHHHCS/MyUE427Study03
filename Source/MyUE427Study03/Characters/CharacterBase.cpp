@@ -53,6 +53,7 @@ void ACharacterBase::BeginPlay()
 	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
 		                                        this,TEXT(
 			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
+	mainUI->player = this;
 	mainUI->AddToViewport();
 }
 
