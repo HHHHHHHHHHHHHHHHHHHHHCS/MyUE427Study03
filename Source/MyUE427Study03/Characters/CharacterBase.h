@@ -43,6 +43,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
 	float canMoveDistance;
 
+protected:
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	FString currentName;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float totalHP;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentHp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float totalMp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentMp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentExp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	int currentLevel;
+
 
 protected:
 	bool bMouseRightHold;
@@ -77,6 +99,47 @@ protected:
 
 	void CameraZoomOut();
 
+public:
+	FORCEINLINE void SetCharacterName(FString name)
+	{
+		currentName = name;
+	}
+
+	FORCEINLINE FString GetCharacterName()
+	{
+		return currentName;
+	}
+
+	FORCEINLINE void ChangeCurrentHP(float deltaHP)
+	{
+		currentHp += deltaHP;
+	}
+
+	FORCEINLINE float GetCurrentHP() const
+	{
+		return currentHp;
+	}
+
+
+	FORCEINLINE void ChangeCurrentMP(float deltaMp)
+	{
+		currentMp += deltaMp;
+	}
+
+	FORCEINLINE float GetCurrentMP() const
+	{
+		return currentMp;
+	}
+
+	FORCEINLINE void ChangeCurrentExp(float deltaExp)
+	{
+		currentExp += deltaExp;
+	}
+
+	FORCEINLINE float GetCurrentExp() const
+	{
+		return currentExp;
+	}
 
 public:
 	// Called every frame
