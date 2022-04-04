@@ -3,7 +3,9 @@
 
 #include "CharacterBase.h"
 
+#include "CharacterInfo.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Engine/DataTable.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
@@ -39,6 +41,9 @@ ACharacterBase::ACharacterBase()
 	bMouseRightHold = false;
 	canMoveDistance = 0.0f;
 	bMouseMoving = false;
+
+	ReadData();
+	currentLevel = 1;
 }
 
 // Called when the game starts or when spawned
@@ -198,5 +203,28 @@ void ACharacterBase::CancelMoveToCursor()
 	{
 		currCursorDecal->Destroy();
 		currCursorDecal = nullptr;
+	}
+}
+
+void ACharacterBase::ReadData()
+{
+	UDataTable* characterInfo = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(),NULL,
+	                                                              TEXT(
+		                                                              "DataTable'/Game/Blueprints/Info/CharacterInfoDataTable.CharacterInfoDataTable'")));
+	if (characterInfo == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CharacterInfo is not find!"));
+		return;
+	}
+
+	FCharacterInfo* row = characterInfo->FindRow<FCharacterInfo>(TEXT("S1"),TEXT("LookupCharacterInfo"));
+
+	if (row)
+	{
+		SetCharacterName(row->characterName);
+		totalHp = row->startHp;
+		currentHp = totalHp;
+		totalMp = row->startMp;
+		currentMp = totalMp;
 	}
 }

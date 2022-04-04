@@ -48,7 +48,7 @@ protected:
 	FString currentName;
 
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float totalHP;
+	float totalHp;
 
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	float currentHp;
@@ -149,4 +149,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void CancelMoveToCursor();
+	
+	void ReadData();
 };
