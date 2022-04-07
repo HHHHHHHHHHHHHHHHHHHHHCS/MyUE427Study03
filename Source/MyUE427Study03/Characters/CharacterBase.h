@@ -26,6 +26,9 @@ public:
 	UCameraComponent* followCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	USceneCaptureComponent2D* protraitComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	float minCameraZoom;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
@@ -110,35 +113,32 @@ public:
 		return currentName;
 	}
 
-	FORCEINLINE void ChangeCurrentHP(float deltaHP)
-	{
-		currentHp += deltaHP;
-	}
+	void ChangeCurrentHP(float deltaHP);
 
 	FORCEINLINE float GetCurrentHP() const
 	{
 		return currentHp;
 	}
 
-
-	FORCEINLINE void ChangeCurrentMP(float deltaMp)
-	{
-		currentMp += deltaMp;
-	}
+	void ChangeCurrentMP(float deltaMp);
 
 	FORCEINLINE float GetCurrentMP() const
 	{
 		return currentMp;
 	}
 
-	FORCEINLINE void ChangeCurrentExp(float deltaExp)
-	{
-		currentExp += deltaExp;
-	}
+	void ChangeCurrentExp(float deltaExp);
 
 	FORCEINLINE float GetCurrentExp() const
 	{
 		return currentExp;
+	}
+
+	void SetLevel(int val);
+
+	FORCEINLINE int GetLevel() const
+	{
+		return currentLevel;
 	}
 
 public:
@@ -149,6 +149,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void CancelMoveToCursor();
-	
+
 	void ReadData();
+
+	void UpdatePlayerDataUI();
 };

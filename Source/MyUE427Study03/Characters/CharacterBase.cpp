@@ -5,6 +5,7 @@
 
 #include "CharacterInfo.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Engine/DataTable.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
@@ -27,6 +28,9 @@ ACharacterBase::ACharacterBase()
 	followCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	followCamera->SetupAttachment(cameraBoom);
 
+	protraitComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("ProtraitComponent"));
+	protraitComponent->SetupAttachment(GetMesh(),"head");
+	
 	bUseControllerRotationYaw = false;
 	cameraBoom->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -44,6 +48,8 @@ ACharacterBase::ACharacterBase()
 
 	ReadData();
 	currentLevel = 1;
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -58,8 +64,35 @@ void ACharacterBase::BeginPlay()
 	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
 		                                        this,TEXT(
 			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
-	mainUI->player = this;
 	mainUI->AddToViewport();
+	UpdatePlayerDataUI();
+}
+
+
+// Called every frame
+void ACharacterBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+// Called to bind functionality to input
+void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterBase::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, &ACharacterBase::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Lookup", this, &ACharacterBase::AddControllerPitchInput);
+	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Pressed, this, &ACharacterBase::MouseRightPressed);
+	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
+									 &ACharacterBase::OnSetDestinationPressed);
+	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this,
+									 &ACharacterBase::CameraZoomIn);
+	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this,
+									 &ACharacterBase::CameraZoomOut);
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -169,30 +202,27 @@ void ACharacterBase::CameraZoomOut()
 	cameraBoom->TargetArmLength = FMath::Min(cameraBoom->TargetArmLength + camerZoomStep, maxCameraZoom);
 }
 
-// Called every frame
-void ACharacterBase::Tick(float DeltaTime)
+void ACharacterBase::ChangeCurrentHP(float deltaHP)
 {
-	Super::Tick(DeltaTime);
+	currentHp = FMath::Clamp(currentHp + deltaHP, 0.0f, totalHp);
+	mainUI->SetHpProgressBar(currentHp / totalHp);
 }
 
-// Called to bind functionality to input
-void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACharacterBase::ChangeCurrentMP(float deltaMp)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterBase::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
-	PlayerInputComponent->BindAxis("Turn", this, &ACharacterBase::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("Lookup", this, &ACharacterBase::AddControllerPitchInput);
-	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Pressed, this, &ACharacterBase::MouseRightPressed);
-	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
-	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::OnSetDestinationPressed);
-	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::CameraZoomIn);
-	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::CameraZoomOut);
+	currentMp = FMath::Clamp(currentMp + deltaMp, 0.0f, totalMp);
+	mainUI->SetMpProgressBar(currentMp / totalMp);
+}
+
+void ACharacterBase::ChangeCurrentExp(float deltaExp)
+{
+	currentExp += deltaExp;
+}
+
+void ACharacterBase::SetLevel(int val)
+{
+	currentLevel = val;
+	mainUI->SetLevelText(FText::AsNumber(currentLevel));
 }
 
 void ACharacterBase::CancelMoveToCursor()
@@ -227,4 +257,11 @@ void ACharacterBase::ReadData()
 		totalMp = row->startMp;
 		currentMp = totalMp;
 	}
+}
+
+void ACharacterBase::UpdatePlayerDataUI()
+{
+	mainUI->SetLevelText(FText::AsNumber(currentLevel));
+	mainUI->SetHpProgressBar(currentHp/totalHp);
+	mainUI->SetMpProgressBar(currentMp/totalMp);
 }

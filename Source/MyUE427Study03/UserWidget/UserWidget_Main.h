@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "UserWidget_Main.generated.h"
 
 /**
@@ -16,14 +18,18 @@ class MYUE427STUDY03_API UUserWidget_Main : public UUserWidget
 
 
 public:
-	//互相引用的问题
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
-	class ACharacterBase* player;
+	UTextBlock* levelText;
+
+	UProgressBar* hpProgressBar;
+
+	UProgressBar* mpProgressBar;
 
 public:
-	UFUNCTION(BlueprintCallable)
-	inline ACharacterBase* GetPlayer() const
-	{
-		return player;
-	};
+	virtual bool Initialize() override;
+
+	void SetLevelText(FText text);
+
+	void SetHpProgressBar(float percent);
+
+	void SetMpProgressBar(float percent);
 };
