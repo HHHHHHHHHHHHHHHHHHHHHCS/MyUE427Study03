@@ -7,6 +7,7 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/DataTable.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
@@ -28,15 +29,24 @@ ACharacterBase::ACharacterBase()
 	followCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	followCamera->SetupAttachment(cameraBoom);
 
-	protraitComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("ProtraitComponent"));
-	protraitComponent->SetupAttachment(GetMesh(),"head");
-	
+	portraitComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("PortraitComponent"));
+	portraitComponent->SetupAttachment(GetMesh(), "head");
+	portraitComponent->SetRelativeLocation(FVector(0, 70, 0));
+	portraitComponent->SetRelativeRotation(FRotator(0, -90, 90));
+	portraitComponent->FOVAngle = 30.0f;
+	static auto portraitRT = ConstructorHelpers::FObjectFinder<UTexture>(
+		TEXT("TextureRenderTarget2D'/Game/Blueprints/Others/RT_Protrait.RT_Protrait'"));
+	if (portraitRT.Succeeded())
+	{
+		portraitComponent->TextureTarget = Cast<UTextureRenderTarget2D>(portraitRT.Object);
+	}
+
 	bUseControllerRotationYaw = false;
 	cameraBoom->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	//FClassFinder 的path 不需要前缀和后缀
-	ConstructorHelpers::FClassFinder<ACursorDecal> cursorDecalCls(TEXT("'/Game/Blueprints/Others/BP_CursorDecal'"));
+	static ConstructorHelpers::FClassFinder<ACursorDecal> cursorDecalCls(TEXT("'/Game/Blueprints/Others/BP_CursorDecal'"));
 	if (cursorDecalCls.Succeeded())
 	{
 		cursorDecal = cursorDecalCls.Class;
@@ -48,8 +58,6 @@ ACharacterBase::ACharacterBase()
 
 	ReadData();
 	currentLevel = 1;
-
-	
 }
 
 // Called when the game starts or when spawned
@@ -88,11 +96,11 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
 	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
-									 &ACharacterBase::OnSetDestinationPressed);
+	                                 &ACharacterBase::OnSetDestinationPressed);
 	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this,
-									 &ACharacterBase::CameraZoomIn);
+	                                 &ACharacterBase::CameraZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this,
-									 &ACharacterBase::CameraZoomOut);
+	                                 &ACharacterBase::CameraZoomOut);
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -262,6 +270,6 @@ void ACharacterBase::ReadData()
 void ACharacterBase::UpdatePlayerDataUI()
 {
 	mainUI->SetLevelText(FText::AsNumber(currentLevel));
-	mainUI->SetHpProgressBar(currentHp/totalHp);
-	mainUI->SetMpProgressBar(currentMp/totalMp);
+	mainUI->SetHpProgressBar(currentHp / totalHp);
+	mainUI->SetMpProgressBar(currentMp / totalMp);
 }

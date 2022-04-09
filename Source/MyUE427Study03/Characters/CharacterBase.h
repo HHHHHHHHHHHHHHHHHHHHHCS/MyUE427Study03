@@ -26,7 +26,7 @@ public:
 	UCameraComponent* followCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
-	USceneCaptureComponent2D* protraitComponent;
+	USceneCaptureComponent2D* portraitComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	float minCameraZoom;
