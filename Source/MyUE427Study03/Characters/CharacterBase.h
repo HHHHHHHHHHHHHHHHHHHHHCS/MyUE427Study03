@@ -7,8 +7,28 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
+#include "MyUE427Study03/Skill/SkillBase.h"
+#include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
+
+USTRUCT()
+struct FSkillStage
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	int requiredLevel; //需要的前置等级
+	TArray<ASkillBase*> requiredSkill; //需要的前置技能
+	UTexture2D* overrideIcon; //覆盖用的新图标, 如果为空则使用初始技能和的图标
+	float range; //技能效果的范围
+	float damage; //技能的伤害值
+	EDamageType damageType; //伤害的类型
+	float criticalChance; //暴击率
+	float cooldownTime; //技能的冷却时间
+	float castingTime; //技能的释放的时间
+	float manaCost;//魔法消耗值
+	float missileSpeed;//投掷类速度
+};
 
 UCLASS()
 class MYUE427STUDY03_API ACharacterBase : public ACharacter
@@ -27,7 +47,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	USceneCaptureComponent2D* portraitComponent;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	float minCameraZoom;
 
