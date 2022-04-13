@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SkillElement.h"
 #include "UObject/NoExportTypes.h"
 #include "SkillElementInfo.generated.h"
 
-/**
- * 
- */
+class ASkillElementBase;
+
+//元素的信息
 USTRUCT()
 struct FSkillElementInfo
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
+	
 	UPROPERTY(EditAnywhere,Category="SkillElement")
 	FText name;
 	UPROPERTY(EditAnywhere,Category="SkillElement")
@@ -23,7 +23,7 @@ public:
 	UPROPERTY(EditAnywhere,Category="SkillElement")
 	FLinearColor color; //元素的颜色
 	UPROPERTY(EditAnywhere,Category="SkillElement")
-	TArray<TSubclassOf<ASkillElement>> resistances; //增强效果的元素
+	TArray<TSubclassOf<ASkillElementBase>> resistances; //增强效果的元素
 	UPROPERTY(EditAnywhere,Category="SkillElement")
-	TArray<TSubclassOf<ASkillElement>> weakness; //虚弱效果的元素
+	TArray<TSubclassOf<ASkillElementBase>> weakness; //虚弱效果的元素
 };

@@ -6,6 +6,7 @@
 #include "UObject/NoExportTypes.h"
 #include "SkillEnum.generated.h"
 
+//技能作用的对象
 UENUM()
 enum class ETargetTypes : uint8
 {
@@ -16,6 +17,7 @@ enum class ETargetTypes : uint8
 	Missile, //比如子弹,元气弹
 };
 
+//伤害的类型
 UENUM()
 enum class EDamageType: uint8
 {
@@ -24,7 +26,7 @@ enum class EDamageType: uint8
 	Real,
 };
 
-
+//效果, 比如带buff, 效果增加和效果削弱
 UENUM()
 enum class EEffectiveness: uint8
 {
