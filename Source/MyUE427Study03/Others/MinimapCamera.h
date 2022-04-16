@@ -16,6 +16,8 @@ class MYUE427STUDY03_API AMinimapCamera : public ASceneCapture2D
 	GENERATED_BODY()
 
 public:
+	float offsetZ;
+
 	ACharacterBase* mainPlayer;
 
 public:

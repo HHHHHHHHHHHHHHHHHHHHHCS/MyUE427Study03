@@ -10,8 +10,9 @@ AMinimapCamera::AMinimapCamera()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	GetCaptureComponent2D()->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
+	offsetZ = 1200.0f;
 	FVector location = GetActorLocation();
-	location.Z= 1200.0f;
+	location.Z = offsetZ;
 	SetActorLocation(location);
 }
 
@@ -30,6 +31,6 @@ void AMinimapCamera::Tick(float DeltaSeconds)
 void AMinimapCamera::OutsideTick()
 {
 	FVector targetLocation = mainPlayer->GetActorLocation();
-	targetLocation.Z = GetActorLocation().Z;
+	targetLocation.Z = mainPlayer->GetActorLocation().Z + offsetZ;
 	SetActorLocation(targetLocation);
 }
