@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_SkillHotkey.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 #include "UserWidget_Main.generated.h"
 
 /**
@@ -24,6 +26,11 @@ public:
 
 	UProgressBar* mpProgressBar;
 
+	UVerticalBox* hotkeyRowContainer;
+
+private:
+	TArray<UUI_SkillHotkey*> allHotkeySlots;
+
 public:
 	virtual bool Initialize() override;
 
@@ -32,4 +39,6 @@ public:
 	void SetHpProgressBar(float percent);
 
 	void SetMpProgressBar(float percent);
+
+	void GenerateHotkeys(TArray<FKey> keys, int keysPerRow);
 };

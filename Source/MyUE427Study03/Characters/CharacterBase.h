@@ -69,7 +69,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
+public:
+	UPROPERTY(EditAnywhere, Category="UI")
+	TArray<FKey> keys;
 
+	UPROPERTY(EditAnywhere, Category="UI")
+	int keysPerRow;
+	
 protected:
 	bool bMouseRightHold;
 

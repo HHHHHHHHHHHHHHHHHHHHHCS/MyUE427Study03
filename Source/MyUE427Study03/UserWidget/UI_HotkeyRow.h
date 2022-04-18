@@ -29,5 +29,5 @@ public:
 public:
 	FORCEINLINE void SetHotkeys(TArray<FKey> _keys) { keys = _keys; }
 
-	TArray<UUI_SkillHotkey> GenerateHotkeys();
+	TArray<UUI_SkillHotkey*> GenerateHotkeys();
 };
