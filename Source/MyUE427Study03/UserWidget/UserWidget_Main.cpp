@@ -51,11 +51,42 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 		return;
 	}
 
-	if (keys.Num() == keysPerRow)
+	TArray<FKey> localKeys = keys;
+
+	if (localKeys.Num() == keysPerRow)
 	{
 		UUI_HotkeyRow* row = CreateWidget<UUI_HotkeyRow>(GetWorld(), cls);
-		row->SetHotkeys(keys);
+		row->SetHotkeys(localKeys);
 		hotkeyRowContainer->AddChildToVerticalBox(row);
 		allHotkeySlots.Append(row->GenerateHotkeys());
+	}
+	else
+	{
+		for (int i = 0; i < localKeys.Num() / keysPerRow; i++)
+		{
+			TArray<FKey> localModifyKeys = localKeys;
+			localModifyKeys.SetNum(keysPerRow);
+			UUI_HotkeyRow* row = CreateWidget<UUI_HotkeyRow>(GetWorld(), cls);
+			row->SetHotkeys(localModifyKeys);
+			hotkeyRowContainer->AddChildToVerticalBox(row);
+			allHotkeySlots.Append(row->GenerateHotkeys());
+			for (int j = 0; j < keysPerRow; j++)
+			{
+				// 因为确保了被整除, 所以无所谓
+				// if (j < localKeys.Num())
+				{
+					localKeys.RemoveAt(j);
+				}
+			}
+
+			// for (auto& key : localModifyKeys)
+			// {
+			// 	SIZE_T idx = localKeys.IndexOfByKey(key);
+			// 	if (idx != INDEX_NONE)
+			// 	{
+			// 		localKeys.RemoveAt(idx);
+			// 	}
+			// }
+		}
 	}
 }

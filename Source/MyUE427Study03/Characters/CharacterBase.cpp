@@ -46,7 +46,8 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	//FClassFinder 的path 不需要前缀和后缀
-	static ConstructorHelpers::FClassFinder<ACursorDecal> cursorDecalCls(TEXT("'/Game/Blueprints/Others/BP_CursorDecal'"));
+	static ConstructorHelpers::FClassFinder<ACursorDecal> cursorDecalCls(
+		TEXT("'/Game/Blueprints/Others/BP_CursorDecal'"));
 	if (cursorDecalCls.Succeeded())
 	{
 		cursorDecal = cursorDecalCls.Class;
@@ -73,6 +74,7 @@ void ACharacterBase::BeginPlay()
 		                                        this,TEXT(
 			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
 	mainUI->AddToViewport();
+	mainUI->GenerateHotkeys(keys, keysPerRow);
 	UpdatePlayerDataUI();
 }
 
