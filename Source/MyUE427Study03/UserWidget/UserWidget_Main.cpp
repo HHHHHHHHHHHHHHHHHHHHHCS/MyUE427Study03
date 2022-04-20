@@ -4,6 +4,8 @@
 #include "UserWidget_Main.h"
 
 #include "UI_HotkeyRow.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/OverlaySlot.h"
 
 bool UUserWidget_Main::Initialize()
 {
@@ -62,7 +64,13 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 	}
 	else
 	{
-		for (int i = 0; i < localKeys.Num() / keysPerRow; i++)
+		int len = localKeys.Num() / keysPerRow;
+		auto slot = Cast<UOverlaySlot>(hotkeyRowContainer->Slot);
+		auto padding = slot->Padding;
+		// 115 是每一个间距 
+		padding.Top -=  (len - 1) * 115;
+		slot->SetPadding(padding);
+		for (int i = 0; i < len; i++)
 		{
 			TArray<FKey> localModifyKeys = localKeys;
 			localModifyKeys.SetNum(keysPerRow);
@@ -70,15 +78,8 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 			row->SetHotkeys(localModifyKeys);
 			hotkeyRowContainer->AddChildToVerticalBox(row);
 			allHotkeySlots.Append(row->GenerateHotkeys());
-			for (int j = 0; j < keysPerRow; j++)
-			{
-				// 因为确保了被整除, 所以无所谓
-				// if (j < localKeys.Num())
-				{
-					localKeys.RemoveAt(j);
-				}
-			}
-
+			// 因为确保了被整除而且有序, 所以无所谓
+			localKeys.RemoveAt(0, keysPerRow);
 			// for (auto& key : localModifyKeys)
 			// {
 			// 	SIZE_T idx = localKeys.IndexOfByKey(key);
