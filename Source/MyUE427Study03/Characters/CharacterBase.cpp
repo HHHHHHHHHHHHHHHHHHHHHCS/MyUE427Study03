@@ -59,6 +59,29 @@ ACharacterBase::ACharacterBase()
 
 	ReadData();
 	currentLevel = 1;
+
+	//Keys
+	{
+		keysPerRow = 9;
+		keys.Add(EKeys::One);
+		keys.Add(EKeys::Two);
+		keys.Add(EKeys::Three);
+		keys.Add(EKeys::Four);
+		keys.Add(EKeys::Five);
+		keys.Add(EKeys::Six);
+		keys.Add(EKeys::Seven);
+		keys.Add(EKeys::Eight);
+		keys.Add(EKeys::Nine);
+		keys.Add(EKeys::F1);
+		keys.Add(EKeys::F2);
+		keys.Add(EKeys::F3);
+		keys.Add(EKeys::F4);
+		keys.Add(EKeys::F5);
+		keys.Add(EKeys::F6);
+		keys.Add(EKeys::F7);
+		keys.Add(EKeys::F8);
+		keys.Add(EKeys::F9);
+	}
 }
 
 // Called when the game starts or when spawned

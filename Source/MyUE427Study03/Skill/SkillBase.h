@@ -19,16 +19,16 @@ public:
 
 	int currentStageIndex;
 
+private:
+	bool bIsCooldown; //是否在冷却
+	bool bCurrCasted; //是否释放完毕
+
+	class UUI_SkillHotkey* hotkey; //技能绑定的快捷键
+	class ACharacterBase* playerReference; //谁释放了该技能
+
 public:
 	// Sets default values for this actor's properties
 	ASkillBase();
-
-	FORCEINLINE FSkillStage GetCurrentStage()
-	
-	{
-		return skillInfo.stages[currentStageIndex];
-	}
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,4 +36,14 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FORCEINLINE FSkillStage GetCurrentStage()
+	{
+		return skillInfo.stages[currentStageIndex];
+	}
+
+	FORCEINLINE void SetHotkey(UUI_SkillHotkey* _hotkey)
+	{
+		hotkey = _hotkey;
+	}
 };
