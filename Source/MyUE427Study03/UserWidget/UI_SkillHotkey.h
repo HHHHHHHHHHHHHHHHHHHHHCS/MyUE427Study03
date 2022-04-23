@@ -37,10 +37,15 @@ public:
 private:
 	bool bHasSetKeyName = false;
 
+
+	class ASkillBase* assignedSpell; //分配的技能
+
 public:
 	virtual bool Initialize() override;
 
 	FORCEINLINE void SetKey(FKey _key) { this->key = _key; }
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	void AssignSpell(ASkillBase* newAssignedSpell);
 };
