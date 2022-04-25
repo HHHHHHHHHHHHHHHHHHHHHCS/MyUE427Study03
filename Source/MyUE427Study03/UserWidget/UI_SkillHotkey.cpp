@@ -13,6 +13,7 @@ bool UUI_SkillHotkey::Initialize()
 	}
 
 	Button_Skill->OnClicked.AddDynamic(this, &UUI_SkillHotkey::OnSKillButtonClicked);
+	cooldownMat = Image_Cooldown->GetDynamicMaterial();
 
 	return true;
 }
@@ -63,14 +64,23 @@ void UUI_SkillHotkey::OnSKillButtonClicked()
 void UUI_SkillHotkey::EnableHotkey()
 {
 	bIsActive = true;
-	if(assignedSpell->IsCooldown())
+	if (!assignedSpell->IsCooldown())
 	{
-		//TODO:
+		Button_Skill->SetIsEnabled(true);
+		Image_SkillIcon->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		Image_Cooldown->SetVisibility(ESlateVisibility::Hidden);
+		Image_SkillIcon->SetColorAndOpacity(FLinearColor::White);
 	}
 }
 
 void UUI_SkillHotkey::DisableHotkey()
 {
 	bIsActive = false;
-
+	if (assignedSpell->IsCooldown())
+	{
+		Button_Skill->SetIsEnabled(false);
+		Image_SkillIcon->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		Image_Cooldown->SetVisibility(ESlateVisibility::Visible);
+		cooldownMat->SetScalarParameterValue(FName("Percent"), 1.0f);
+	}
 }

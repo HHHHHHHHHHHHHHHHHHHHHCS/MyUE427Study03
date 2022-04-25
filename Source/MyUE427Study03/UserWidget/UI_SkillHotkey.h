@@ -41,6 +41,7 @@ private:
 	
 	class ASkillBase* assignedSpell; //分配的技能
 
+	UMaterialInstanceDynamic* cooldownMat; 
 
 public:
 	virtual bool Initialize() override;
