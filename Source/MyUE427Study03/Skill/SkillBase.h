@@ -46,4 +46,17 @@ public:
 	{
 		hotkey = _hotkey;
 	}
+
+	FORCEINLINE bool IsCooldown() const
+	{
+		return bIsCooldown;
+	}
+
+	FORCEINLINE bool CurrCasted() const
+	{
+		return bCurrCasted;
+	}
+	
+	void OnTryCastSpell();
+
 };

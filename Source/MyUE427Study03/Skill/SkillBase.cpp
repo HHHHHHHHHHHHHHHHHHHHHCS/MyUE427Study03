@@ -25,3 +25,7 @@ void ASkillBase::Tick(float DeltaTime)
 
 }
 
+void ASkillBase::OnTryCastSpell()
+{
+}
+

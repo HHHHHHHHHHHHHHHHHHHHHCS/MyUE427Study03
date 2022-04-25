@@ -37,8 +37,10 @@ public:
 private:
 	bool bHasSetKeyName = false;
 
-
+	bool bIsActive = false;
+	
 	class ASkillBase* assignedSpell; //分配的技能
+
 
 public:
 	virtual bool Initialize() override;
@@ -47,5 +49,17 @@ public:
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
+	//为技能分配快捷键
 	void AssignSpell(ASkillBase* newAssignedSpell);
+
+	//清除分配的技能
+	void ClearAssignedSpell();
+
+	UFUNCTION()
+	void OnSKillButtonClicked();
+
+	void EnableHotkey();
+
+	void DisableHotkey();
+
 };
