@@ -59,4 +59,14 @@ public:
 	
 	void OnTryCastSpell();
 
+	FORCEINLINE ACharacterBase* GetPlayerRef() const
+	{
+		return playerReference;
+	}
+	
+	
+	FORCEINLINE void SetPlayerRef(ACharacterBase* player)
+	{
+		this->playerReference = player; 
+	}
 };

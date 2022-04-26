@@ -34,14 +34,15 @@ public:
 
 	FKey key;
 
+	class ASkillBase* assignedSpell; //分配的技能
+
 private:
 	bool bHasSetKeyName = false;
 
 	bool bIsActive = false;
-	
-	class ASkillBase* assignedSpell; //分配的技能
 
-	UMaterialInstanceDynamic* cooldownMat; 
+
+	UMaterialInstanceDynamic* cooldownMat;
 
 public:
 	virtual bool Initialize() override;
@@ -62,5 +63,4 @@ public:
 	void EnableHotkey();
 
 	void DisableHotkey();
-
 };

@@ -75,7 +75,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="UI")
 	int keysPerRow;
-	
+
+	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
+
+	ASkillBase* currentSkill; //当前技能
+
 protected:
 	bool bMouseRightHold;
 
@@ -160,4 +164,6 @@ public:
 	void ReadData();
 
 	void UpdatePlayerDataUI();
+
+	void GenerateStartingSkills();//生成初始技能
 };

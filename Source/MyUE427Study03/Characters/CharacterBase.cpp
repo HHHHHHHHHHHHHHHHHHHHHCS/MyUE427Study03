@@ -10,6 +10,7 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/Skill/SkillBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 
 // Sets default values
@@ -297,4 +298,32 @@ void ACharacterBase::UpdatePlayerDataUI()
 	mainUI->SetLevelText(FText::AsNumber(currentLevel));
 	mainUI->SetHpProgressBar(currentHp / totalHp);
 	mainUI->SetMpProgressBar(currentMp / totalMp);
+}
+
+void ACharacterBase::GenerateStartingSkills()
+{
+	FActorSpawnParameters params;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	TArray<UUI_SkillHotkey*> emptyHotkeys;
+
+	for (const auto& hotkey : mainUI->GetAllHotKeySlots())
+	{
+		if (hotkey && hotkey->assignedSpell == nullptr)
+		{
+			emptyHotkeys.Emplace(hotkey);
+		}
+	}
+
+	for (auto& skill : startingSkills)
+	{
+		ASkillBase* tempSkill = GetWorld()->SpawnActor<ASkillBase>(skill, params);
+		tempSkill->SetPlayerRef(this);
+		if(emptyHotkeys.Num()>0)
+		{
+			const auto hotkey = emptyHotkeys[0];
+			emptyHotkeys.RemoveAt(0);
+			hotkey->assignedSpell = tempSkill;
+		}
+	}
 }

@@ -41,4 +41,9 @@ public:
 	void SetMpProgressBar(float percent);
 
 	void GenerateHotkeys(TArray<FKey> keys, int keysPerRow);
+
+	FORCEINLINE TArray<UUI_SkillHotkey*> GetAllHotKeySlots()
+	{
+		return allHotkeySlots;
+	};
 };
