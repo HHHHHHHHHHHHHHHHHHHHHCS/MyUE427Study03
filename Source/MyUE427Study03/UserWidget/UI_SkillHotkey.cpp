@@ -27,7 +27,7 @@ void UUI_SkillHotkey::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 }
 
-void UUI_SkillHotkey::AssignSpell(ASkillBase* newAssignedSpell)
+void UUI_SkillHotkey::SetAssignSpell(ASkillBase* newAssignedSpell)
 {
 	this->assignedSpell = newAssignedSpell;
 	assignedSpell->SetHotkey(this);
@@ -56,7 +56,7 @@ void UUI_SkillHotkey::ClearAssignedSpell()
 	}
 }
 
-void UUI_SkillHotkey::OnSKillButtonClicked()
+void UUI_SkillHotkey::OnSKillButtonClicked() 
 {
 	assignedSpell->OnTryCastSpell();
 }

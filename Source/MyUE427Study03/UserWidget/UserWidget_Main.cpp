@@ -60,7 +60,7 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 		UUI_HotkeyRow* row = CreateWidget<UUI_HotkeyRow>(GetWorld(), cls);
 		row->SetHotkeys(localKeys);
 		hotkeyRowContainer->AddChildToVerticalBox(row);
-		allHotkeySlots.Append(row->GenerateHotkeys());
+		allHotkeySlots.Append(row->GenerateHotkeys(0));
 	}
 	else
 	{
@@ -77,7 +77,7 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 			UUI_HotkeyRow* row = CreateWidget<UUI_HotkeyRow>(GetWorld(), cls);
 			row->SetHotkeys(localModifyKeys);
 			hotkeyRowContainer->AddChildToVerticalBox(row);
-			allHotkeySlots.Append(row->GenerateHotkeys());
+			allHotkeySlots.Append(row->GenerateHotkeys(i));
 			// 因为确保了被整除而且有序, 所以无所谓
 			localKeys.RemoveAt(0, keysPerRow);
 			// for (auto& key : localModifyKeys)

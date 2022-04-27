@@ -21,11 +21,13 @@ class MYUE427STUDY03_API UUI_SkillHotkey : public UUserWidget
 public:
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UTextBlock* Text_Hotkey;
+
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UTextBlock* Text_Cooldown;
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UImage* Image_SkillIcon;
+
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UImage* Image_Cooldown;
 
@@ -36,11 +38,13 @@ public:
 
 	class ASkillBase* assignedSpell; //分配的技能
 
+	int hotkeyRow;
+	int hotkeyIndex;
+
 private:
 	bool bHasSetKeyName = false;
 
 	bool bIsActive = false;
-
 
 	UMaterialInstanceDynamic* cooldownMat;
 
@@ -52,7 +56,7 @@ public:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	//为技能分配快捷键
-	void AssignSpell(ASkillBase* newAssignedSpell);
+	void SetAssignSpell(ASkillBase* newAssignedSpell);
 
 	//清除分配的技能
 	void ClearAssignedSpell();

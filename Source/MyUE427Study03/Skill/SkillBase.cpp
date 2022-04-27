@@ -29,3 +29,15 @@ void ASkillBase::OnTryCastSpell()
 {
 }
 
+void ASkillBase::InitSpellCast()
+{
+}
+
+void ASkillBase::OnSpellCast()
+{
+}
+
+void ASkillBase::OnCastCompleted()
+{
+}
+

@@ -100,6 +100,7 @@ void ACharacterBase::BeginPlay()
 	mainUI->AddToViewport();
 	mainUI->GenerateHotkeys(keys, keysPerRow);
 	UpdatePlayerDataUI();
+	GenerateStartingSkills();
 }
 
 
@@ -311,7 +312,20 @@ void ACharacterBase::GenerateStartingSkills()
 	{
 		if (hotkey && hotkey->assignedSpell == nullptr)
 		{
-			emptyHotkeys.Emplace(hotkey);
+			int index = -1;
+			for (auto& temp : emptyHotkeys)
+			{
+				index++;
+				if (hotkey->hotkeyRow > temp->hotkeyRow)
+				{
+					break;
+				}
+				if (hotkey->hotkeyRow == temp->hotkeyRow && hotkey->hotkeyIndex < temp->hotkeyIndex)
+				{
+					break;
+				}
+			}
+			emptyHotkeys.Insert(hotkey, index);
 		}
 	}
 
@@ -319,11 +333,31 @@ void ACharacterBase::GenerateStartingSkills()
 	{
 		ASkillBase* tempSkill = GetWorld()->SpawnActor<ASkillBase>(skill, params);
 		tempSkill->SetPlayerRef(this);
-		if(emptyHotkeys.Num()>0)
+		if (emptyHotkeys.Num() > 0)
 		{
 			const auto hotkey = emptyHotkeys[0];
 			emptyHotkeys.RemoveAt(0);
-			hotkey->assignedSpell = tempSkill;
+			hotkey->SetAssignSpell(tempSkill);
 		}
 	}
+}
+
+void ACharacterBase::BeginSpellCast(ASkillBase* skill)
+{
+	bIsCasting = true;
+	currentSkill = skill;
+	for (auto& hotkeySlot : mainUI->GetAllHotKeySlots())
+	{
+		if (hotkeySlot->assignedSpell)
+		{
+			if (currentSkill != hotkeySlot->assignedSpell)
+			{
+				hotkeySlot->DisableHotkey();
+			}
+		}
+	}
+}
+
+void ACharacterBase::EndSpellCast(ASkillBase* skill)
+{
 }

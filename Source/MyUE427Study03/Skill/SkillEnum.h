@@ -19,7 +19,7 @@ enum class ETargetTypes : uint8
 
 //伤害的类型
 UENUM()
-enum class EDamageType: uint8
+enum class ESkillDamageType: uint8
 {
 	Physical,
 	Magic,

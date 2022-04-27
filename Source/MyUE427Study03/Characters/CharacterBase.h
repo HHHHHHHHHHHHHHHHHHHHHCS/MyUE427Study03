@@ -76,18 +76,23 @@ public:
 	UPROPERTY(EditAnywhere, Category="UI")
 	int keysPerRow;
 
+	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
 
-	ASkillBase* currentSkill; //当前技能
 
 protected:
 	bool bMouseRightHold;
 
 	bool bMouseMoving;
 
+	bool bIsCasting = true;
+
 	ACursorDecal* currCursorDecal;
 
 	UUserWidget_Main* mainUI;
+
+	ASkillBase* currentSkill; //释放的当前技能
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -165,5 +170,13 @@ public:
 
 	void UpdatePlayerDataUI();
 
-	void GenerateStartingSkills();//生成初始技能
+	//生成初始技能
+	void GenerateStartingSkills();
+
+	//开始技能释放
+	void BeginSpellCast(ASkillBase* skill);
+
+
+	//结束技能释放
+	void EndSpellCast(ASkillBase* skill);
 };

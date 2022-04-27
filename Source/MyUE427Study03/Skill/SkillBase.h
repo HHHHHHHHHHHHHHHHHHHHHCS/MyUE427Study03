@@ -64,9 +64,14 @@ public:
 		return playerReference;
 	}
 	
-	
 	FORCEINLINE void SetPlayerRef(ACharacterBase* player)
 	{
 		this->playerReference = player; 
 	}
+
+	void InitSpellCast();
+
+	void OnSpellCast();
+
+	void OnCastCompleted();
 };
