@@ -21,14 +21,18 @@ public:
 
 private:
 	bool bIsCooldown; //是否在冷却
-	bool bCurrCasted; //是否释放完毕
+	bool bCurrCasting; //是否正在释放
 
+	float currCD; //当前的CD
+	FTimerHandle timerHandle_cooldown;
+	
 	class UUI_SkillHotkey* hotkey; //技能绑定的快捷键
 	class ACharacterBase* playerReference; //谁释放了该技能
 
 public:
 	// Sets default values for this actor's properties
 	ASkillBase();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -54,7 +58,7 @@ public:
 
 	FORCEINLINE bool CurrCasted() const
 	{
-		return bCurrCasted;
+		return bCurrCasting;
 	}
 	
 	void OnTryCastSpell();
@@ -69,9 +73,13 @@ public:
 		this->playerReference = player; 
 	}
 
+	//初始释放, 用来做条件判断, 比如说魔法值
 	void InitSpellCast();
 
 	void OnSpellCast();
 
 	void OnCastCompleted();
+
+	//技能冷却
+	void OnCooldown();
 };

@@ -41,12 +41,13 @@ public:
 	int hotkeyRow;
 	int hotkeyIndex;
 
+	UMaterialInstanceDynamic* cooldownMat;
+
+
 private:
 	bool bHasSetKeyName = false;
 
 	bool bIsActive = false;
-
-	UMaterialInstanceDynamic* cooldownMat;
 
 public:
 	virtual bool Initialize() override;

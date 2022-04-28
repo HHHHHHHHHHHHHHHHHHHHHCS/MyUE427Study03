@@ -85,7 +85,7 @@ protected:
 
 	bool bMouseMoving;
 
-	bool bIsCasting = true;
+	bool bIsCasting;
 
 	ACursorDecal* currCursorDecal;
 
@@ -176,7 +176,11 @@ public:
 	//开始技能释放
 	void BeginSpellCast(ASkillBase* skill);
 
-
 	//结束技能释放
 	void EndSpellCast(ASkillBase* skill);
+
+	FORCEINLINE bool GetBIsCasting() const
+	{
+		return bIsCasting;
+	}
 };
