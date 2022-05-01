@@ -70,7 +70,7 @@ protected:
 	int currentLevel;
 
 public:
-	UPROPERTY(EditAnywhere, Category="UI")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TArray<FKey> keys;
 
 	UPROPERTY(EditAnywhere, Category="UI")
@@ -79,6 +79,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
 
+	bool bCanFindKey;
+
+	UUserWidget_Main* mainUI;
 
 protected:
 	bool bMouseRightHold;
@@ -88,8 +91,6 @@ protected:
 	bool bIsCasting;
 
 	ACursorDecal* currCursorDecal;
-
-	UUserWidget_Main* mainUI;
 
 	ASkillBase* currentSkill; //释放的当前技能
 
@@ -117,6 +118,9 @@ protected:
 	void CameraZoomIn();
 
 	void CameraZoomOut();
+
+	void OnAnyKeyPressed(FKey key);
+
 
 public:
 	FORCEINLINE void SetCharacterName(FString name)

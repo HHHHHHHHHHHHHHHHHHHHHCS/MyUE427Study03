@@ -28,7 +28,6 @@ public:
 
 	UVerticalBox* hotkeyRowContainer;
 
-private:
 	TArray<UUI_SkillHotkey*> allHotkeySlots;
 
 public:
@@ -46,4 +45,9 @@ public:
 	{
 		return allHotkeySlots;
 	};
+
+	UFUNCTION(BlueprintNativeEvent, Category="Animation")
+	void PlayPopupAnimation();
+
+	void PlayPopupAnimation_Implementation();
 };

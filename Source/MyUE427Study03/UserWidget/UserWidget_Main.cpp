@@ -91,3 +91,7 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 		}
 	}
 }
+
+void UUserWidget_Main::PlayPopupAnimation_Implementation()
+{
+}

@@ -57,6 +57,7 @@ ACharacterBase::ACharacterBase()
 	bMouseRightHold = false;
 	canMoveDistance = 0.0f;
 	bMouseMoving = false;
+	bCanFindKey = true;
 
 	ReadData();
 	currentLevel = 1;
@@ -122,12 +123,10 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
-	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::OnSetDestinationPressed);
-	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::CameraZoomIn);
-	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::CameraZoomOut);
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this, &ACharacterBase::OnSetDestinationPressed);
+	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomIn);
+	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
+	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -204,8 +203,7 @@ void ACharacterBase::OnSetDestinationPressed()
 	if (hitResult.bBlockingHit)
 	{
 		CancelMoveToCursor();
-		if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel)
-			== ECollisionResponse::ECR_Block)
+		if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel) == ECollisionResponse::ECR_Block)
 		{
 			FActorSpawnParameters parameters;
 			parameters.Owner = this;
@@ -236,6 +234,28 @@ void ACharacterBase::CameraZoomOut()
 {
 	cameraBoom->TargetArmLength = FMath::Min(cameraBoom->TargetArmLength + camerZoomStep, maxCameraZoom);
 }
+
+void ACharacterBase::OnAnyKeyPressed(FKey key)
+{
+	if (bCanFindKey)
+	{
+		bCanFindKey = false;
+		for (auto& hotkey : mainUI->GetAllHotKeySlots())
+		{
+			// if (playerController->IsInputKeyDown(hotkey->key))
+			if (key == hotkey->key)
+			{
+				if (hotkey->assignedSpell)
+				{
+					hotkey->assignedSpell->OnTryCastSpell();
+					break;
+				}
+			}
+		}
+		bCanFindKey = true;
+	}
+}
+
 
 void ACharacterBase::ChangeCurrentHP(float deltaHP)
 {
@@ -312,10 +332,9 @@ void ACharacterBase::GenerateStartingSkills()
 	{
 		if (hotkey && hotkey->assignedSpell == nullptr)
 		{
-			int index = -1;
+			int index = 0;
 			for (auto& temp : emptyHotkeys)
 			{
-				index++;
 				if (hotkey->hotkeyRow > temp->hotkeyRow)
 				{
 					break;
@@ -324,6 +343,7 @@ void ACharacterBase::GenerateStartingSkills()
 				{
 					break;
 				}
+				index++;
 			}
 			emptyHotkeys.Insert(hotkey, index);
 		}
@@ -350,7 +370,7 @@ void ACharacterBase::BeginSpellCast(ASkillBase* skill)
 	{
 		if (hotkeySlot->assignedSpell)
 		{
-			if (currentSkill != hotkeySlot->assignedSpell)
+			if (currentSkill == hotkeySlot->assignedSpell)
 			{
 				hotkeySlot->DisableHotkey();
 			}
@@ -360,4 +380,16 @@ void ACharacterBase::BeginSpellCast(ASkillBase* skill)
 
 void ACharacterBase::EndSpellCast(ASkillBase* skill)
 {
+	bIsCasting = false;
+	currentSkill = skill;
+	for (auto& HotkeySlot : mainUI->GetAllHotKeySlots())
+	{
+		if (HotkeySlot->assignedSpell)
+		{
+			if (currentSkill == HotkeySlot->assignedSpell)
+			{
+				HotkeySlot->EnableHotkey();
+			}
+		}
+	}
 }

@@ -68,4 +68,9 @@ public:
 	void EnableHotkey();
 
 	void DisableHotkey();
+
+	FORCEINLINE bool GetIsActive() const
+	{
+		return bIsActive;
+	}
 };

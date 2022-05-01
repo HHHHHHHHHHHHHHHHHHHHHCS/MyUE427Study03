@@ -25,14 +25,14 @@ private:
 
 	float currCD; //当前的CD
 	FTimerHandle timerHandle_cooldown;
-	
+
 	class UUI_SkillHotkey* hotkey; //技能绑定的快捷键
 	class ACharacterBase* playerReference; //谁释放了该技能
 
 public:
 	// Sets default values for this actor's properties
 	ASkillBase();
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -60,17 +60,18 @@ public:
 	{
 		return bCurrCasting;
 	}
-	
+
+	UFUNCTION(BlueprintCallable)
 	void OnTryCastSpell();
 
 	FORCEINLINE ACharacterBase* GetPlayerRef() const
 	{
 		return playerReference;
 	}
-	
+
 	FORCEINLINE void SetPlayerRef(ACharacterBase* player)
 	{
-		this->playerReference = player; 
+		this->playerReference = player;
 	}
 
 	//初始释放, 用来做条件判断, 比如说魔法值
@@ -82,4 +83,7 @@ public:
 
 	//技能冷却
 	void OnCooldown();
+
+	//技能冷却结束
+	void OnCooldownExpired();
 };

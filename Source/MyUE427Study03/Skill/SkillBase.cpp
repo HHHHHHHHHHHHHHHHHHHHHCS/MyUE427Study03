@@ -43,7 +43,7 @@ void ASkillBase::InitSpellCast()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Not enough mana!"));
+		playerReference->mainUI->PlayPopupAnimation();
 	}
 }
 
@@ -76,11 +76,36 @@ void ASkillBase::OnCooldown()
 	if (currCD <= 0)
 	{
 		GetWorldTimerManager().ClearTimer(timerHandle_cooldown);
+		OnCooldownExpired();
 	}
 	else
 	{
 		currCD -= 0.01f;
 		hotkey->cooldownMat->SetScalarParameterValue("Percent", currCD / GetCurrentStage().cooldownTime);
-		hotkey->Text_Cooldown->SetText(FText::AsNumber(currCD));
+		if (currCD >= 1.0f)
+		{
+			hotkey->Text_Cooldown->SetText(FText::AsNumber(FMath::RoundHalfToZero(currCD)));
+		}
+		else
+		{
+			hotkey->Text_Cooldown->SetText(FText::AsNumber(0.1f * FMath::RoundHalfToZero(10.0f * currCD)));
+		}
+	}
+}
+
+void ASkillBase::OnCooldownExpired()
+{
+	bIsCooldown = false;
+	if (hotkey)
+	{
+		if (hotkey->GetIsActive())
+		{
+			hotkey->Button_Skill->SetIsEnabled(true);
+			hotkey->Image_SkillIcon->SetColorAndOpacity(FLinearColor::White);
+		}
+
+		hotkey->cooldownMat->SetScalarParameterValue("Percent", 0);
+		hotkey->Image_Cooldown->SetVisibility(ESlateVisibility::Hidden);
+		hotkey->Text_Cooldown->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
