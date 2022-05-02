@@ -325,7 +325,7 @@ void ACharacterBase::GenerateStartingSkills()
 {
 	FActorSpawnParameters params;
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
+	params.Owner = this;
 	TArray<UUI_SkillHotkey*> emptyHotkeys;
 
 	for (const auto& hotkey : mainUI->GetAllHotKeySlots())
@@ -352,7 +352,6 @@ void ACharacterBase::GenerateStartingSkills()
 	for (auto& skill : startingSkills)
 	{
 		ASkillBase* tempSkill = GetWorld()->SpawnActor<ASkillBase>(skill, params);
-		tempSkill->SetPlayerRef(this);
 		if (emptyHotkeys.Num() > 0)
 		{
 			const auto hotkey = emptyHotkeys[0];

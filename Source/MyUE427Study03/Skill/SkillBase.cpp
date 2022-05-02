@@ -3,6 +3,7 @@
 
 #include "SkillBase.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 
 // Sets default values
@@ -16,6 +17,7 @@ ASkillBase::ASkillBase()
 void ASkillBase::BeginPlay()
 {
 	Super::BeginPlay();
+	playerReference  = Cast<ACharacterBase>(GetOwner());
 }
 
 // Called every frame
@@ -50,6 +52,10 @@ void ASkillBase::InitSpellCast()
 void ASkillBase::OnSpellCast()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Casting skill: %s"), *skillInfo.name.ToString());
+	if(skillAnimMontage)
+	{
+		PlaySkillAnim(skillAnimMontage);
+	}
 	OnCastCompleted();
 }
 
@@ -108,4 +114,19 @@ void ASkillBase::OnCooldownExpired()
 		hotkey->Image_Cooldown->SetVisibility(ESlateVisibility::Hidden);
 		hotkey->Text_Cooldown->SetVisibility(ESlateVisibility::Hidden);
 	}
+}
+
+void ASkillBase::PlaySkillAnim(UAnimMontage* skillAnimMon)
+{
+	const auto charMove = playerReference->GetCharacterMovement();
+	charMove->DisableMovement();
+	charMove->StopMovementImmediately();
+	const auto animInst = playerReference->GetMesh()->GetAnimInstance();
+	animInst->Montage_Play(skillAnimMon);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetMove, this, &ASkillBase::ResetMovement, skillAnimMon->SequenceLength, false);
+}
+
+void ASkillBase::ResetMovement()
+{
+	playerReference->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }

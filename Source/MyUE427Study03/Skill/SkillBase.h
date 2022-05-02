@@ -17,6 +17,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill Info")
 	FSkillInfo skillInfo;
 
+	UPROPERTY(EditAnywhere, Category="Skill Info")
+	UAnimMontage* skillAnimMontage;
+
 	int currentStageIndex;
 
 private:
@@ -29,6 +32,8 @@ private:
 	class UUI_SkillHotkey* hotkey; //技能绑定的快捷键
 	class ACharacterBase* playerReference; //谁释放了该技能
 
+	FTimerHandle TimerHandle_ResetMove;
+	
 public:
 	// Sets default values for this actor's properties
 	ASkillBase();
@@ -69,11 +74,6 @@ public:
 		return playerReference;
 	}
 
-	FORCEINLINE void SetPlayerRef(ACharacterBase* player)
-	{
-		this->playerReference = player;
-	}
-
 	//初始释放, 用来做条件判断, 比如说魔法值
 	void InitSpellCast();
 
@@ -86,4 +86,9 @@ public:
 
 	//技能冷却结束
 	void OnCooldownExpired();
+
+	//播放技能动画
+	void PlaySkillAnim(UAnimMontage* skillAnimMon);
+
+	void ResetMovement();
 };
