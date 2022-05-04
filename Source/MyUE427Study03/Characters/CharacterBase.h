@@ -92,6 +92,7 @@ protected:
 
 	ACursorDecal* currCursorDecal;
 
+	UPROPERTY(BlueprintReadOnly)
 	ASkillBase* currentSkill; //释放的当前技能
 
 

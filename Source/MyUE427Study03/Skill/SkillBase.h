@@ -22,7 +22,7 @@ public:
 
 	int currentStageIndex;
 
-private:
+protected:
 	bool bIsCooldown; //是否在冷却
 	bool bCurrCasting; //是否正在释放
 
@@ -33,7 +33,7 @@ private:
 	class ACharacterBase* playerReference; //谁释放了该技能
 
 	FTimerHandle TimerHandle_ResetMove;
-	
+
 public:
 	// Sets default values for this actor's properties
 	ASkillBase();
@@ -75,20 +75,23 @@ public:
 	}
 
 	//初始释放, 用来做条件判断, 比如说魔法值
-	void InitSpellCast();
+	virtual void InitSpellCast();
 
-	void OnSpellCast();
+	virtual void OnSpellCast();
 
-	void OnCastCompleted();
+	virtual void OnCastCompleted();
 
 	//技能冷却
-	void OnCooldown();
+	virtual void OnCooldown();
 
 	//技能冷却结束
 	void OnCooldownExpired();
 
 	//播放技能动画
-	void PlaySkillAnim(UAnimMontage* skillAnimMon);
+	virtual void PlaySkillAnim(UAnimMontage* skillAnimMon);
 
 	void ResetMovement();
+
+	UFUNCTION(BlueprintCallable)
+	virtual  void OnSkillNotify();
 };

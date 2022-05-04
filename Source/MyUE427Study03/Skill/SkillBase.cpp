@@ -130,3 +130,7 @@ void ASkillBase::ResetMovement()
 {
 	playerReference->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }
+
+void ASkillBase::OnSkillNotify()
+{
+}
