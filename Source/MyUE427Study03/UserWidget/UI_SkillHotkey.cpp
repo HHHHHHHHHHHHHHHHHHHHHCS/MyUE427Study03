@@ -14,7 +14,8 @@ bool UUI_SkillHotkey::Initialize()
 
 	Button_Skill->OnClicked.AddDynamic(this, &UUI_SkillHotkey::OnSKillButtonClicked);
 	cooldownMat = Image_Cooldown->GetDynamicMaterial();
-
+	dragOverColor = FLinearColor(1.0f, 0.82f, 0.0f, 0.5f);
+	defaultColor = FLinearColor(0, 0, 0, 0.2f);
 	return true;
 }
 
@@ -56,7 +57,7 @@ void UUI_SkillHotkey::ClearAssignedSpell()
 	}
 }
 
-void UUI_SkillHotkey::OnSKillButtonClicked() 
+void UUI_SkillHotkey::OnSKillButtonClicked()
 {
 	assignedSpell->OnTryCastSpell();
 }
@@ -83,4 +84,10 @@ void UUI_SkillHotkey::DisableHotkey()
 		Image_Cooldown->SetVisibility(ESlateVisibility::Visible);
 		cooldownMat->SetScalarParameterValue(FName("Percent"), 1.0f);
 	}
+}
+
+void UUI_SkillHotkey::ResetStyle()
+{
+	bDraggedOver = false;
+	Image_Bg->SetColorAndOpacity(defaultColor);
 }
