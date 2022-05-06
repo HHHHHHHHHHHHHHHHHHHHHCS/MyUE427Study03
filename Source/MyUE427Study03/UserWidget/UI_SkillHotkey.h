@@ -30,7 +30,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UImage* Image_Bg;
-	
+
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UImage* Image_Cooldown;
 
@@ -40,7 +40,7 @@ public:
 	bool bDraggedOver; //当前是否被拖拽
 	FLinearColor dragOverColor; //这个插槽为空的时候有图标过来，显示的颜色
 	FLinearColor defaultColor; //默认的颜色
-	
+
 	FKey key;
 
 	class ASkillBase* assignedSpell; //分配的技能
@@ -50,6 +50,8 @@ public:
 
 	UMaterialInstanceDynamic* cooldownMat;
 
+	UPROPERTY(EditAnywhere, Category="DragDrop")
+	TSubclassOf<UDragDropOperation> skillDragOperation;
 
 private:
 	bool bHasSetKeyName = false;
@@ -83,4 +85,10 @@ public:
 
 	//重设为初始的样子
 	void ResetStyle();
+
+	//返回鼠标右键 按下的事件,  以便拖拽功能,  只有当鼠标右键按下的时候, 才来执行检测拖拽的方法
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	//检测到拖拽的时候 调用的函数
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 };

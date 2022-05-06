@@ -3,6 +3,9 @@
 
 #include "UI_SkillHotkey.h"
 
+#include "SkillDragOperation.h"
+#include "UI_SkillDrag.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MyUE427Study03/Skill/SkillBase.h"
 
 bool UUI_SkillHotkey::Initialize()
@@ -90,4 +93,49 @@ void UUI_SkillHotkey::ResetStyle()
 {
 	bDraggedOver = false;
 	Image_Bg->SetColorAndOpacity(defaultColor);
+}
+
+FReply UUI_SkillHotkey::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+	if (!assignedSpell)
+	{
+		return FReply::Handled();
+	}
+
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton) && !assignedSpell->IsCooldown())
+	{
+		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
+	}
+
+	return FReply::Handled();
+}
+
+void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+
+	auto* cls = LoadClass<UUI_SkillDrag>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_SkillDrag.UI_SkillDrag_C'"));
+	UUI_SkillDrag* skillDrag = CreateWidget<UUI_SkillDrag>(GetWorld(), cls);
+
+	auto* icon = assignedSpell->GetCurrentStage().overrideIcon;
+	if (!icon)
+	{
+		icon = assignedSpell->skillInfo.icon;
+	}
+	skillDrag->SetSkillIconTexture(icon);
+
+	UDragDropOperation* tempOp = UWidgetBlueprintLibrary::CreateDragDropOperation(skillDragOperation);
+
+	tempOp->DefaultDragVisual = skillDrag;
+	OutOperation = tempOp;
+
+
+	USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(OutOperation);
+	if(skillDragOp)
+	{
+		skillDragOp->skillActor = assignedSpell;
+		skillDragOp->FromHotkey = this;
+	}
 }
