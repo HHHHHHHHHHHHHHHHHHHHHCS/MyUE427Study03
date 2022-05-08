@@ -91,4 +91,7 @@ public:
 
 	//检测到拖拽的时候 调用的函数
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+
+	//当拖拽UI 碰到自己的时候触发
+	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };

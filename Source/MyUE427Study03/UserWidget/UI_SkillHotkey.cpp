@@ -97,6 +97,7 @@ void UUI_SkillHotkey::ResetStyle()
 
 FReply UUI_SkillHotkey::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	// UE_LOG(LogTemp, Warning, TEXT("NativeOnMouseButtonDown"));
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	if (!assignedSpell)
@@ -114,6 +115,7 @@ FReply UUI_SkillHotkey::NativeOnMouseButtonDown(const FGeometry& InGeometry, con
 
 void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
+	// UE_LOG(LogTemp, Warning, TEXT("NativeOnDragDetected"));
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
 	auto* cls = LoadClass<UUI_SkillDrag>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_SkillDrag.UI_SkillDrag_C'"));
@@ -133,9 +135,29 @@ void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FP
 
 
 	USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(OutOperation);
-	if(skillDragOp)
+	if (skillDragOp)
 	{
 		skillDragOp->skillActor = assignedSpell;
 		skillDragOp->FromHotkey = this;
 	}
+}
+
+bool UUI_SkillHotkey::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	// UE_LOG(LogTemp, Warning, TEXT("NativeOnDragOver"));
+	Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
+
+	USkillDragOperation* dragOp = Cast<USkillDragOperation>(InOperation);
+
+	if (!dragOp)
+	{
+		return false;
+	}
+
+	if (!bDraggedOver && dragOp->FromHotkey != this && !assignedSpell)
+	{
+		Image_Bg->SetColorAndOpacity(dragOverColor);
+		bDraggedOver = true;
+	}
+	return false;
 }
