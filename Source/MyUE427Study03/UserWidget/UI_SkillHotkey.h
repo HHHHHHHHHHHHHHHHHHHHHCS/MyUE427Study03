@@ -94,4 +94,7 @@ public:
 
 	//当拖拽UI 碰到自己的时候触发
 	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	//拖拽离开的时候触发
+	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };

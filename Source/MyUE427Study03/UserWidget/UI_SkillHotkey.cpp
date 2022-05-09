@@ -158,6 +158,20 @@ bool UUI_SkillHotkey::NativeOnDragOver(const FGeometry& InGeometry, const FDragD
 	{
 		Image_Bg->SetColorAndOpacity(dragOverColor);
 		bDraggedOver = true;
+		return true;
 	}
 	return false;
+}
+
+void UUI_SkillHotkey::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragLeave(InDragDropEvent, InOperation);
+	if (bDraggedOver)
+	{
+		USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(InOperation);
+		if (skillDragOp)
+		{
+			ResetStyle();
+		}
+	}
 }
