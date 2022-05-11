@@ -54,7 +54,7 @@ void UUI_SkillHotkey::ClearAssignedSpell()
 		assignedSpell->SetHotkey(nullptr);
 		assignedSpell = nullptr;
 
-		Image_SkillIcon->SetIsEnabled(false);
+		Button_Skill->SetIsEnabled(false);
 		Image_SkillIcon->SetBrushFromTexture(nullptr);
 		Image_SkillIcon->SetVisibility(ESlateVisibility::Hidden);
 	}
@@ -174,4 +174,43 @@ void UUI_SkillHotkey::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, U
 			ResetStyle();
 		}
 	}
+}
+
+bool UUI_SkillHotkey::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+
+	USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(InOperation);
+
+	if (skillDragOp)
+	{
+		if (skillDragOp->FromHotkey != this)
+		{
+			if (assignedSpell)
+			{
+				if (assignedSpell->IsCooldown())
+				{
+					return true;
+				}
+				else
+				{
+					auto tempAS = assignedSpell;
+					ClearAssignedSpell();
+					skillDragOp->FromHotkey->ClearAssignedSpell();
+					SetAssignSpell(skillDragOp->skillActor);
+					skillDragOp->FromHotkey->SetAssignSpell(tempAS);
+					ResetStyle();
+					return true;
+				}
+			}
+			else
+			{
+				skillDragOp->FromHotkey->ClearAssignedSpell();
+				SetAssignSpell(skillDragOp->skillActor);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

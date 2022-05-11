@@ -97,4 +97,7 @@ public:
 
 	//拖拽离开的时候触发
 	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	
+	//拖拽鼠标放下的时候触发
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };
