@@ -18,7 +18,7 @@ bool UUI_SkillHotkey::Initialize()
 	Button_Skill->OnClicked.AddDynamic(this, &UUI_SkillHotkey::OnSKillButtonClicked);
 	cooldownMat = Image_Cooldown->GetDynamicMaterial();
 	dragOverColor = FLinearColor(1.0f, 0.82f, 0.0f, 0.5f);
-	defaultColor = FLinearColor(0, 0, 0, 0.2f);
+	defaultColor = Image_Bg->ColorAndOpacity;
 	return true;
 }
 

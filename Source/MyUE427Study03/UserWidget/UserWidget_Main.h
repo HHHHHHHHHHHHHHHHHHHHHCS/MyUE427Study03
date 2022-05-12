@@ -50,4 +50,6 @@ public:
 	void PlayPopupAnimation();
 
 	void PlayPopupAnimation_Implementation();
+
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };

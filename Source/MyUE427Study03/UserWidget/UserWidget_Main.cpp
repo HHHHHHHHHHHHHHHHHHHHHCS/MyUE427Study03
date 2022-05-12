@@ -3,6 +3,7 @@
 
 #include "UserWidget_Main.h"
 
+#include "SkillDragOperation.h"
 #include "UI_HotkeyRow.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
@@ -68,7 +69,7 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 		auto slot = Cast<UOverlaySlot>(hotkeyRowContainer->Slot);
 		auto padding = slot->Padding;
 		// 115 是每一个间距 
-		padding.Top -=  (len - 1) * 115;
+		padding.Top -= (len - 1) * 115;
 		slot->SetPadding(padding);
 		for (int i = 0; i < len; i++)
 		{
@@ -94,4 +95,20 @@ void UUserWidget_Main::GenerateHotkeys(TArray<FKey> keys, int keysPerRow)
 
 void UUserWidget_Main::PlayPopupAnimation_Implementation()
 {
+}
+
+bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	bool bl = Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+
+	//看似是丢掉技能, 实则是丢在主界面上
+	USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(InOperation);
+
+	if (skillDragOp)
+	{
+		skillDragOp->FromHotkey->ClearAssignedSpell();
+		return true;
+	}
+
+	return bl;
 }
