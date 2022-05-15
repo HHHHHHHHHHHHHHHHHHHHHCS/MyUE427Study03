@@ -17,7 +17,7 @@ ACharacterGideon::ACharacterGideon()
 
 
 	static ConstructorHelpers::FClassFinder<UAnimInstance> anim(
-		TEXT("AnimBlueprint'/Game/Blueprints/Animations/ABP_Gideon.ABP_Gideon_C'"));
+		TEXT("AnimBlueprint'/Game/Blueprints/Characters/Animations/ABP_Gideon.ABP_Gideon_C'"));
 	if (anim.Succeeded())
 	{
 		GetMesh()->SetAnimClass(anim.Class);
