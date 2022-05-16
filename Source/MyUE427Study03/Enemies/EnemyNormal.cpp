@@ -18,6 +18,7 @@ void AEnemyNormal::BeginPlay()
 {
 	Super::BeginPlay();
 	myController = Cast<AEnemyNormal_Controller>(GetController());
+	myController->Patrol();
 }
 
 // Called every frame
