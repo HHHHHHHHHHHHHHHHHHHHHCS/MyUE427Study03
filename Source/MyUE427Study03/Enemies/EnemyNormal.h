@@ -15,8 +15,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
 
+	UPROPERTY(VisibleAnywhere, Category="AI")
+	class UAIPerceptionComponent* aiPerceptionComp;
+
+	UPROPERTY(VisibleAnywhere, Category="AI")
+	class UAISenseConfig_Sight* sightConfig;
+
 protected:
 	class AEnemyNormal_Controller* myController;
+
 
 public:
 	// Sets default values for this character's properties

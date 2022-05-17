@@ -4,6 +4,8 @@
 #include "EnemyNormal.h"
 
 #include "EnemyNormal_Controller.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
 
 // Sets default values
 AEnemyNormal::AEnemyNormal()
@@ -11,6 +13,17 @@ AEnemyNormal::AEnemyNormal()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = AEnemyNormal_Controller::StaticClass();
+	aiPerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComp"));
+	sightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISightConfig"));
+
+
+	sightConfig->SightRadius = 800;
+	sightConfig->LoseSightRadius = 2000;
+	sightConfig->PeripheralVisionAngleDegrees = 90.0f;
+
+	aiPerceptionComp->ConfigureSense(*sightConfig);
+	//设置为视觉优先
+	aiPerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());
 }
 
 // Called when the game starts or when spawned
