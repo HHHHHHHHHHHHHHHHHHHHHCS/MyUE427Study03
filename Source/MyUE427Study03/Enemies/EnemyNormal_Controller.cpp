@@ -45,8 +45,31 @@ void AEnemyNormal_Controller::OnMoveCompleted(FAIRequestID RequestID, const FPat
 
 void AEnemyNormal_Controller::DetectedPool()
 {
-	if(bIsPatrolling)
+	if (bIsPatrolling)
 	{
 		Patrol();
 	}
+}
+
+int AEnemyNormal_Controller::GetNextAnimationIndex()
+{
+	if (attackAnimMontages.Num() == 0)
+	{
+		currAttackIndex = 0;
+	}
+	else
+	{
+		currAttackIndex = (currAttackIndex + 1) % attackAnimMontages.Num();
+	}
+
+	return currAttackIndex;
+}
+
+bool AEnemyNormal_Controller::GetIsInAttackRange()
+{
+	if (!targetActor)
+	{
+		return false;
+	}
+	return enemyPawn->GetDistanceTo(targetActor) <= attackRange;
 }

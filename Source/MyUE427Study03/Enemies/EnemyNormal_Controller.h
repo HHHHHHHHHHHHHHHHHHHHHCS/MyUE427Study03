@@ -24,8 +24,11 @@ public:
 	//追逐的移动速度
 	float aggroedWalkSpeed = 400.0f;
 
+	//攻击范围
+	float attackRange = 300.0f;
+
 	//攻击动画蒙太奇列表
-	TArray<UAnimMontage*> AttackAnimMontages;
+	TArray<UAnimMontage*> attackAnimMontages;
 
 protected:
 	//初始的位置
@@ -37,7 +40,7 @@ protected:
 	bool bIsPatrolling = true;
 
 	//追逐的目标
-	AActor* target;
+	AActor* targetActor;
 
 	//是否是追逐目标, 但是目标脱离了的状态
 	bool bisRunningBack;
@@ -47,6 +50,8 @@ protected:
 
 	//当前的动画索引
 	int currAttackIndex = 0;
+
+
 
 public:
 	AEnemyNormal_Controller();
@@ -58,4 +63,10 @@ public:
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
 	void DetectedPool();
+
+	//得到要播放的下一个动画索引, 如果动画数组到头则重置为0
+	int GetNextAnimationIndex();
+
+	//目标是否在攻击范围内
+	bool GetIsInAttackRange();
 };
