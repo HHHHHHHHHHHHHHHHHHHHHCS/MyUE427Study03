@@ -5,6 +5,8 @@
 
 #include "EnemyNormal.h"
 #include "NavigationSystem.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEnemyNormal_Controller::AEnemyNormal_Controller()
 {
@@ -16,6 +18,7 @@ void AEnemyNormal_Controller::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	enemyPawn = Cast<AEnemyNormal>(InPawn);
+	animInst = enemyPawn->GetMesh()->GetAnimInstance();
 }
 
 void AEnemyNormal_Controller::Patrol()
@@ -36,6 +39,12 @@ void AEnemyNormal_Controller::Patrol()
 
 void AEnemyNormal_Controller::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
+	if (GetIsInAttackRange())
+	{
+		PerformAttack();
+		return;
+	}
+
 	if (bIsPatrolling)
 	{
 		float thinkTime = FMath::RandRange(1.0f, 4.0f);
@@ -53,16 +62,17 @@ void AEnemyNormal_Controller::DetectedPool()
 
 int AEnemyNormal_Controller::GetNextAnimationIndex()
 {
+	int idx;
 	if (attackAnimMontages.Num() == 0)
 	{
-		currAttackIndex = 0;
+		idx = 0;
 	}
 	else
 	{
-		currAttackIndex = (currAttackIndex + 1) % attackAnimMontages.Num();
+		idx = (currAttackIndex + 1) % attackAnimMontages.Num();
 	}
 
-	return currAttackIndex;
+	return idx;
 }
 
 bool AEnemyNormal_Controller::GetIsInAttackRange()
@@ -72,4 +82,44 @@ bool AEnemyNormal_Controller::GetIsInAttackRange()
 		return false;
 	}
 	return enemyPawn->GetDistanceTo(targetActor) <= attackRange;
+}
+
+void AEnemyNormal_Controller::PerformAttack()
+{
+	if (!enemyPawn->GetIsDead() && !bisRunningBack && targetActor)
+	{
+		bIsPatrolling = false;
+
+		enemyPawn->GetCharacterMovement()->StopMovementImmediately();
+
+		if (targetActor)
+		{
+			FRotator rot = UKismetMathLibrary::FindLookAtRotation(enemyPawn->GetActorLocation(), targetActor->GetActorLocation());
+			enemyPawn->SetActorRotation(rot);
+		}
+
+		currAttackMontage = attackAnimMontages[currAttackIndex];
+
+		animInst->Montage_Play(currAttackMontage);
+
+		GetWorldTimerManager().SetTimer(timerHandle_AnimPlayOver, this, &AEnemyNormal_Controller::OnAnimPlayOver, currAttackMontage->SequenceLength, false);
+	}
+}
+
+void AEnemyNormal_Controller::OnAnimPlayOver()
+{
+	currAttackMontage = nullptr;
+	currAttackIndex = GetNextAnimationIndex();
+
+	if (GetIsInAttackRange())
+	{
+		PerformAttack();
+	}
+	else
+	{
+		if (targetActor)
+		{
+			MoveToActor(targetActor);
+		}
+	}
 }

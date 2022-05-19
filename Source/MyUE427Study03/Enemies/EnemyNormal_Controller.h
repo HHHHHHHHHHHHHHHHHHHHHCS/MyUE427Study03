@@ -51,7 +51,10 @@ protected:
 	//当前的动画索引
 	int currAttackIndex = 0;
 
+	//动画实例
+	UAnimInstance* animInst;
 
+	FTimerHandle timerHandle_AnimPlayOver;
 
 public:
 	AEnemyNormal_Controller();
@@ -69,4 +72,10 @@ public:
 
 	//目标是否在攻击范围内
 	bool GetIsInAttackRange();
+
+	//执行攻击的函数
+	void PerformAttack();
+
+	//当攻击动画播放完成调用
+	void OnAnimPlayOver();
 };
