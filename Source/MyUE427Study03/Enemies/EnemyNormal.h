@@ -15,11 +15,23 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
 
+	//是否是有侵略性的
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Behavior")
+	bool bAggressive;
+
 	UPROPERTY(VisibleAnywhere, Category="AI")
 	class UAIPerceptionComponent* aiPerceptionComp;
 
 	UPROPERTY(VisibleAnywhere, Category="AI")
 	class UAISenseConfig_Sight* sightConfig;
+
+	//攻击动画蒙太奇列表
+	UPROPERTY(EditAnywhere, Category="Behavior")
+	TArray<UAnimMontage*> attackAnimMontages;
+	
+	//初始的位置
+	FVector startLocation;
+
 
 protected:
 	class AEnemyNormal_Controller* myController;
@@ -44,4 +56,7 @@ public:
 	{
 		return bIsDead;
 	}
+
+	UFUNCTION()
+	virtual void OnPerceptionUpdated(const TArray<AActor*>& updatedActors);
 };

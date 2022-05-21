@@ -22,20 +22,25 @@ public:
 	float patrolWalkSpeed = 200.0f;
 
 	//追逐的移动速度
-	float aggroedWalkSpeed = 400.0f;
+	float aggroedWalkSpeed = 600.0f;
 
 	//攻击范围
 	float attackRange = 300.0f;
 
-	//攻击动画蒙太奇列表
-	TArray<UAnimMontage*> attackAnimMontages;
+	//最大跟随目标的距离
+	float maxDistanceToFollow = 600.0f;
+
+
+
+	//狂暴状态
+	bool bWasAggroed = false;
 
 protected:
-	//初始的位置
-	FVector startLocation;
 
-	FTimerHandle timerHandle_patrol;
-
+	FTimerHandle timerHandle_Patrol;
+	FTimerHandle timerHandle_AnimPlayOver;
+	FTimerHandle timerHandle_CalDis;
+	
 	//是否处于追逐状态
 	bool bIsPatrolling = true;
 
@@ -54,7 +59,7 @@ protected:
 	//动画实例
 	UAnimInstance* animInst;
 
-	FTimerHandle timerHandle_AnimPlayOver;
+
 
 public:
 	AEnemyNormal_Controller();
@@ -78,4 +83,12 @@ public:
 
 	//当攻击动画播放完成调用
 	void OnAnimPlayOver();
+
+	//当发现主角之后
+	void OnAggroedPulled(AActor* target);
+
+	void CalcTargetDistance();
+
+	//当追着目标跑, 但是距离目标太远的时候就不追了, 回到初始位置, 并将状态重置为初始状态
+	void OnResetActor();
 };

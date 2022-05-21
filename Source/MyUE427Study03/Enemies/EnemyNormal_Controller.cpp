@@ -16,9 +16,9 @@ AEnemyNormal_Controller::AEnemyNormal_Controller()
 void AEnemyNormal_Controller::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
 	enemyPawn = Cast<AEnemyNormal>(InPawn);
 	animInst = enemyPawn->GetMesh()->GetAnimInstance();
+	enemyPawn->GetCharacterMovement()->MaxWalkSpeed = patrolWalkSpeed;
 }
 
 void AEnemyNormal_Controller::Patrol()
@@ -39,6 +39,13 @@ void AEnemyNormal_Controller::Patrol()
 
 void AEnemyNormal_Controller::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
+	if (bisRunningBack)
+	{
+		bisRunningBack = false;
+		bIsPatrolling = true;
+		enemyPawn->GetCharacterMovement()->MaxWalkSpeed = patrolWalkSpeed;
+	}
+
 	if (GetIsInAttackRange())
 	{
 		PerformAttack();
@@ -48,7 +55,7 @@ void AEnemyNormal_Controller::OnMoveCompleted(FAIRequestID RequestID, const FPat
 	if (bIsPatrolling)
 	{
 		float thinkTime = FMath::RandRange(1.0f, 4.0f);
-		GetWorldTimerManager().SetTimer(timerHandle_patrol, this, &AEnemyNormal_Controller::DetectedPool, thinkTime, false);
+		GetWorldTimerManager().SetTimer(timerHandle_Patrol, this, &AEnemyNormal_Controller::DetectedPool, thinkTime, false);
 	}
 }
 
@@ -63,13 +70,13 @@ void AEnemyNormal_Controller::DetectedPool()
 int AEnemyNormal_Controller::GetNextAnimationIndex()
 {
 	int idx;
-	if (attackAnimMontages.Num() == 0)
+	if (enemyPawn->attackAnimMontages.Num() == 0)
 	{
 		idx = 0;
 	}
 	else
 	{
-		idx = (currAttackIndex + 1) % attackAnimMontages.Num();
+		idx = (currAttackIndex + 1) % enemyPawn->attackAnimMontages.Num();
 	}
 
 	return idx;
@@ -86,7 +93,7 @@ bool AEnemyNormal_Controller::GetIsInAttackRange()
 
 void AEnemyNormal_Controller::PerformAttack()
 {
-	if (!enemyPawn->GetIsDead() && !bisRunningBack && targetActor)
+	if (targetActor && !enemyPawn->GetIsDead() && !bisRunningBack && bWasAggroed)
 	{
 		bIsPatrolling = false;
 
@@ -98,7 +105,7 @@ void AEnemyNormal_Controller::PerformAttack()
 			enemyPawn->SetActorRotation(rot);
 		}
 
-		currAttackMontage = attackAnimMontages[currAttackIndex];
+		currAttackMontage = enemyPawn->attackAnimMontages[currAttackIndex];
 
 		animInst->Montage_Play(currAttackMontage);
 
@@ -122,4 +129,55 @@ void AEnemyNormal_Controller::OnAnimPlayOver()
 			MoveToActor(targetActor);
 		}
 	}
+}
+
+void AEnemyNormal_Controller::OnAggroedPulled(AActor* target)
+{
+	if (!bWasAggroed && bisRunningBack)
+	{
+		bWasAggroed = true;
+		targetActor = target;
+		bIsPatrolling = false;
+
+		enemyPawn->GetCharacterMovement()->MaxWalkSpeed = aggroedWalkSpeed;
+		if (GetWorldTimerManager().TimerExists(timerHandle_CalDis))
+		{
+			GetWorldTimerManager().ClearTimer(timerHandle_CalDis);
+		}
+		GetWorldTimerManager().SetTimer(timerHandle_CalDis, this, &AEnemyNormal_Controller::CalcTargetDistance, 1.0f, true);
+		if (GetIsInAttackRange())
+		{
+			PerformAttack();
+		}
+		else
+		{
+			MoveToActor(targetActor);
+		}
+	}
+}
+
+void AEnemyNormal_Controller::CalcTargetDistance()
+{
+	if (targetActor == nullptr)
+	{
+		return;
+	}
+
+	if (FVector::Distance(enemyPawn->GetActorLocation(), targetActor->GetActorLocation()) > maxDistanceToFollow)
+	{
+		OnResetActor();
+	}
+}
+
+void AEnemyNormal_Controller::OnResetActor()
+{
+	animInst->Montage_Stop(0.0f);
+	bisRunningBack = true;
+	currAttackIndex = 0;
+	GetWorldTimerManager().ClearTimer(timerHandle_Patrol);
+	GetWorldTimerManager().ClearTimer(timerHandle_AnimPlayOver);
+	GetWorldTimerManager().ClearTimer(timerHandle_CalDis);
+	targetActor = nullptr;
+	bWasAggroed = false;
+	MoveToLocation(enemyPawn->startLocation);
 }
