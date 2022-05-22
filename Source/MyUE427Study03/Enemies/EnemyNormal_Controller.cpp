@@ -133,7 +133,7 @@ void AEnemyNormal_Controller::OnAnimPlayOver()
 
 void AEnemyNormal_Controller::OnAggroedPulled(AActor* target)
 {
-	if (!bWasAggroed && bisRunningBack)
+	if (!bWasAggroed && !bisRunningBack)
 	{
 		bWasAggroed = true;
 		targetActor = target;

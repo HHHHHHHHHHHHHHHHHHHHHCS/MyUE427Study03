@@ -14,32 +14,36 @@ AEnemyNormal::AEnemyNormal()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	startLocation = GetActorLocation();
-
 	AIControllerClass = AEnemyNormal_Controller::StaticClass();
 	aiPerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComp"));
-
 	sightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISightConfig"));
+
 	sightConfig->SightRadius = 800;
 	sightConfig->LoseSightRadius = 2000;
 	sightConfig->PeripheralVisionAngleDegrees = 90.0f;
+	sightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	sightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	sightConfig->DetectionByAffiliation.bDetectEnemies = true;
 
 	aiPerceptionComp->ConfigureSense(*sightConfig);
 	//设置为视觉优先
 	aiPerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());
-	aiPerceptionComp->OnPerceptionUpdated.AddDynamic(this, &AEnemyNormal::OnPerceptionUpdated);
+
 }
 
 // Called when the game starts or when spawned
 void AEnemyNormal::BeginPlay()
 {
 	Super::BeginPlay();
+	startLocation = GetActorLocation();
 	myController = Cast<AEnemyNormal_Controller>(GetController());
-	if(myController)
+	if (myController)
 	{
 		myController->Patrol();
 	}
+	aiPerceptionComp->OnPerceptionUpdated.AddDynamic(this, &AEnemyNormal::OnPerceptionUpdated);
 }
+
 
 // Called every frame
 void AEnemyNormal::Tick(float DeltaTime)
@@ -51,6 +55,7 @@ void AEnemyNormal::Tick(float DeltaTime)
 void AEnemyNormal::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 }
 
 void AEnemyNormal::OnPerceptionUpdated(const TArray<AActor*>& updatedActors)

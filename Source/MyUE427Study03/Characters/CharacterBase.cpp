@@ -392,3 +392,9 @@ void ACharacterBase::EndSpellCast(ASkillBase* skill)
 		}
 	}
 }
+
+float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	ChangeCurrentHP(-DamageAmount);
+	return currentHp;
+}
