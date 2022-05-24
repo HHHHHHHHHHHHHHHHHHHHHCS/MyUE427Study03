@@ -6,13 +6,14 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
-#include "MyUE427Study03/Skill/SkillEnum.h"
+#include "MyUE427Study03/Skill/SkillElementBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API ACharacterBase : public ACharacter
+class MYUE427STUDY03_API ACharacterBase : public ACharacter, public IDamageableInterface
 {
 	GENERATED_BODY()
 
@@ -69,12 +70,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TArray<FKey> keys;
 
 	UPROPERTY(EditAnywhere, Category="UI")
 	int keysPerRow;
+
+	UPROPERTY(EditAnywhere, Category="Skill")
+	TSubclassOf<ASkillElementBase> skillElement;
 
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
@@ -189,5 +194,6 @@ public:
 		return bIsCasting;
 	}
 
-	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void OnReceiveDamage(float baseDamage, int critChance, ESkillDamageType type,
+	                             TSubclassOf<ASkillElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
 };

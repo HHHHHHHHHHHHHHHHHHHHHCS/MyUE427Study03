@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "DamageableInterface.generated.h"
 
@@ -20,6 +19,6 @@ class IDamageableInterface
 {
 	GENERATED_BODY()
 public:
-	virtual void OnReceiveDamage(float baseDamage, ESkillDamageType type,
-	                             TSubclassOf<ACharacterBase> elements, AActor* attacker, ASkillBase* skill) = 0;
+	virtual void OnReceiveDamage(float baseDamage, int critChance, ESkillDamageType type,
+	                             TSubclassOf<class ASkillElementBase> attackElement, AActor* attacker, class ASkillBase* skill) = 0;
 };

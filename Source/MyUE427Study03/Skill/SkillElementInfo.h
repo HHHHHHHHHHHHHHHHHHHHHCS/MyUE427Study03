@@ -23,7 +23,7 @@ public:
 	UPROPERTY(EditAnywhere,Category="SkillElement")
 	FLinearColor color; //元素的颜色
 	UPROPERTY(EditAnywhere,Category="SkillElement")
-	TArray<TSubclassOf<ASkillElementBase>> resistances; //增强效果的元素
+	TArray<TSubclassOf<ASkillElementBase>> enhance; //增强效果的元素
 	UPROPERTY(EditAnywhere,Category="SkillElement")
 	TArray<TSubclassOf<ASkillElementBase>> weakness; //虚弱效果的元素
 };

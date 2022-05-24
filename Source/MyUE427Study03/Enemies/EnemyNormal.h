@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyNormal.generated.h"
 
+class ASkillElementBase;
 UCLASS()
 class MYUE427STUDY03_API AEnemyNormal : public ACharacter
 {
@@ -28,6 +29,9 @@ public:
 	//攻击动画蒙太奇列表
 	UPROPERTY(EditAnywhere, Category="Behavior")
 	TArray<UAnimMontage*> attackAnimMontages;
+	
+	UPROPERTY(EditAnywhere, Category="Skill")
+	TSubclassOf<ASkillElementBase> skillElement;
 	
 	//初始的位置
 	FVector startLocation;

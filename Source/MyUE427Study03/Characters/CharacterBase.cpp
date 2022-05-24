@@ -10,7 +10,9 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/Skill/SkillBase.h"
+#include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 
 // Sets default values
@@ -393,8 +395,12 @@ void ACharacterBase::EndSpellCast(ASkillBase* skill)
 	}
 }
 
-float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void ACharacterBase::OnReceiveDamage(float baseDamage, int critChance, ESkillDamageType type, TSubclassOf<ASkillElementBase> attackElement, AActor* attacker, ASkillBase* skill)
 {
-	ChangeCurrentHP(-DamageAmount);
-	return currentHp;
+	if (UStaticLibrary::IsEnemy(attacker))
+	{
+		return;
+	}
+
+	ChangeCurrentHP(-1 * UStaticLibrary::CalculateFinalDamage(baseDamage, critChance, attackElement, this->skillElement));
 }

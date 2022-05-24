@@ -32,7 +32,8 @@ enum class EEffectiveness: uint8
 {
 	Effective,
 	SuperEffective,
-	NoEffect,
+	LowEffective,
+	// NoEffect,
 };
 
 UCLASS()
