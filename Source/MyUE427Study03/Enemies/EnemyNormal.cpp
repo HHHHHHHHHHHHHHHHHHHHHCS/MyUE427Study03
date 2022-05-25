@@ -4,6 +4,7 @@
 #include "EnemyNormal.h"
 
 #include "EnemyNormal_Controller.h"
+#include "Components/CapsuleComponent.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -28,7 +29,6 @@ AEnemyNormal::AEnemyNormal()
 	aiPerceptionComp->ConfigureSense(*sightConfig);
 	//设置为视觉优先
 	aiPerceptionComp->SetDominantSense(UAISense_Sight::StaticClass());
-
 }
 
 // Called when the game starts or when spawned
@@ -55,7 +55,6 @@ void AEnemyNormal::Tick(float DeltaTime)
 void AEnemyNormal::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AEnemyNormal::OnPerceptionUpdated(const TArray<AActor*>& updatedActors)
@@ -77,4 +76,24 @@ void AEnemyNormal::OnPerceptionUpdated(const TArray<AActor*>& updatedActors)
 
 void AEnemyNormal::Notify_AttackHit()
 {
+}
+
+void AEnemyNormal::AttackRay()
+{
+	const float range = 180.0f;
+	FVector startPos = GetActorLocation();
+	FVector endPos = startPos + range * GetCapsuleComponent()->GetForwardVector();
+
+	FHitResult hitResult;
+	FCollisionQueryParams queryParams;
+	queryParams.AddIgnoredActor(this);
+	const bool isHit = GetWorld()->LineTraceSingleByChannel(hitResult, startPos, endPos, ECC_Visibility);
+	if (isHit)
+	{
+		ACharacterBase* player = Cast<ACharacterBase>(hitResult.Actor);
+		if (player)
+		{
+			player->OnReceiveDamage(baseDamage, critChance, damgeType, element, this, nullptr);
+		}
+	}
 }

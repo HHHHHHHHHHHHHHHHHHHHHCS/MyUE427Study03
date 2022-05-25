@@ -76,4 +76,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Notify_AttackHit();
+
+	void AttackRay();
 };
