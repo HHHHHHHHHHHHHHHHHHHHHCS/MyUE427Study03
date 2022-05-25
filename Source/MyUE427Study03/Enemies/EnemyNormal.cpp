@@ -74,3 +74,7 @@ void AEnemyNormal::OnPerceptionUpdated(const TArray<AActor*>& updatedActors)
 		}
 	}
 }
+
+void AEnemyNormal::Notify_AttackHit()
+{
+}

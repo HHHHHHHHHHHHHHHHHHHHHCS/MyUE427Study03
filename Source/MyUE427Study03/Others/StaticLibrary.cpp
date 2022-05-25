@@ -3,19 +3,19 @@
 
 #include "StaticLibrary.h"
 
-float UStaticLibrary::CalculateFinalDamage(float baseDamage, int critChance, TSubclassOf<ASkillElementBase> attackerElement
-                                           , TSubclassOf<ASkillElementBase> defenderElement)
+float UStaticLibrary::CalculateFinalDamage(float baseDamage, int critChance, TSubclassOf<AElementBase> attackerElement
+                                           , TSubclassOf<AElementBase> defenderElement)
 {
 	float currDamage = baseDamage * FMath::RandRange(0.9f, 1.1f);
 
 	EEffectiveness localEffectiveness;
 	if (attackerElement && defenderElement)
 	{
-		if (defenderElement->GetDefaultObject<ASkillElementBase>()->skillElementInfo.weakness.Contains(attackerElement))
+		if (defenderElement->GetDefaultObject<AElementBase>()->skillElementInfo.weakness.Contains(attackerElement))
 		{
 			localEffectiveness = EEffectiveness::LowEffective;
 		}
-		else if (defenderElement->GetDefaultObject<ASkillElementBase>()->skillElementInfo.enhance.Contains(attackerElement))
+		else if (defenderElement->GetDefaultObject<AElementBase>()->skillElementInfo.enhance.Contains(attackerElement))
 		{
 			localEffectiveness = EEffectiveness::SuperEffective;
 		}

@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "SkillElementInfo.h"
-#include "SkillElementBase.generated.h"
+#include "ElementBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API ASkillElementBase : public AActor
+class MYUE427STUDY03_API AElementBase : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ASkillElementBase();
+	AElementBase();
 
 	UPROPERTY(EditAnywhere, Category="ElementInfo")
 	FSkillElementInfo skillElementInfo;

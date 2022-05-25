@@ -4,15 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MyUE427Study03/Skill/SkillEnum.h"
 #include "EnemyNormal.generated.h"
 
-class ASkillElementBase;
+class AElementBase;
 UCLASS()
 class MYUE427STUDY03_API AEnemyNormal : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(EditAnywhere,Category="Enemy")
+	float baseDamage = 25.0f;
+
+	UPROPERTY(EditAnywhere,Category="Enemy")
+	EDamageType damgeType = EDamageType::Physical;
+
+	UPROPERTY(EditAnywhere,Category="Enemy")
+	TSubclassOf<AElementBase> element;
+
+	UPROPERTY(EditAnywhere,Category="Enemy")
+	int critChance = 25;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
 
@@ -29,13 +43,9 @@ public:
 	//攻击动画蒙太奇列表
 	UPROPERTY(EditAnywhere, Category="Behavior")
 	TArray<UAnimMontage*> attackAnimMontages;
-	
-	UPROPERTY(EditAnywhere, Category="Skill")
-	TSubclassOf<ASkillElementBase> skillElement;
-	
+
 	//初始的位置
 	FVector startLocation;
-
 
 protected:
 	class AEnemyNormal_Controller* myController;
@@ -63,4 +73,7 @@ public:
 
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(const TArray<AActor*>& updatedActors);
+
+	UFUNCTION(BlueprintCallable)
+	void Notify_AttackHit();
 };

@@ -8,7 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
-#include "MyUE427Study03/Skill/SkillElementBase.h"
+#include "MyUE427Study03/Skill/ElementBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
 
@@ -79,7 +79,7 @@ public:
 	int keysPerRow;
 
 	UPROPERTY(EditAnywhere, Category="Skill")
-	TSubclassOf<ASkillElementBase> skillElement;
+	TSubclassOf<AElementBase> element;
 
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
@@ -162,7 +162,7 @@ public:
 
 	void SetLevel(int val);
 
-	FORCEINLINE int GetLevel() const
+	FORCEINLINE int GetTheLevel() const
 	{
 		return currentLevel;
 	}
@@ -194,6 +194,6 @@ public:
 		return bIsCasting;
 	}
 
-	virtual void OnReceiveDamage(float baseDamage, int critChance, ESkillDamageType type,
-	                             TSubclassOf<ASkillElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
+	virtual void OnReceiveDamage(float baseDamage, int critChance, EDamageType type,
+	                             TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
 };

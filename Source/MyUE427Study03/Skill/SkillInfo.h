@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SkillElementBase.h"
+#include "ElementBase.h"
 #include "SkillEnum.h"
 #include "SkillInfo.generated.h"
 
@@ -30,7 +30,7 @@ public:
 	float damage; //技能的伤害值
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
-	ESkillDamageType damageType; //伤害的类型
+	EDamageType damageType; //伤害的类型
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
 	float criticalChance; //暴击率
@@ -64,7 +64,7 @@ public:
 	FText description; //技能的描述
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
-	TSubclassOf<ASkillElementBase> skillElement; //技能所属的信息
+	TSubclassOf<AElementBase> skillElement; //技能所属的信息
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
 	ETargetTypes target; //做用对象
