@@ -5,3 +5,4 @@
 #include "CoreMinimal.h"
 
 #define CursorTraceChannel ECollisionChannel::ECC_GameTraceChannel1
+#define EnemyHitChannel ECollisionChannel::ECC_GameTraceChannel2

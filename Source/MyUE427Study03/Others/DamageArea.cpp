@@ -58,7 +58,8 @@ void ADamageArea::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 
 void ADamageArea::ApplyAreaDamage()
 {
-	UGameplayStatics::ApplyDamage(player, damageVal, nullptr, this, nullptr);
+	// UGameplayStatics::ApplyDamage(player, damageVal, nullptr, this, nullptr);
+	player->OnReceiveDamage(damageVal,0, EAttackDamageType::Magic, element, this, nullptr);
 }
 
 // Called every frame

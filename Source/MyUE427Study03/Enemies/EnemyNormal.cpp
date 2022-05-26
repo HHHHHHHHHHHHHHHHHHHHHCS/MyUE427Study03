@@ -5,6 +5,7 @@
 
 #include "EnemyNormal_Controller.h"
 #include "Components/CapsuleComponent.h"
+#include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -76,6 +77,7 @@ void AEnemyNormal::OnPerceptionUpdated(const TArray<AActor*>& updatedActors)
 
 void AEnemyNormal::Notify_AttackHit()
 {
+	AttackRay();
 }
 
 void AEnemyNormal::AttackRay()
@@ -87,13 +89,13 @@ void AEnemyNormal::AttackRay()
 	FHitResult hitResult;
 	FCollisionQueryParams queryParams;
 	queryParams.AddIgnoredActor(this);
-	const bool isHit = GetWorld()->LineTraceSingleByChannel(hitResult, startPos, endPos, ECC_Visibility);
+	const bool isHit = GetWorld()->LineTraceSingleByChannel(hitResult, startPos, endPos, EnemyHitChannel);
 	if (isHit)
 	{
 		ACharacterBase* player = Cast<ACharacterBase>(hitResult.Actor);
 		if (player)
 		{
-			player->OnReceiveDamage(baseDamage, critChance, damgeType, element, this, nullptr);
+			player->OnReceiveDamage(baseDamage, critChance, attackDamageType, element, this, nullptr);
 		}
 	}
 }

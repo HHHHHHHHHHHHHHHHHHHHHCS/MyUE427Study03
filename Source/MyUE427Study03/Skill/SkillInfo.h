@@ -30,7 +30,7 @@ public:
 	float damage; //技能的伤害值
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
-	EDamageType damageType; //伤害的类型
+	EAttackDamageType damageType; //伤害的类型
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
 	float criticalChance; //暴击率

@@ -395,12 +395,12 @@ void ACharacterBase::EndSpellCast(ASkillBase* skill)
 	}
 }
 
-void ACharacterBase::OnReceiveDamage(float baseDamage, int critChance, EDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill)
+void ACharacterBase::OnReceiveDamage(float baseDamage, int critChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill)
 {
-	if (UStaticLibrary::IsEnemy(attacker))
-	{
-		return;
-	}
+	// if (!UStaticLibrary::IsEnemy(attacker))
+	// {
+	// 	return;
+	// }
 
 	ChangeCurrentHP(-1 * UStaticLibrary::CalculateFinalDamage(baseDamage, critChance, attackElement, this->element));
 }

@@ -22,6 +22,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Component")
 	float damageVal;
+
+	UPROPERTY(EditAnywhere,Category="Enemy")
+	TSubclassOf<class AElementBase> element;
 	
 protected:
 	ACharacterBase* player;

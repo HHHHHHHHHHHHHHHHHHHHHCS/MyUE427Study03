@@ -19,7 +19,7 @@ public:
 	float baseDamage = 25.0f;
 
 	UPROPERTY(EditAnywhere,Category="Enemy")
-	EDamageType damgeType = EDamageType::Physical;
+	EAttackDamageType attackDamageType = EAttackDamageType::Physical;
 
 	UPROPERTY(EditAnywhere,Category="Enemy")
 	TSubclassOf<AElementBase> element;
