@@ -15,8 +15,11 @@ UCLASS()
 class MYUE427STUDY03_API UUI_EnemyInfoWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* LevelName;
+
+	UPROPERTY(meta=(BindWidget))
 	UProgressBar* HealthBar;
 };

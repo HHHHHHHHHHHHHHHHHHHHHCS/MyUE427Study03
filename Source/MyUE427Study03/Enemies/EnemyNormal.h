@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
+#include "MyUE427Study03/UserWidget/UI_EnemyInfoWidget.h"
 #include "EnemyNormal.generated.h"
 
 class AElementBase;
@@ -14,17 +17,22 @@ class MYUE427STUDY03_API AEnemyNormal : public ACharacter
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, Category="Enemy")
+	FText enemyName = FText::FromString("Spider");
 
-	UPROPERTY(EditAnywhere,Category="Enemy")
+	UPROPERTY(EditAnywhere, Category="Enemy")
+	int level = 1;
+
+	UPROPERTY(EditAnywhere, Category="Enemy")
 	float baseDamage = 25.0f;
 
-	UPROPERTY(EditAnywhere,Category="Enemy")
+	UPROPERTY(EditAnywhere, Category="Enemy")
 	EAttackDamageType attackDamageType = EAttackDamageType::Physical;
 
-	UPROPERTY(EditAnywhere,Category="Enemy")
+	UPROPERTY(EditAnywhere, Category="Enemy")
 	TSubclassOf<AElementBase> element;
 
-	UPROPERTY(EditAnywhere,Category="Enemy")
+	UPROPERTY(EditAnywhere, Category="Enemy")
 	int critChance = 25;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
@@ -44,11 +52,23 @@ public:
 	UPROPERTY(EditAnywhere, Category="Behavior")
 	TArray<UAnimMontage*> attackAnimMontages;
 
+	UPROPERTY(EditAnywhere, Category="UI")
+	UWidgetComponent* enemyWidgetComponent;
+
+	UPROPERTY(EditAnywhere, Category="UI")
+	USphereComponent* showUICollision;
+
+	UPROPERTY(EditAnywhere, Category="UI")
+	bool bInShowUIRange;
+
+
 	//初始的位置
 	FVector startLocation;
 
 protected:
 	class AEnemyNormal_Controller* myController;
+
+	UUI_EnemyInfoWidget* enemyInfoWidget;
 
 
 public:
@@ -78,4 +98,13 @@ public:
 	void Notify_AttackHit();
 
 	void AttackRay();
+
+	void InitWidget();
+
+	UFUNCTION()
+	void OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                           const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };
