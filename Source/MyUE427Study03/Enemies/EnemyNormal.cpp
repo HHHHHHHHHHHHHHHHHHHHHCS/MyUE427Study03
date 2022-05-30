@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/UserWidget/UI_EnemyInfoWidget.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -49,6 +50,8 @@ AEnemyNormal::AEnemyNormal()
 
 	showUICollision = CreateDefaultSubobject<USphereComponent>(TEXT("ShowUICollision"));
 	showUICollision->SetupAttachment(GetRootComponent());
+
+	currentHealth = totalHealth;
 }
 
 // Called when the game starts or when spawned
@@ -66,6 +69,7 @@ void AEnemyNormal::BeginPlay()
 	showUICollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemyNormal::OnBeginOverlap_ShowUI);
 	showUICollision->OnComponentEndOverlap.AddDynamic(this, &AEnemyNormal::OnEndOverlap_ShowUI);
 	InitWidget();
+	UpdateHealthBar();
 }
 
 
@@ -141,7 +145,7 @@ void AEnemyNormal::InitWidget()
 void AEnemyNormal::OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                          const FHitResult& SweepResult)
 {
-	if (bIsDead)
+	if (bIsDead || bInShowUIRange)
 	{
 		return;
 	}
@@ -154,7 +158,7 @@ void AEnemyNormal::OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponen
 
 void AEnemyNormal::OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (bIsDead)
+	if (bIsDead || !bInShowUIRange)
 	{
 		return;
 	}
@@ -164,5 +168,43 @@ void AEnemyNormal::OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent,
 		enemyWidgetComponent->SetVisibility(false);
 	}
 }
+
+void AEnemyNormal::UpdateHealthBar()
+{
+	enemyInfoWidget->HealthBar->SetPercent(currentHealth / totalHealth);
+}
+
+void AEnemyNormal::ResetHealth()
+{
+	currentHealth = totalHealth;
+	UpdateHealthBar();
+}
+
+void AEnemyNormal::ChangeHealth(float damage)
+{
+	currentHealth = FMath::Clamp(currentHealth + damage, 0.0f, totalHealth);
+	UpdateHealthBar();
+}
+
+
+void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill)
+{
+	if (bIsDead || UStaticLibrary::IsEnemy(attacker))
+	{
+		return;
+	}
+
+	float damage = -UStaticLibrary::CalculateFinalDamage(attackerDamage, attackerCritChance, attackElement, element);
+	ChangeHealth(damage);
+	if (currentHealth <= 0)
+	{
+		bIsDead = true;
+	}
+	else
+	{
+		myController->OnAggroedPulled(attacker);
+	}
+}
+
 
 #undef LOCTEXT_NAMESPACE

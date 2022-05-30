@@ -6,13 +6,14 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
+#include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UI_EnemyInfoWidget.h"
 #include "EnemyNormal.generated.h"
 
 class AElementBase;
 UCLASS()
-class MYUE427STUDY03_API AEnemyNormal : public ACharacter
+class MYUE427STUDY03_API AEnemyNormal : public ACharacter, public IDamageableInterface
 {
 	GENERATED_BODY()
 
@@ -34,6 +35,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Enemy")
 	int critChance = 25;
+
+	UPROPERTY(EditAnywhere, Category="Enemy")
+	float totalHealth = 100.0f;
+
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
@@ -70,6 +75,7 @@ protected:
 
 	UUI_EnemyInfoWidget* enemyInfoWidget;
 
+	float currentHealth;
 
 public:
 	// Sets default values for this character's properties
@@ -107,4 +113,13 @@ public:
 
 	UFUNCTION()
 	void OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	void UpdateHealthBar();
+
+	void ResetHealth();
+
+	virtual void ChangeHealth(float damage);
+	
+	virtual void OnReceiveDamage(float baseDamage, int attackerCritChance, EAttackDamageType type,
+							 TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) override;
 };

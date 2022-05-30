@@ -19,6 +19,6 @@ class IDamageableInterface
 {
 	GENERATED_BODY()
 public:
-	virtual void OnReceiveDamage(float baseDamage, int critChance, EAttackDamageType type,
+	virtual void OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type,
 	                             TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) = 0;
 };

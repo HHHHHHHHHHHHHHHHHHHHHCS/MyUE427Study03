@@ -194,6 +194,6 @@ public:
 		return bIsCasting;
 	}
 
-	virtual void OnReceiveDamage(float baseDamage, int critChance, EAttackDamageType type,
+	virtual void OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type,
 	                             TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
 };

@@ -180,4 +180,5 @@ void AEnemyNormal_Controller::OnResetActor()
 	targetActor = nullptr;
 	bWasAggroed = false;
 	MoveToLocation(enemyPawn->startLocation);
+	enemyPawn->ResetHealth();
 }
