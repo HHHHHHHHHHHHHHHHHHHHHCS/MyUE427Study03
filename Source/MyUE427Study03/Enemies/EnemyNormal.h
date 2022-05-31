@@ -39,10 +39,18 @@ public:
 	UPROPERTY(EditAnywhere, Category="Enemy")
 	float totalHealth = 100.0f;
 
+	UPROPERTY(EditAnywhere, Category="Enemy")
+	float expForKill = 25.0f;
 
+	UPROPERTY(EditAnywhere, Category="Enemy")
+	float respawnTime = 10.0f;
+	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
+	bool bDoesRespawn = true;
+	
 	//是否是有侵略性的
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Behavior")
 	bool bAggressive;
@@ -66,16 +74,20 @@ public:
 	UPROPERTY(EditAnywhere, Category="UI")
 	bool bInShowUIRange;
 
-
 	//初始的位置
 	FVector startLocation;
 
-protected:
-	class AEnemyNormal_Controller* myController;
 
+	
+protected:
+
+	class AEnemyNormal_Controller* myController;
+	
 	UUI_EnemyInfoWidget* enemyInfoWidget;
 
 	float currentHealth;
+
+	FTimerHandle timerHandle_Respawn;
 
 public:
 	// Sets default values for this character's properties
@@ -122,4 +134,8 @@ public:
 	
 	virtual void OnReceiveDamage(float baseDamage, int attackerCritChance, EAttackDamageType type,
 							 TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) override;
+
+	virtual void OnDeath(AActor* killer);
+
+	virtual void OnRespawn();
 };

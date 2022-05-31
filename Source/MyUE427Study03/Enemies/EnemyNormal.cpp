@@ -2,6 +2,7 @@
 #include "EnemyNormal.h"
 #include "EnemyNormal_Controller.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
@@ -187,7 +188,8 @@ void AEnemyNormal::ChangeHealth(float damage)
 }
 
 
-void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill)
+void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker,
+                                   ASkillBase* skill)
 {
 	if (bIsDead || UStaticLibrary::IsEnemy(attacker))
 	{
@@ -198,12 +200,51 @@ void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance,
 	ChangeHealth(damage);
 	if (currentHealth <= 0)
 	{
-		bIsDead = true;
+		OnDeath(attacker);
 	}
 	else
 	{
 		myController->OnAggroedPulled(attacker);
 	}
+}
+
+void AEnemyNormal::OnDeath(AActor* killer)
+{
+	bIsDead = true;
+	myController->animInst->Montage_Stop(0.0f);
+	GetCharacterMovement()->DisableMovement();
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetActorHiddenInGame(true);
+	ACharacterBase* player;
+	if (UStaticLibrary::TryGetPlayer(killer, player))
+	{
+		player->ChangeCurrentExp(expForKill);
+	}
+
+	if(bDoesRespawn)
+	{
+		GetWorldTimerManager().SetTimer(timerHandle_Respawn, this, &AEnemyNormal::OnRespawn, respawnTime, false);
+	}
+	else
+	{
+		Destroy();
+	}
+}
+
+void AEnemyNormal::OnRespawn()
+{
+	bIsDead = false;
+	SetActorLocation(startLocation);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	ChangeHealth(totalHealth);
+	InitWidget();
+	GetCharacterMovement()->MaxWalkSpeed = myController->patrolWalkSpeed;
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	enemyWidgetComponent->SetVisibility(bInShowUIRange);
+	SetActorHiddenInGame(true);
+	myController->OnRespawn();
+	myController->Patrol();
 }
 
 

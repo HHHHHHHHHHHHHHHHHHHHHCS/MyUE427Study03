@@ -182,3 +182,13 @@ void AEnemyNormal_Controller::OnResetActor()
 	MoveToLocation(enemyPawn->startLocation);
 	enemyPawn->ResetHealth();
 }
+
+void AEnemyNormal_Controller::OnRespawn()
+{
+	bIsPatrolling = true;
+	bWasAggroed = false;
+	targetActor = nullptr;
+	currAttackIndex = 0;
+	bisRunningBack = false;
+	
+}

@@ -30,11 +30,13 @@ public:
 	//最大跟随目标的距离
 	float maxDistanceToFollow = 600.0f;
 
-
-
 	//狂暴状态
 	bool bWasAggroed = false;
 
+
+	//动画实例
+	UAnimInstance* animInst;
+	
 protected:
 
 	FTimerHandle timerHandle_Patrol;
@@ -56,8 +58,6 @@ protected:
 	//当前的动画索引
 	int currAttackIndex = 0;
 
-	//动画实例
-	UAnimInstance* animInst;
 
 
 
@@ -91,4 +91,6 @@ public:
 
 	//当追着目标跑, 但是距离目标太远的时候就不追了, 回到初始位置, 并将状态重置为初始状态
 	void OnResetActor();
+
+	void OnRespawn();
 };
