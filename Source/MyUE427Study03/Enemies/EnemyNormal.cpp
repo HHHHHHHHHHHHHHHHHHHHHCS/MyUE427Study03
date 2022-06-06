@@ -242,7 +242,7 @@ void AEnemyNormal::OnRespawn()
 	GetCharacterMovement()->MaxWalkSpeed = myController->patrolWalkSpeed;
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	enemyWidgetComponent->SetVisibility(bInShowUIRange);
-	SetActorHiddenInGame(true);
+	SetActorHiddenInGame(false);
 	myController->OnRespawn();
 	myController->Patrol();
 }
