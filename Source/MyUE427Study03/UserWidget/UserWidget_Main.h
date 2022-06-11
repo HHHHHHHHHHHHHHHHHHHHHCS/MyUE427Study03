@@ -34,7 +34,7 @@ public:
 
 	UTextBlock * enemyHpText;
 
-	UProgressBar* enemyHpText
+	UProgressBar* enemyHpProgressBar;
 	
 public:
 	virtual bool Initialize() override;
