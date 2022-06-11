@@ -27,9 +27,15 @@ public:
 	UProgressBar* mpProgressBar;
 
 	UVerticalBox* hotkeyRowContainer;
-
+	
 	TArray<UUI_SkillHotkey*> allHotkeySlots;
 
+	UTextBlock * enemyNameLevelText;
+
+	UTextBlock * enemyHpText;
+
+	UProgressBar* enemyHpText
+	
 public:
 	virtual bool Initialize() override;
 
