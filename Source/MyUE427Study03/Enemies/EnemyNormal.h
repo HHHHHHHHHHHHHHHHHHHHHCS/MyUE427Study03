@@ -7,13 +7,14 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "MyUE427Study03/Interface/DamageableInterface.h"
+#include "MyUE427Study03/Interface/SelectableInterface.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UI_EnemyInfoWidget.h"
 #include "EnemyNormal.generated.h"
 
 class AElementBase;
 UCLASS()
-class MYUE427STUDY03_API AEnemyNormal : public ACharacter, public IDamageableInterface
+class MYUE427STUDY03_API AEnemyNormal : public ACharacter, public IDamageableInterface, public ISelectableInterface
 {
 	GENERATED_BODY()
 
@@ -44,13 +45,13 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Enemy")
 	float respawnTime = 10.0f;
-	
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bIsDead;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Behavior")
 	bool bDoesRespawn = true;
-	
+
 	//是否是有侵略性的
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Behavior")
 	bool bAggressive;
@@ -78,16 +79,18 @@ public:
 	FVector startLocation;
 
 
-	
 protected:
-
 	class AEnemyNormal_Controller* myController;
-	
+
 	UUI_EnemyInfoWidget* enemyInfoWidget;
 
 	float currentHealth;
 
 	FTimerHandle timerHandle_Respawn;
+
+	bool bSelected = false;
+
+	class ACharacterBase* mainPlayer;
 
 public:
 	// Sets default values for this character's properties
@@ -131,11 +134,16 @@ public:
 	void ResetHealth();
 
 	virtual void ChangeHealth(float damage);
-	
+
 	virtual void OnReceiveDamage(float baseDamage, int attackerCritChance, EAttackDamageType type,
-							 TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) override;
+	                             TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) override;
 
 	virtual void OnDeath(AActor* killer);
 
 	virtual void OnRespawn();
+
+	//选中
+	virtual void OnSelected(class ACharacterBase* character) override;
+	//离开选中
+	virtual void OnSelectionEnd(class ACharacterBase* character) override;
 };

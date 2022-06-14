@@ -172,7 +172,13 @@ void AEnemyNormal::OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent,
 
 void AEnemyNormal::UpdateHealthBar()
 {
-	enemyInfoWidget->HealthBar->SetPercent(currentHealth / totalHealth);
+	float percent = currentHealth / totalHealth;
+	enemyInfoWidget->HealthBar->SetPercent(percent);
+	if (bSelected)
+	{
+		mainPlayer->mainUI->enemyHpProgressBar->SetPercent(percent);
+		mainPlayer->mainUI->enemyHpText->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "{0}/{1}"), FText::AsNumber(currentHealth), FText::AsNumber(totalHealth)));
+	}
 }
 
 void AEnemyNormal::ResetHealth()
@@ -222,7 +228,7 @@ void AEnemyNormal::OnDeath(AActor* killer)
 		player->ChangeCurrentExp(expForKill);
 	}
 
-	if(bDoesRespawn)
+	if (bDoesRespawn)
 	{
 		GetWorldTimerManager().SetTimer(timerHandle_Respawn, this, &AEnemyNormal::OnRespawn, respawnTime, false);
 	}
@@ -245,6 +251,29 @@ void AEnemyNormal::OnRespawn()
 	SetActorHiddenInGame(false);
 	myController->OnRespawn();
 	myController->Patrol();
+}
+
+void AEnemyNormal::OnSelected(ACharacterBase* character)
+{
+	if (!bIsDead && !bSelected)
+	{
+		bSelected = true;
+		mainPlayer = character;
+		GetMesh()->SetRenderCustomDepth(true);
+		character->mainUI->enemyNameLevelText->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "{0}(Lv.{1})"), enemyName, FText::AsNumber(level)));
+		UpdateHealthBar();
+	}
+}
+
+void AEnemyNormal::OnSelectionEnd(ACharacterBase* character)
+{
+	if (!bIsDead && !bSelected)
+	{
+		bSelected = false;
+		mainPlayer = nullptr;
+		GetMesh()->SetRenderCustomDepth(false);
+		//TODO:
+	}
 }
 
 
