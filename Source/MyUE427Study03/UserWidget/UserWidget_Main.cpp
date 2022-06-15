@@ -21,6 +21,7 @@ bool UUserWidget_Main::Initialize()
 	mpProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_Mp"));
 	hotkeyRowContainer = Cast<UVerticalBox>(GetWidgetFromName("HotkeyRowContainer"));
 
+	enemyBorder = Cast<UBorder>(GetWidgetFromName("EnemyBorder"));
 	enemyNameLevelText = Cast<UTextBlock>(GetWidgetFromName("Text_EnemyName"));
 	enemyHpText = Cast<UTextBlock>(GetWidgetFromName("Text_EnemyHp"));
 	enemyHpProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_EnemyHp"));

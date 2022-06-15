@@ -262,17 +262,18 @@ void AEnemyNormal::OnSelected(ACharacterBase* character)
 		GetMesh()->SetRenderCustomDepth(true);
 		character->mainUI->enemyNameLevelText->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "{0}(Lv.{1})"), enemyName, FText::AsNumber(level)));
 		UpdateHealthBar();
+		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
 void AEnemyNormal::OnSelectionEnd(ACharacterBase* character)
 {
-	if (!bIsDead && !bSelected)
+	if (!bIsDead && bSelected)
 	{
 		bSelected = false;
 		mainPlayer = nullptr;
 		GetMesh()->SetRenderCustomDepth(false);
-		//TODO:
+		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 

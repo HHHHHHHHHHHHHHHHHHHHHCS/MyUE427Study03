@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI_SkillHotkey.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Border.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
@@ -30,11 +31,14 @@ public:
 	
 	TArray<UUI_SkillHotkey*> allHotkeySlots;
 
+	UBorder * enemyBorder;
+	
 	UTextBlock * enemyNameLevelText;
 
 	UTextBlock * enemyHpText;
 
 	UProgressBar* enemyHpProgressBar;
+
 	
 public:
 	virtual bool Initialize() override;

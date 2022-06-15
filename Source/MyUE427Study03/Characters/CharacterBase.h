@@ -100,6 +100,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ASkillBase* currentSkill; //释放的当前技能
 
+	AActor* selectedActor;
+
 
 protected:
 	// Called when the game starts or when spawned

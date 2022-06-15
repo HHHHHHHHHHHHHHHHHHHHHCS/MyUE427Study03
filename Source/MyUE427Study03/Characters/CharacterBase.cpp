@@ -205,8 +205,36 @@ void ACharacterBase::OnSetDestinationPressed()
 	if (hitResult.bBlockingHit)
 	{
 		CancelMoveToCursor();
-		if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel) == ECollisionResponse::ECR_Block)
+
+		auto selectable = Cast<ISelectableInterface>(hitResult.GetActor());
+		if (selectable)
 		{
+			if (selectedActor == hitResult.GetActor())
+			{
+				//两次点击是同一个actor
+				selectedActor = hitResult.GetActor();
+				selectable->OnSelected(this);
+			}
+			else
+			{
+				//两次点击的是不同actor
+				if (selectedActor)
+				{
+					Cast<ISelectableInterface>(selectedActor)->OnSelectionEnd(this);
+				}
+				selectable->OnSelected(this);
+				selectedActor = hitResult.GetActor();
+			}
+		}
+		else if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel) == ECollisionResponse::ECR_Block)
+		{
+			//点到空地 取消选择
+			if (selectedActor)
+			{
+				Cast<ISelectableInterface>(selectedActor)->OnSelectionEnd(this);
+				selectedActor = nullptr;
+			}
+			
 			FActorSpawnParameters parameters;
 			parameters.Owner = this;
 			currCursorDecal = GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location,
@@ -395,7 +423,8 @@ void ACharacterBase::EndSpellCast(ASkillBase* skill)
 	}
 }
 
-void ACharacterBase::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill)
+void ACharacterBase::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker,
+                                     ASkillBase* skill)
 {
 	// if (!UStaticLibrary::IsEnemy(attacker))
 	// {
