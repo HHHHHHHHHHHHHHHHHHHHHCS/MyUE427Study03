@@ -177,7 +177,8 @@ void AEnemyNormal::UpdateHealthBar()
 	if (bSelected)
 	{
 		mainPlayer->mainUI->enemyHpProgressBar->SetPercent(percent);
-		mainPlayer->mainUI->enemyHpText->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "{0}/{1}"), FText::AsNumber(currentHealth), FText::AsNumber(totalHealth)));
+		mainPlayer->mainUI->enemyHpText->SetText(
+			FText::Format(LOCTEXT("EnemyNameSpace", "{0}/{1}"), FText::AsNumber(FMath::CeilToFloat(currentHealth)), FText::AsNumber(totalHealth)));
 	}
 }
 
