@@ -87,6 +87,9 @@ public:
 	bool bCanFindKey;
 
 	UUserWidget_Main* mainUI;
+	
+	class AEnemyNormal* selectEnemy;
+
 
 protected:
 	bool bMouseRightHold;

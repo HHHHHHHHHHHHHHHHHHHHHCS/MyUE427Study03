@@ -36,7 +36,8 @@ AEnemyNormal::AEnemyNormal()
 
 	enemyWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyWidget"));
 	enemyWidgetComponent->SetupAttachment(GetRootComponent());
-	static auto clsFinder = ConstructorHelpers::FClassFinder<UUI_EnemyInfoWidget>(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Enemy/UI_EnemyInfo.UI_EnemyInfo_C'"));
+	static auto clsFinder = ConstructorHelpers::FClassFinder<UUI_EnemyInfoWidget>(
+		TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Enemy/UI_EnemyInfo.UI_EnemyInfo_C'"));
 	if (clsFinder.Succeeded())
 	{
 		enemyWidgetComponent->SetWidgetClass(clsFinder.Class);
@@ -130,7 +131,8 @@ void AEnemyNormal::AttackRay()
 
 void AEnemyNormal::InitWidget()
 {
-	enemyInfoWidget->LevelName->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "[Lv{0}.{1}]"), FText::AsNumber(level), enemyName));
+	enemyInfoWidget->LevelName->SetText(
+		FText::Format(LOCTEXT("EnemyNameSpace", "[Lv{0}.{1}]"), FText::AsNumber(level), enemyName));
 	FLinearColor levelNameColor;
 	if (bAggressive)
 	{
@@ -143,7 +145,8 @@ void AEnemyNormal::InitWidget()
 	enemyInfoWidget->LevelName->SetColorAndOpacity(levelNameColor);
 }
 
-void AEnemyNormal::OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+void AEnemyNormal::OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                          const FHitResult& SweepResult)
 {
 	if (bIsDead || bInShowUIRange)
@@ -157,7 +160,8 @@ void AEnemyNormal::OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponen
 	}
 }
 
-void AEnemyNormal::OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AEnemyNormal::OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (bIsDead || !bInShowUIRange)
 	{
@@ -178,7 +182,8 @@ void AEnemyNormal::UpdateHealthBar()
 	{
 		mainPlayer->mainUI->enemyHpProgressBar->SetPercent(percent);
 		mainPlayer->mainUI->enemyHpText->SetText(
-			FText::Format(LOCTEXT("EnemyNameSpace", "{0}/{1}"), FText::AsNumber(FMath::CeilToFloat(currentHealth)), FText::AsNumber(totalHealth)));
+			FText::Format(LOCTEXT("EnemyNameSpace", "{0}/{1}"), FText::AsNumber(FMath::CeilToFloat(currentHealth)),
+			              FText::AsNumber(totalHealth)));
 	}
 }
 
@@ -195,7 +200,8 @@ void AEnemyNormal::ChangeHealth(float damage)
 }
 
 
-void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker,
+void AEnemyNormal::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type,
+                                   TSubclassOf<AElementBase> attackElement, AActor* attacker,
                                    ASkillBase* skill)
 {
 	if (bIsDead || UStaticLibrary::IsEnemy(attacker))
@@ -261,9 +267,11 @@ void AEnemyNormal::OnSelected(ACharacterBase* character)
 		bSelected = true;
 		mainPlayer = character;
 		GetMesh()->SetRenderCustomDepth(true);
-		character->mainUI->enemyNameLevelText->SetText(FText::Format(LOCTEXT("EnemyNameSpace", "{0}(Lv.{1})"), enemyName, FText::AsNumber(level)));
+		character->mainUI->enemyNameLevelText->SetText(
+			FText::Format(LOCTEXT("EnemyNameSpace", "{0}(Lv.{1})"), enemyName, FText::AsNumber(level)));
 		UpdateHealthBar();
 		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Visible);
+		mainPlayer->selectEnemy = this;
 	}
 }
 
@@ -275,6 +283,10 @@ void AEnemyNormal::OnSelectionEnd(ACharacterBase* character)
 		mainPlayer = nullptr;
 		GetMesh()->SetRenderCustomDepth(false);
 		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Hidden);
+		if (mainPlayer->selectEnemy == this)
+		{
+			mainPlayer->selectEnemy = nullptr;
+		}
 	}
 }
 

@@ -67,7 +67,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable)
-	void OnTryCastSpell();
+	virtual void OnTryCastSpell();
 
 	FORCEINLINE ACharacterBase* GetPlayerRef() const
 	{
@@ -93,5 +93,5 @@ public:
 	void ResetMovement();
 
 	UFUNCTION(BlueprintCallable)
-	virtual  void OnSkillNotify();
+	virtual void OnSkillNotify();
 };
