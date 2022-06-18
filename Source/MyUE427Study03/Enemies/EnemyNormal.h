@@ -75,6 +75,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="UI")
 	bool bInShowUIRange;
 
+	UPROPERTY(VisibleAnywhere, Category="Hit")
+	UArrowComponent* hitArrow;
+
 	//初始的位置
 	FVector startLocation;
 
@@ -90,7 +93,8 @@ protected:
 
 	bool bSelected = false;
 
-	class ACharacterBase* mainPlayer;
+	ACharacterBase* mainPlayer;
+
 
 public:
 	// Sets default values for this character's properties
@@ -123,11 +127,13 @@ public:
 	void InitWidget();
 
 	UFUNCTION()
-	void OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	void OnBeginOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                           const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnEndOverlap_ShowUI(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	void UpdateHealthBar();
 
@@ -136,7 +142,8 @@ public:
 	virtual void ChangeHealth(float damage);
 
 	virtual void OnReceiveDamage(float baseDamage, int attackerCritChance, EAttackDamageType type,
-	                             TSubclassOf<class AElementBase> attackElement, AActor* attacker, class ASkillBase* skill) override;
+	                             TSubclassOf<class AElementBase> attackElement, AActor* attacker,
+	                             class ASkillBase* skill) override;
 
 	virtual void OnDeath(AActor* killer);
 

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "EnemyNormal.h"
 #include "EnemyNormal_Controller.h"
+#include "Components/ArrowComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
@@ -49,11 +50,15 @@ AEnemyNormal::AEnemyNormal()
 		enemyWidgetComponent->SetRelativeRotation(FRotator(0, 0, 0));
 		enemyWidgetComponent->SetVisibility(bInShowUIRange);
 	}
+	
+	hitArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("HitArrow"));
+	hitArrow->SetupAttachment(GetRootComponent());
 
 	showUICollision = CreateDefaultSubobject<USphereComponent>(TEXT("ShowUICollision"));
 	showUICollision->SetupAttachment(GetRootComponent());
 
 	currentHealth = totalHealth;
+
 }
 
 // Called when the game starts or when spawned
