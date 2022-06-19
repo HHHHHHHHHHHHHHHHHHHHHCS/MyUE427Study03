@@ -22,6 +22,9 @@ public:
 	UPROPERTY(EditAnywhere, Category=Skill)
 	TSubclassOf<class AMagicProjectile> magicProjectile;
 
+protected:
+	FTimerHandle timerHandle_CalcDistToEnemy;
+
 public:
 	// Sets default values for this actor's properties
 	ASkillMissile();
@@ -36,5 +39,5 @@ public:
 
 	virtual void OnSkillNotify() override;
 
-	virtual void MoveToEnemy();
+	virtual void CalcDistToEnemy();
 };
