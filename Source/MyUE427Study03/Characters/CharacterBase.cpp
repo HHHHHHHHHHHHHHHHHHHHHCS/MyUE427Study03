@@ -125,7 +125,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
-	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this, &ACharacterBase::OnSetDestinationPressed);
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
+	                                 &ACharacterBase::OnSetDestinationPressed);
 	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
 	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
@@ -133,17 +134,18 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ACharacterBase::MoveForward(float val)
 {
+	//val==0 也在调用
 	if (val == 0 || Controller == nullptr)
 	{
 		return;
 	}
 
-	//val==0 也在调用
 	if (bMouseMoving)
 	{
 		CancelMoveToCursor();
 	}
 
+	CancelMissile();
 
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
@@ -153,16 +155,18 @@ void ACharacterBase::MoveForward(float val)
 
 void ACharacterBase::MoveRight(float val)
 {
+	//val==0 也在调用
 	if (val == 0 || Controller == nullptr)
 	{
 		return;
 	}
 
-	//val==0 也在调用
 	if (bMouseMoving)
 	{
 		CancelMoveToCursor();
 	}
+
+	CancelMissile();
 
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
@@ -205,6 +209,7 @@ void ACharacterBase::OnSetDestinationPressed()
 	if (hitResult.bBlockingHit)
 	{
 		CancelMoveToCursor();
+		CancelMissile();
 
 		auto selectable = Cast<ISelectableInterface>(hitResult.GetActor());
 		if (selectable)
@@ -226,7 +231,8 @@ void ACharacterBase::OnSetDestinationPressed()
 				selectedActor = hitResult.GetActor();
 			}
 		}
-		else if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel) == ECollisionResponse::ECR_Block)
+		else if (hitResult.GetActor()->GetComponentsCollisionResponseToChannel(CursorTraceChannel) ==
+			ECollisionResponse::ECR_Block)
 		{
 			//点到空地 取消选择
 			if (selectedActor)
@@ -234,7 +240,7 @@ void ACharacterBase::OnSetDestinationPressed()
 				Cast<ISelectableInterface>(selectedActor)->OnSelectionEnd(this);
 				selectedActor = nullptr;
 			}
-			
+
 			FActorSpawnParameters parameters;
 			parameters.Owner = this;
 			currCursorDecal = GetWorld()->SpawnActor<ACursorDecal>(cursorDecal, hitResult.Location,
@@ -423,7 +429,8 @@ void ACharacterBase::EndSpellCast(ASkillBase* skill)
 	}
 }
 
-void ACharacterBase::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type, TSubclassOf<AElementBase> attackElement, AActor* attacker,
+void ACharacterBase::OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type,
+                                     TSubclassOf<AElementBase> attackElement, AActor* attacker,
                                      ASkillBase* skill)
 {
 	// if (!UStaticLibrary::IsEnemy(attacker))
@@ -431,5 +438,16 @@ void ACharacterBase::OnReceiveDamage(float attackerDamage, int attackerCritChanc
 	// 	return;
 	// }
 
-	ChangeCurrentHP(-1 * UStaticLibrary::CalculateFinalDamage(attackerDamage, attackerCritChance, attackElement, this->element));
+	ChangeCurrentHP(
+		-1 * UStaticLibrary::CalculateFinalDamage(attackerDamage, attackerCritChance, attackElement, this->element));
+}
+
+void ACharacterBase::CancelMissile()
+{
+	if (sKillMissile)
+	{
+		// GetCharacterMovement()->DisableMovement();
+		GetMovementComponent()->StopMovementImmediately();
+		sKillMissile->StopCalcDist();
+	}
 }

@@ -9,6 +9,7 @@
 #include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
 #include "MyUE427Study03/Skill/ElementBase.h"
+#include "MyUE427Study03/Skill/SkillMissile.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
 
@@ -90,6 +91,7 @@ public:
 	
 	class AEnemyNormal* selectEnemy;
 
+	ASkillMissile* sKillMissile;
 
 protected:
 	bool bMouseRightHold;
@@ -104,7 +106,6 @@ protected:
 	ASkillBase* currentSkill; //释放的当前技能
 
 	AActor* selectedActor;
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -201,4 +202,6 @@ public:
 
 	virtual void OnReceiveDamage(float attackerDamage, int attackerCritChance, EAttackDamageType type,
 	                             TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
+
+	void CancelMissile();
 };

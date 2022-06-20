@@ -30,21 +30,16 @@ void ASkillMissile::OnTryCastSpell()
 
 void ASkillMissile::InitSpellCast()
 {
-	if (GetWorldTimerManager().TimerExists(timerHandle_CalcDistToEnemy))
-	{
-		GetWorldTimerManager().ClearTimer(timerHandle_CalcDistToEnemy);
-	}
-	
 	if (IsInAttackRange())
 	{
+		StopCalcDist();
 		Super::InitSpellCast();
 	}
 	else
 	{
-
-
 		GetWorldTimerManager().SetTimer(timerHandle_CalcDistToEnemy, this, &ASkillMissile::CalcDistToEnemy
 		                                , 0.01f, true);
+		playerReference->sKillMissile = this;
 	}
 }
 
@@ -80,4 +75,10 @@ void ASkillMissile::CalcDistToEnemy()
 			                                             , playerReference->selectEnemy);
 		}
 	}
+}
+
+void ASkillMissile::StopCalcDist()
+{
+	GetWorldTimerManager().ClearTimer(timerHandle_CalcDistToEnemy);
+	playerReference->sKillMissile = nullptr;
 }

@@ -7,6 +7,8 @@
 #include "MyUE427Study03/Enemies/EnemyNormal.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -36,8 +38,10 @@ void AMagicProjectile::BeginPlay()
 	impatctEffect = skill->impactEffect;
 	particleSystemComp->SetTemplate(missileEffect);
 	// projectileMoveComp->InitialSpeed = skill->GetCurrentStage().missileSpeed;
-	projectileMoveComp->HomingTargetComponent =skill->GetPlayerRef()->selectEnemy->hitArrow;
+	projectileMoveComp->HomingTargetComponent = skill->GetPlayerRef()->selectEnemy->hitArrow;
 	projectileMoveComp->HomingAccelerationMagnitude = skill->GetCurrentStage().missileSpeed;
+	sphereCollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AMagicProjectile::OnBeginOverlap);
+	// sphereCollisionComp->OnComponentEndOverlap.AddDynamic(this, &AMagicProjectile::OnEndOverlap);
 }
 
 // Called every frame
@@ -45,3 +49,26 @@ void AMagicProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void AMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                      const FHitResult& SweepResult)
+{
+	AEnemyNormal* tempEnemy = Cast<AEnemyNormal>(OtherActor);
+	if (!tempEnemy || OtherComp != tempEnemy->GetCapsuleComponent())
+	{
+		return;
+	}
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), impatctEffect, SweepResult.ImpactPoint
+	                                         , FRotator::ZeroRotator);
+	FSkillStage stage = skill->GetCurrentStage();
+	tempEnemy->OnReceiveDamage(stage.damage, stage.criticalChance, stage.damageType
+	                           , skill->skillInfo.skillElement, skill->GetPlayerRef(), skill);
+	Destroy();
+}
+
+// void AMagicProjectile::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+//                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+// {
+// }

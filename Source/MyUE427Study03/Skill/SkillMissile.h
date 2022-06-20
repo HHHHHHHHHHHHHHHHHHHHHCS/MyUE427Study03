@@ -40,4 +40,6 @@ public:
 	virtual void OnSkillNotify() override;
 
 	virtual void CalcDistToEnemy();
+
+	virtual void StopCalcDist();
 };
