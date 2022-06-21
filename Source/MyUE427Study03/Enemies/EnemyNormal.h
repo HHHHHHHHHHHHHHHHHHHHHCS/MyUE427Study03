@@ -89,6 +89,8 @@ protected:
 
 	float currentHealth;
 
+	FTimerHandle timerHandle_DelayDestroy;
+
 	FTimerHandle timerHandle_Respawn;
 
 	bool bSelected = false;
@@ -147,10 +149,13 @@ public:
 
 	virtual void OnDeath(AActor* killer);
 
+	virtual void OnDelayDeath();
+	
 	virtual void OnRespawn();
 
 	//选中
 	virtual void OnSelected(class ACharacterBase* character) override;
 	//离开选中
 	virtual void OnSelectionEnd(class ACharacterBase* character) override;
+
 };

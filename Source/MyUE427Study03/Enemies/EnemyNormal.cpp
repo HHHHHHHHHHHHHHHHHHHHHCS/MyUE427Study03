@@ -50,7 +50,7 @@ AEnemyNormal::AEnemyNormal()
 		enemyWidgetComponent->SetRelativeRotation(FRotator(0, 0, 0));
 		enemyWidgetComponent->SetVisibility(bInShowUIRange);
 	}
-	
+
 	hitArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("HitArrow"));
 	hitArrow->SetupAttachment(GetRootComponent());
 
@@ -58,7 +58,6 @@ AEnemyNormal::AEnemyNormal()
 	showUICollision->SetupAttachment(GetRootComponent());
 
 	currentHealth = totalHealth;
-
 }
 
 // Called when the game starts or when spawned
@@ -233,12 +232,27 @@ void AEnemyNormal::OnDeath(AActor* killer)
 	GetCharacterMovement()->DisableMovement();
 	GetCharacterMovement()->StopMovementImmediately();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetActorHiddenInGame(true);
+	enemyWidgetComponent->SetVisibility(false);
 	ACharacterBase* player;
 	if (UStaticLibrary::TryGetPlayer(killer, player))
 	{
 		player->ChangeCurrentExp(expForKill);
+		if (player->selectEnemy == this)
+		{
+			bSelected = false;
+			GetMesh()->SetRenderCustomDepth(false);
+			mainPlayer->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Hidden);
+			mainPlayer->selectEnemy = nullptr;
+			mainPlayer = nullptr;
+		}
 	}
+
+	GetWorldTimerManager().SetTimer(timerHandle_DelayDestroy, this, &AEnemyNormal::OnDelayDeath, 2.0f, false);
+}
+
+void AEnemyNormal::OnDelayDeath()
+{
+	SetActorHiddenInGame(true);
 
 	if (bDoesRespawn)
 	{
@@ -285,13 +299,13 @@ void AEnemyNormal::OnSelectionEnd(ACharacterBase* character)
 	if (!bIsDead && bSelected)
 	{
 		bSelected = false;
-		mainPlayer = nullptr;
-		GetMesh()->SetRenderCustomDepth(false);
-		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Hidden);
 		if (mainPlayer->selectEnemy == this)
 		{
 			mainPlayer->selectEnemy = nullptr;
 		}
+		GetMesh()->SetRenderCustomDepth(false);
+		character->mainUI->enemyBorder->SetVisibility(ESlateVisibility::Hidden);
+		mainPlayer = nullptr;
 	}
 }
 
