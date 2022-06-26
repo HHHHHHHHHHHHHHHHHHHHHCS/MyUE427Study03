@@ -6,6 +6,7 @@
 #include "UI_SkillHotkey.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Border.h"
+#include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
@@ -38,6 +39,8 @@ public:
 	UTextBlock * enemyHpText;
 
 	UProgressBar* enemyHpProgressBar;
+
+	UHorizontalBox* buffBox;
 
 	
 public:

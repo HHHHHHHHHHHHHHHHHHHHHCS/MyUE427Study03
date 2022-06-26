@@ -26,6 +26,8 @@ bool UUserWidget_Main::Initialize()
 	enemyHpText = Cast<UTextBlock>(GetWidgetFromName("Text_EnemyHp"));
 	enemyHpProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_EnemyHp"));
 
+	buffBox = Cast<UHorizontalBox>(GetWidgetFromName("HBox_Buff"));
+	
 	return true;
 }
 

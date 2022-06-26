@@ -14,6 +14,7 @@
 #include "MyUE427Study03/Skill/SkillBase.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
+#include "MyUE427Study03/Skill/SkillBuff.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -450,4 +451,32 @@ void ACharacterBase::CancelMissile()
 		GetMovementComponent()->StopMovementImmediately();
 		sKillMissile->StopCalcDist();
 	}
+}
+
+
+UUI_BuffWidget* ACharacterBase::AddBuff(ASkillBuff* skillBuff)
+{
+	if (buffArray.Contains(skillBuff))
+	{
+		return skillBuff->buffWidgetRef;
+	}
+
+	buffArray.Add(skillBuff);
+	auto cls = LoadClass<UUI_BuffWidget>(
+		GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_Buff.UI_Buff_C'"));
+	UUI_BuffWidget* buffWidget = CreateWidget<UUI_BuffWidget>(GetWorld(), cls);
+	buffWidget->buffTexure = skillBuff->buffIcon;
+	mainUI->buffBox->AddChildToHorizontalBox(buffWidget);
+	return buffWidget;
+}
+
+void ACharacterBase::RemoveBuff(ASkillBuff* skillBuff)
+{
+	if (!buffArray.Contains(skillBuff))
+	{
+		return;
+	}
+
+	buffArray.Remove(skillBuff);
+	skillBuff->buffWidgetRef->RemoveFromParent();
 }

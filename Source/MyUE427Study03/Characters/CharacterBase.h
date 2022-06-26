@@ -9,7 +9,9 @@
 #include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
 #include "MyUE427Study03/Skill/ElementBase.h"
+#include "MyUE427Study03/Skill/SkillBuff.h"
 #include "MyUE427Study03/Skill/SkillMissile.h"
+#include "MyUE427Study03/UserWidget/UI_BuffWidget.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "CharacterBase.generated.h"
 
@@ -88,10 +90,12 @@ public:
 	bool bCanFindKey;
 
 	UUserWidget_Main* mainUI;
-	
+
 	class AEnemyNormal* selectEnemy;
 
 	ASkillMissile* sKillMissile;
+
+	TArray<ASkillBuff*> buffArray;
 
 protected:
 	bool bMouseRightHold;
@@ -204,4 +208,8 @@ public:
 	                             TSubclassOf<AElementBase> attackElement, AActor* attacker, ASkillBase* skill) override;
 
 	void CancelMissile();
+
+	UUI_BuffWidget* AddBuff(ASkillBuff* skillBuff);
+
+	void RemoveBuff(ASkillBuff* skillBuff);
 };
