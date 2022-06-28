@@ -32,17 +32,22 @@ public:
 	
 	TArray<UUI_SkillHotkey*> allHotkeySlots;
 
-	UBorder * enemyBorder;
+	UBorder* enemyBorder;
 	
-	UTextBlock * enemyNameLevelText;
+	UTextBlock* enemyNameLevelText;
 
-	UTextBlock * enemyHpText;
+	UTextBlock* enemyHpText;
 
 	UProgressBar* enemyHpProgressBar;
 
 	UHorizontalBox* buffBox;
 
-	
+	UProgressBar* expProgressBar;
+
+	UTextBlock* expCurrText;
+
+	UTextBlock* expMaxText;
+
 public:
 	virtual bool Initialize() override;
 
@@ -65,4 +70,6 @@ public:
 	void PlayPopupAnimation_Implementation();
 
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	void SetExpPanel(float currExp, float maxExp);
 };

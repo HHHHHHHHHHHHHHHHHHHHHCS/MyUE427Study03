@@ -27,7 +27,11 @@ bool UUserWidget_Main::Initialize()
 	enemyHpProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_EnemyHp"));
 
 	buffBox = Cast<UHorizontalBox>(GetWidgetFromName("HBox_Buff"));
-	
+
+	expProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_Exp"));
+	expCurrText = Cast<UTextBlock>(GetWidgetFromName("Text_CurrExp"));
+	expMaxText = Cast<UTextBlock>(GetWidgetFromName("Text_MaxExp"));
+
 	return true;
 }
 
@@ -105,7 +109,8 @@ void UUserWidget_Main::PlayPopupAnimation_Implementation()
 {
 }
 
-bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+                                    UDragDropOperation* InOperation)
 {
 	bool bl = Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
@@ -119,4 +124,11 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 	}
 
 	return bl;
+}
+
+void UUserWidget_Main::SetExpPanel(float currExp, float maxExp)
+{
+	expProgressBar->SetPercent(currExp / maxExp);
+	expCurrText->SetText(FText::AsNumber(currExp));
+	expMaxText->SetText(FText::AsNumber(maxExp));
 }
