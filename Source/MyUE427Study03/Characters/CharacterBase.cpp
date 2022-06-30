@@ -64,7 +64,7 @@ ACharacterBase::ACharacterBase()
 
 	ReadData();
 	currentLevel = 1;
-
+	
 	//Keys
 	{
 		keysPerRow = 9;
@@ -105,6 +105,8 @@ void ACharacterBase::BeginPlay()
 	mainUI->GenerateHotkeys(keys, keysPerRow);
 	UpdatePlayerDataUI();
 	GenerateStartingSkills();
+	InCreaseLevel(0);
+	IncreaseCurrentExp(0);
 }
 
 
@@ -308,13 +310,33 @@ void ACharacterBase::ChangeCurrentMP(float deltaMp)
 
 void ACharacterBase::ChangeCurrentExp(float deltaExp)
 {
-	currentExp += deltaExp;
+	if(deltaExp!=0)
+	{
+		currentExp += deltaExp;
+		if (currentExp >= currentMaxExp)
+		{
+			currentExp -= currentMaxExp;
+			InCreaseLevel();
+		}
+	}
+	mainUI->SetExpPanel(currentExp, currentMaxExp);
+}
+
+void ACharacterBase::IncreaseCurrentExp(float val)
+{
+	ChangeCurrentExp(val);
 }
 
 void ACharacterBase::SetLevel(int val)
 {
 	currentLevel = val;
+	currentMaxExp = FMath::FloorToInt((FMath::Pow(currentLevel - 1, 3) + 60) / 5 * ((currentLevel - 1) * 2 + 60) + 60);
 	mainUI->SetLevelText(FText::AsNumber(currentLevel));
+}
+
+void ACharacterBase::InCreaseLevel(int val)
+{
+	this->SetLevel(GetTheLevel() + val);
 }
 
 void ACharacterBase::CancelMoveToCursor()

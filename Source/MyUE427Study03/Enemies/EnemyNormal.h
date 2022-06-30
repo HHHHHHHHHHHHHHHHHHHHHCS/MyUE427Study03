@@ -41,7 +41,7 @@ public:
 	float totalHealth = 100.0f;
 
 	UPROPERTY(EditAnywhere, Category="Enemy")
-	float expForKill = 25.0f;
+	float expForKill = 500.0f;
 
 	UPROPERTY(EditAnywhere, Category="Enemy")
 	float respawnTime = 10.0f;

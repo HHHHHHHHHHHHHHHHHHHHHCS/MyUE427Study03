@@ -236,7 +236,7 @@ void AEnemyNormal::OnDeath(AActor* killer)
 	ACharacterBase* player;
 	if (UStaticLibrary::TryGetPlayer(killer, player))
 	{
-		player->ChangeCurrentExp(expForKill);
+		player->IncreaseCurrentExp(expForKill);
 		if (player->selectEnemy == this)
 		{
 			bSelected = false;

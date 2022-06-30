@@ -71,6 +71,9 @@ protected:
 	float currentExp;
 
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentMaxExp;
+	
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
 
@@ -165,12 +168,16 @@ public:
 
 	void ChangeCurrentExp(float deltaExp);
 
+	void IncreaseCurrentExp(float val);
+
 	FORCEINLINE float GetCurrentExp() const
 	{
 		return currentExp;
 	}
 
 	void SetLevel(int val);
+
+	void InCreaseLevel(int val = 1);
 
 	FORCEINLINE int GetTheLevel() const
 	{
