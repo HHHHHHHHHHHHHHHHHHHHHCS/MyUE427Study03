@@ -1,3 +1,4 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
@@ -10,12 +11,12 @@
 
 AEnemyNormal_Controller::AEnemyNormal_Controller()
 {
-	navSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(this);
 }
 
 void AEnemyNormal_Controller::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	navSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(this);
 	enemyPawn = Cast<AEnemyNormal>(InPawn);
 	animInst = enemyPawn->GetMesh()->GetAnimInstance();
 	enemyPawn->GetCharacterMovement()->MaxWalkSpeed = patrolWalkSpeed;
