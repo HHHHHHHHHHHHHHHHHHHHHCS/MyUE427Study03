@@ -7,6 +7,7 @@
 #include "UI_HotkeyRow.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
+#include "SkillTree/UI_SkillTree_MainTree.h"
 
 bool UUserWidget_Main::Initialize()
 {
@@ -31,6 +32,8 @@ bool UUserWidget_Main::Initialize()
 	expProgressBar = Cast<UProgressBar>(GetWidgetFromName("ProgressBar_Exp"));
 	expCurrText = Cast<UTextBlock>(GetWidgetFromName("Text_CurrExp"));
 	expMaxText = Cast<UTextBlock>(GetWidgetFromName("Text_MaxExp"));
+
+	skillTree_MainTree = Cast<UUI_SkillTree_MainTree>(GetWidgetFromName("SkillTree_MainTree"));
 
 	return true;
 }

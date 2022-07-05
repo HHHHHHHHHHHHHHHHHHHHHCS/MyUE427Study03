@@ -48,6 +48,8 @@ public:
 
 	UTextBlock* expMaxText;
 
+	class UUI_SkillTree_MainTree* skillTree_MainTree;
+
 public:
 	virtual bool Initialize() override;
 
