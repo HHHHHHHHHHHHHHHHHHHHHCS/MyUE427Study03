@@ -38,6 +38,30 @@ public:
 	TSubclassOf<class ASkillBase> spellClass;
 };
 
+USTRUCT()
+struct FSubTreeContent
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category="Skill")
+	TArray<FSubTreeEntry> skills;
+
+	UPROPERTY(EditAnywhere, Category="Skill")
+	TArray<FSkillTreeConnection> connections;
+};
+
+USTRUCT()
+struct FSkillTreeCategory
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category="Skill")
+	FText name;
+
+	UPROPERTY(EditAnywhere, Category="Skill")
+	FSubTreeContent content;
+};
+
 /**
  * 
  */

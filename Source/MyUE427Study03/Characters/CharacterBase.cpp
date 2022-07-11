@@ -64,7 +64,7 @@ ACharacterBase::ACharacterBase()
 
 	ReadData();
 	currentLevel = 1;
-	
+
 	//Keys
 	{
 		keysPerRow = 9;
@@ -87,6 +87,8 @@ ACharacterBase::ACharacterBase()
 		keys.Add(EKeys::F8);
 		keys.Add(EKeys::F9);
 	}
+	
+	skillTreeComp = CreateDefaultSubobject<USkillTreeComponent>(TEXT("SkillTreeComp"));
 }
 
 // Called when the game starts or when spawned
@@ -310,7 +312,7 @@ void ACharacterBase::ChangeCurrentMP(float deltaMp)
 
 void ACharacterBase::ChangeCurrentExp(float deltaExp)
 {
-	if(deltaExp!=0)
+	if (deltaExp != 0)
 	{
 		currentExp += deltaExp;
 		if (currentExp >= currentMaxExp)

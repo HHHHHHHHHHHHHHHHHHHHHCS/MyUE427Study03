@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "MyUE427Study03/Components/SkillTreeComponent.h"
 #include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
 #include "MyUE427Study03/Skill/ElementBase.h"
@@ -72,7 +73,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	float currentMaxExp;
-	
+
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
@@ -89,6 +90,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<TSubclassOf<ASkillBase>> startingSkills; //初始技能
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Skill")
+	USkillTreeComponent* skillTreeComp;
 
 	bool bCanFindKey;
 
