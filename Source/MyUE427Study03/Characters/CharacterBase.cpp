@@ -106,7 +106,8 @@ void ACharacterBase::BeginPlay()
 	mainUI->AddToViewport();
 	mainUI->GenerateHotkeys(keys, keysPerRow);
 	UpdatePlayerDataUI();
-	GenerateStartingSkills();
+	// 取消初始技能的升级
+	// GenerateStartingSkills();
 	InCreaseLevel(0);
 	IncreaseCurrentExp(0);
 }

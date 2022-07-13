@@ -104,6 +104,8 @@ public:
 
 	TArray<ASkillBuff*> buffArray;
 
+	TArray<TSubclassOf<ASkillBase>> learnedSkills; //学习过的技能
+	
 protected:
 	bool bMouseRightHold;
 
@@ -117,6 +119,8 @@ protected:
 	ASkillBase* currentSkill; //释放的当前技能
 
 	AActor* selectedActor;
+
+
 
 protected:
 	// Called when the game starts or when spawned

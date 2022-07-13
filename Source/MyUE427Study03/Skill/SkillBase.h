@@ -20,7 +20,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill Info")
 	UAnimMontage* skillAnimMontage;
 
-	int currentStageIndex;
+	int currentStageIndex = -1;
 
 protected:
 	bool bIsCooldown; //是否在冷却
@@ -48,7 +48,22 @@ public:
 
 	FORCEINLINE FSkillStage GetCurrentStage()
 	{
-		return skillInfo.stages[currentStageIndex];
+		return skillInfo.stages[FMath::Clamp(currentStageIndex, 0, skillInfo.stages.Num() - 1)];
+	}
+
+	FORCEINLINE FSkillStage GetNextStage()
+	{
+		return skillInfo.stages[FMath::Clamp(currentStageIndex + 1, 0, skillInfo.stages.Num() - 1)];
+	}
+
+	FORCEINLINE int GetCurrentStageIndex()
+	{
+		return currentStageIndex;
+	}
+	
+	FORCEINLINE void InCreaseCurrentStageIndex()
+	{
+		currentStageIndex =  FMath::Clamp(currentStageIndex + 1, 0, skillInfo.stages.Num() - 1);
 	}
 
 	FORCEINLINE void SetHotkey(UUI_SkillHotkey* _hotkey)
