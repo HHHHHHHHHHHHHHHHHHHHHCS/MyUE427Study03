@@ -18,7 +18,7 @@ public:
 	int requiredLevel; //需要的前置等级
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
-	TArray<class ASkillBase*> requiredSkill; //需要的前置技能
+	TArray<TSubclassOf<class ASkillBase>> requiredSkills; //需要的前置技能
 
 	UPROPERTY(EditAnywhere, Category="SkillData")
 	UTexture2D* overrideIcon; //覆盖用的新图标, 如果为空则使用初始技能和的图标

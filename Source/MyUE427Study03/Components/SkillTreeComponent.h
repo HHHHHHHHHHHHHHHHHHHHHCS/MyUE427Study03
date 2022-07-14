@@ -36,4 +36,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	bool BPlayerLearnedSpell(TSubclassOf<ASkillBase> skill);
+
+	void AddSkillPoints(int amount);
+
+	bool BCanUpgradeSpell(ASkillBase* skill);
+
+	bool BSkillOnHotkey(ASkillBase* skill);
 };

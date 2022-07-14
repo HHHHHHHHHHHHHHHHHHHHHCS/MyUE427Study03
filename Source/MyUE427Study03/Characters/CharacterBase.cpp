@@ -339,7 +339,7 @@ void ACharacterBase::SetLevel(int val)
 
 void ACharacterBase::InCreaseLevel(int val)
 {
-	this->SetLevel(GetTheLevel() + val);
+	this->SetLevel(GetCurrentLevel() + val);
 }
 
 void ACharacterBase::CancelMoveToCursor()

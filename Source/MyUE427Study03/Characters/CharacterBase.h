@@ -187,7 +187,7 @@ public:
 
 	void InCreaseLevel(int val = 1);
 
-	FORCEINLINE int GetTheLevel() const
+	FORCEINLINE int GetCurrentLevel() const
 	{
 		return currentLevel;
 	}
