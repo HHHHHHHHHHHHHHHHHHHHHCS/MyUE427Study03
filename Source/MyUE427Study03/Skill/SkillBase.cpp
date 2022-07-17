@@ -4,6 +4,7 @@
 #include "SkillBase.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 
 // Sets default values
@@ -17,7 +18,8 @@ ASkillBase::ASkillBase()
 void ASkillBase::BeginPlay()
 {
 	Super::BeginPlay();
-	playerReference  = Cast<ACharacterBase>(GetOwner());
+	playerReference = Cast<ACharacterBase>(UGameplayStatics::GetPlayerPawn(this, 0));
+	animInst = playerReference->GetMesh()->GetAnimInstance();
 }
 
 // Called every frame
@@ -52,7 +54,7 @@ void ASkillBase::InitSpellCast()
 void ASkillBase::OnSpellCast()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Casting skill: %s"), *skillInfo.name.ToString());
-	if(skillAnimMontage)
+	if (skillAnimMontage)
 	{
 		PlaySkillAnim(skillAnimMontage);
 	}
@@ -121,9 +123,9 @@ void ASkillBase::PlaySkillAnim(UAnimMontage* skillAnimMon)
 	const auto charMove = playerReference->GetCharacterMovement();
 	charMove->DisableMovement();
 	charMove->StopMovementImmediately();
-	const auto animInst = playerReference->GetMesh()->GetAnimInstance();
 	animInst->Montage_Play(skillAnimMon);
-	GetWorldTimerManager().SetTimer(TimerHandle_ResetMove, this, &ASkillBase::ResetMovement, skillAnimMon->SequenceLength, false);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetMove, this, &ASkillBase::ResetMovement,
+	                                skillAnimMon->SequenceLength, false);
 }
 
 void ASkillBase::ResetMovement()

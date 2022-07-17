@@ -78,3 +78,11 @@ bool USkillTreeComponent::BSkillOnHotkey(ASkillBase* skill)
 	}
 	return result;
 }
+
+void USkillTreeComponent::UpgradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget)
+{
+}
+
+void USkillTreeComponent::DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget)
+{
+}

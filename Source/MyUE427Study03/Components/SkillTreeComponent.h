@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "MyUE427Study03/Skill/SkillTreeStruct.h"
+#include "MyUE427Study03/UserWidget/SkillTree/UI_SkillTree_Entry.h"
 #include "SkillTreeComponent.generated.h"
 
 
@@ -44,4 +45,9 @@ public:
 	bool BCanUpgradeSpell(ASkillBase* skill);
 
 	bool BSkillOnHotkey(ASkillBase* skill);
+
+	void UpgradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget);
+
+	void DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget);
+
 };

@@ -20,4 +20,10 @@ public:
 	//学习之后,Alpha值为0.7
 	UPROPERTY(Meta=(BindWidget))
 	UImage* Image_Line;
+
+	bool bActive;
+
+	TSubclassOf<class ASkillBase*> forSKill;
+
+	void Active();
 };

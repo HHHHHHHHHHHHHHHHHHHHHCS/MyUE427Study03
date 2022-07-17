@@ -22,4 +22,13 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	UTextBlock* Text_CategoryName;
+
+
+	FText categoryName;
+
+	bool bSelected; // 当前的category是否被选择
+
+	int index; // 当前的category所对应的索引
+
+	class UUI_SkillTree_MainTree* mainTreeRef;
 };

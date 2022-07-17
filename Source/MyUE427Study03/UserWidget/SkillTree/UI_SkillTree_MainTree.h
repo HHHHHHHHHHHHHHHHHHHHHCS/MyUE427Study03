@@ -3,11 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_SkillTree_Category.h"
+#include "UI_SkillTree_SubTree.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include "MyUE427Study03/Components/SkillTreeComponent.h"
 #include "UI_SkillTree_MainTree.generated.h"
 
 /**
@@ -33,4 +36,10 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	UWidgetSwitcher* Switcher_SubTree;
+
+	USkillTreeComponent* skillTreeComp;
+	int currSelectedIndex = -1; // 当前选择的category所对应的index
+	TArray<UUI_SkillTree_Category> categoryUI; // 分类, 比如 skill, defense
+	TArray<FSkillTreeCategory> categoryData; // category数据
+	TArray<UUI_SkillTree_SubTree> subTreeWidgets; // category对应的content
 };

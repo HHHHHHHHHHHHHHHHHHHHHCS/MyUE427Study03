@@ -33,10 +33,31 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	UVerticalBox* VBOX_Upgrade;
-	
+
 	UPROPERTY(Meta=(BindWidget))
 	UButton* Button_Plus;
 
 	UPROPERTY(Meta=(BindWidget))
 	UButton* Button_Minus;
+
+	class UUI_SkillTree_SubTree* subTree;
+	class ASkillBase* skillActor;
+	TSubclassOf<ASkillBase> skillClass;
+	bool bSpellLearned;
+
+
+public :
+	virtual void NativeConstruct() override;
+	
+	int GetAmountOfStages();
+	void UpdateStageText();
+	void UpdateIcon();
+	void UpdateUpgradeBox();
+	void OnSpellLearned();
+
+	UFUNCTION()
+	void OnPlusButtonClicked();
+	
+	UFUNCTION()
+	void OnMinusButtonClicked();
 };
