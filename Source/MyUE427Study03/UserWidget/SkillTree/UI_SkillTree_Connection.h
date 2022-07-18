@@ -23,7 +23,7 @@ public:
 
 	bool bActive;
 
-	TSubclassOf<class ASkillBase*> forSKill;
+	TSubclassOf<class ASkillBase> forSKill;
 
 	void Active();
 };

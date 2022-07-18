@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_SkillTree_Entry.h"
+#include "UI_SkillTree_MainTree.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CanvasPanel.h"
 #include "MyUE427Study03/Skill/SkillTreeStruct.h"
@@ -21,7 +23,10 @@ public:
 	UCanvasPanel* CanvasPanel_Root;
 
 	FSubTreeContent content;
-	TArray<class UUI_SkillTree_Entry*> skillEntries;
+	TArray<UUI_SkillTree_Entry*> skillEntries;
 	TArray<class UUI_SkillTree_Connection*> connections;
-	class UUI_SkillTree_MainTree* mainTreeRef;
+	UUI_SkillTree_MainTree* mainTreeRef;
+
+public:
+	void GenerateContent();
 };
