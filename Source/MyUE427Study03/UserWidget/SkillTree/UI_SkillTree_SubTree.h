@@ -28,5 +28,7 @@ public:
 	UUI_SkillTree_MainTree* mainTreeRef;
 
 public:
+	virtual void NativeConstruct() override;
+	
 	void GenerateContent();
 };

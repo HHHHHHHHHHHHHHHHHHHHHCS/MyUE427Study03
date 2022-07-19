@@ -7,6 +7,12 @@
 #include "UI_SkillTree_Entry.h"
 #include "Components/CanvasPanelSlot.h"
 
+void UUI_SkillTree_SubTree::NativeConstruct()
+{
+	Super::NativeConstruct();
+	GenerateContent();
+}
+
 void UUI_SkillTree_SubTree::GenerateContent()
 {
 	CanvasPanel_Root->ClearChildren();

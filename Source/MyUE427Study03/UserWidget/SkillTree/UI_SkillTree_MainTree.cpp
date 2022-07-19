@@ -3,3 +3,6 @@
 
 #include "UI_SkillTree_MainTree.h"
 
+void UUI_SkillTree_MainTree::OnCategoryClicked(int index)
+{
+}

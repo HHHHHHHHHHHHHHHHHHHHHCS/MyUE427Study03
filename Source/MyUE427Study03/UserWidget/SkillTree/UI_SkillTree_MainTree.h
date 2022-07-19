@@ -39,7 +39,10 @@ public:
 
 	USkillTreeComponent* skillTreeComp;
 	int currSelectedIndex = -1; // 当前选择的category所对应的index
-	TArray<UUI_SkillTree_Category> categoryUI; // 分类, 比如 skill, defense
+	TArray<UUI_SkillTree_Category*> categoryUI; // 分类, 比如 skill, defense
 	TArray<FSkillTreeCategory> categoryData; // category数据
-	TArray<UUI_SkillTree_SubTree> subTreeWidgets; // category对应的content
+	TArray<UUI_SkillTree_SubTree*> subTreeWidgets; // category对应的content
+
+public:
+	void OnCategoryClicked(int index);
 };

@@ -31,4 +31,18 @@ public:
 	int index; // 当前的category所对应的索引
 
 	class UUI_SkillTree_MainTree* mainTreeRef;
+
+public:
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void OnCategoryButtonHovered();
+
+	UFUNCTION()
+	void OnCategoryButtonUnhovered();
+
+	UFUNCTION()
+	void OnCategoryButtonClicked();
+
+	void ChangeState(bool isSelected);
 };
