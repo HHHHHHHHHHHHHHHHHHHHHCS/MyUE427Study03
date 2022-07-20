@@ -24,7 +24,15 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<FSkillTreeCategory> categories;
 
+protected:
+	class UUI_SkillTree_MainTree* mainTreeRef;
+	
+	// 技能树里面的内容是否已经设置好了
+	bool bTreeSetup;
 
+	// 技能树是否已经显示
+	bool bTreeShow;
+	
 public:
 	// Sets default values for this component's properties
 	USkillTreeComponent();
@@ -50,4 +58,6 @@ public:
 
 	void DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget);
 
+	void HandleShowCommand();
+	
 };

@@ -136,6 +136,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
 	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
+	PlayerInputComponent->BindAction("ToggleShowSkillTree", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowSkillTree);
+
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -296,6 +298,11 @@ void ACharacterBase::OnAnyKeyPressed(FKey key)
 		}
 		bCanFindKey = true;
 	}
+}
+
+void ACharacterBase::ToggleShowSkillTree()
+{
+	skillTreeComp->HandleShowCommand();
 }
 
 

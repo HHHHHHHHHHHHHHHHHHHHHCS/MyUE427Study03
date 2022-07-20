@@ -148,6 +148,7 @@ protected:
 
 	void OnAnyKeyPressed(FKey key);
 
+	void ToggleShowSkillTree();
 
 public:
 	FORCEINLINE void SetCharacterName(FString name)

@@ -4,6 +4,7 @@
 #include "SkillTreeComponent.h"
 
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/UserWidget/SkillTree/UI_SkillTree_MainTree.h"
 
 // Sets default values for this component's properties
 USkillTreeComponent::USkillTreeComponent()
@@ -85,4 +86,23 @@ void USkillTreeComponent::UpgradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* e
 
 void USkillTreeComponent::DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget)
 {
+}
+
+void USkillTreeComponent::HandleShowCommand()
+{
+	if(bTreeSetup)
+	{
+		if(bTreeShow)
+		{
+			mainTreeRef->SetVisibility(ESlateVisibility::Hidden);
+			bTreeShow= false;
+		}
+		else
+		{
+			mainTreeRef->SetVisibility(ESlateVisibility::Visible);
+			FInputModeGameAndUI inputMode;
+			playerCharacter->playerController->SetInputMode(inputMode);
+			bTreeShow = true;
+		}
+	}
 }
