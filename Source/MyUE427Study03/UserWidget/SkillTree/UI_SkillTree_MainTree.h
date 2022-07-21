@@ -44,5 +44,10 @@ public:
 	TArray<UUI_SkillTree_SubTree*> subTreeWidgets; // category对应的content
 
 public:
+	virtual void NativeConstruct() override;
+	
 	void OnCategoryClicked(int index);
+
+	UFUNCTION()
+	void OnClosedButtonClicked();
 };
