@@ -91,3 +91,9 @@ void UUI_SkillTree_MainTree::MyInitialize(USkillTreeComponent* treeComp)
 	GenerateCategories();
 	OnCategoryClicked(0);
 }
+
+//拦截鼠标时间
+FReply UUI_SkillTree_MainTree::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return FReply::Handled();;
+}

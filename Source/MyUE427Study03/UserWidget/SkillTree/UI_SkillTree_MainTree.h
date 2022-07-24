@@ -58,4 +58,6 @@ public:
 	void GenerateCategories();
 	
 	void MyInitialize(USkillTreeComponent* treeComp);
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 };
