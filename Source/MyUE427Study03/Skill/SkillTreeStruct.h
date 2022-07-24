@@ -22,6 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill")
 	FWidgetTransform transform;
 
+	UPROPERTY(EditAnywhere, Category="Skill")
 	TSubclassOf<class ASkillBase> forSpell; //该技能所需要的前置技能
 };
 

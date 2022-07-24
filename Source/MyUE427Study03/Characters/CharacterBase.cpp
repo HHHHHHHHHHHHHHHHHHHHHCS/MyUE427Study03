@@ -87,7 +87,7 @@ ACharacterBase::ACharacterBase()
 		keys.Add(EKeys::F8);
 		keys.Add(EKeys::F9);
 	}
-	
+
 	skillTreeComp = CreateDefaultSubobject<USkillTreeComponent>(TEXT("SkillTreeComp"));
 }
 
@@ -110,6 +110,7 @@ void ACharacterBase::BeginPlay()
 	// GenerateStartingSkills();
 	InCreaseLevel(0);
 	IncreaseCurrentExp(0);
+	skillTreeComp->SetupTree();
 }
 
 
@@ -131,13 +132,11 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("MouseRight", EInputEvent::IE_Released, this, &ACharacterBase::MouseRightReleased);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACharacterBase::Jump);
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACharacterBase::StopJumping);
-	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this,
-	                                 &ACharacterBase::OnSetDestinationPressed);
+	PlayerInputComponent->BindAction("MouseLeft", EInputEvent::IE_Pressed, this, &ACharacterBase::OnSetDestinationPressed);
 	PlayerInputComponent->BindAction("ZoomIn", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
 	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
 	PlayerInputComponent->BindAction("ToggleShowSkillTree", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowSkillTree);
-
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -213,7 +212,7 @@ void ACharacterBase::AddControllerPitchInput(float val)
 void ACharacterBase::OnSetDestinationPressed()
 {
 	FHitResult hitResult;
-	playerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+		playerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, hitResult);
 	if (hitResult.bBlockingHit)
 	{
 		CancelMoveToCursor();
@@ -247,6 +246,7 @@ void ACharacterBase::OnSetDestinationPressed()
 			{
 				Cast<ISelectableInterface>(selectedActor)->OnSelectionEnd(this);
 				selectedActor = nullptr;
+				return;
 			}
 
 			FActorSpawnParameters parameters;

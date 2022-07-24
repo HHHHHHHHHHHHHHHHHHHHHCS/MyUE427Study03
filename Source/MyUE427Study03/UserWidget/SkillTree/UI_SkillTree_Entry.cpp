@@ -5,7 +5,10 @@
 
 #include "UI_SkillTree_MainTree.h"
 #include "UI_SkillTree_SubTree.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MyUE427Study03/Skill/SkillBase.h"
+#include "MyUE427Study03/UserWidget/SkillDragOperation.h"
+#include "MyUE427Study03/UserWidget/UI_SkillDrag.h"
 
 #define LOCTEXT_NAMESPACE "SkillTreeEntrySpace"
 
@@ -65,8 +68,8 @@ void UUI_SkillTree_Entry::UpdateUpgradeBox()
 		if (skillActor->GetCurrentStageIndex() >= 1)
 		{
 			Button_Minus->SetVisibility(ESlateVisibility::Visible);
-			SetColorAndOpacity(FLinearColor::White);
 		}
+		SetColorAndOpacity(FLinearColor::White);
 	}
 	else
 	{
@@ -107,6 +110,55 @@ void UUI_SkillTree_Entry::OnPlusButtonClicked()
 void UUI_SkillTree_Entry::OnMinusButtonClicked()
 {
 	subTree->mainTreeRef->skillTreeComp->DowngradeSpell(skillActor, this);
+}
+
+FReply UUI_SkillTree_Entry::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	// UE_LOG(LogTemp, Warning, TEXT("NativeOnMouseButtonDown"));
+	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+	if (bSpellLearned)
+	{
+		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
+	}
+
+	return FReply::Handled();
+}
+
+void UUI_SkillTree_Entry::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
+                                               UDragDropOperation*& OutOperation)
+{
+	// UE_LOG(LogTemp, Warning, TEXT("NativeOnDragDetected"));
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+	if (subTree->mainTreeRef->skillTreeComp->BSkillOnHotkey(skillActor))
+	{
+		return;
+	}
+
+	auto* cls = LoadClass<UUI_SkillDrag>(
+		GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_SkillDrag.UI_SkillDrag_C'"));
+
+	UUI_SkillDrag* skillDrag = CreateWidget<UUI_SkillDrag>(GetWorld(), cls);
+
+	auto* icon = skillActor->GetCurrentStage().overrideIcon;
+	if (!icon)
+	{
+		icon = skillActor->skillInfo.icon;
+	}
+	skillDrag->SetSkillIconTexture(icon);
+
+	UDragDropOperation* tempOp = UWidgetBlueprintLibrary::CreateDragDropOperation(skillDragOperation);
+
+	tempOp->DefaultDragVisual = skillDrag;
+	OutOperation = tempOp;
+
+
+	USkillDragOperation* skillDragOp = Cast<USkillDragOperation>(OutOperation);
+	if (skillDragOp)
+	{
+		skillDragOp->skillActor = skillActor;
+		skillDragOp->FromHotkey = nullptr;
+	}
 }
 
 #undef LOCTEXT_NAMESPACE

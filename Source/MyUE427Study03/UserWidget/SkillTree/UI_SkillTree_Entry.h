@@ -40,15 +40,19 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	UButton* Button_Minus;
 
+	UPROPERTY(EditAnywhere,Category="UI")
+	TSubclassOf<UDragDropOperation> skillDragOperation;
+
 	class UUI_SkillTree_SubTree* subTree;
 	class ASkillBase* skillActor;
 	TSubclassOf<ASkillBase> skillClass;
 	bool bSpellLearned;
 
+private:
 
 public :
 	virtual void NativeConstruct() override;
-	
+
 	int GetAmountOfStages();
 	void UpdateStageText();
 	void UpdateIcon();
@@ -57,7 +61,14 @@ public :
 
 	UFUNCTION()
 	void OnPlusButtonClicked();
-	
+
 	UFUNCTION()
 	void OnMinusButtonClicked();
+
+	//返回鼠标右键 按下的事件,  以便拖拽功能,  只有当鼠标右键按下的时候, 才来执行检测拖拽的方法
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	//检测到拖拽的时候 调用的函数
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
+	                                  UDragDropOperation*& OutOperation) override;
 };

@@ -122,7 +122,10 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
 	if (skillDragOp)
 	{
-		skillDragOp->FromHotkey->ClearAssignedSpell();
+		if(skillDragOp->FromHotkey)
+		{
+			skillDragOp->FromHotkey->ClearAssignedSpell();
+		}
 		return true;
 	}
 

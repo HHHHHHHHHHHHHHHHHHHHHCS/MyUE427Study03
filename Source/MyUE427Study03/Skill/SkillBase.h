@@ -32,7 +32,7 @@ protected:
 	class UUI_SkillHotkey* hotkey; //技能绑定的快捷键
 	class ACharacterBase* playerReference; //谁释放了该技能
 	UAnimInstance* animInst;
-	
+
 	FTimerHandle TimerHandle_ResetMove;
 
 public:
@@ -62,9 +62,14 @@ public:
 		return currentStageIndex;
 	}
 
-	FORCEINLINE void InCreaseCurrentStageIndex()
+	FORCEINLINE void InCreaseCurrentStageIndex(int val = 1)
 	{
-		currentStageIndex = FMath::Clamp(currentStageIndex + 1, 0, skillInfo.stages.Num() - 1);
+		currentStageIndex = FMath::Min(currentStageIndex + val, skillInfo.stages.Num() - 1);
+	}
+
+	FORCEINLINE void DeCreaseCurrentStageIndex(int val = 1)
+	{
+		currentStageIndex = FMath::Max(currentStageIndex - val, -1);
 	}
 
 	FORCEINLINE void SetHotkey(UUI_SkillHotkey* _hotkey)
@@ -86,7 +91,7 @@ public:
 	virtual void OnTryCastSpell();
 
 
-	FORCEINLINE void SetPlayerRef(ACharacterBase* player) 
+	FORCEINLINE void SetPlayerRef(ACharacterBase* player)
 	{
 		playerReference = player;
 	}

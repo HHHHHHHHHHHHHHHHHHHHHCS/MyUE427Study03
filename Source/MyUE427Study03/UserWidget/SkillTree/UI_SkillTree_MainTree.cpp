@@ -81,3 +81,13 @@ void UUI_SkillTree_MainTree::GenerateCategories()
 		Switcher_SubTree->AddChild(subTree);
 	}
 }
+
+void UUI_SkillTree_MainTree::MyInitialize(USkillTreeComponent* treeComp)
+{
+	skillTreeComp = treeComp;
+	categoryData = treeComp->categories;
+	UpdateLevel();
+	UpdateSP();
+	GenerateCategories();
+	OnCategoryClicked(0);
+}

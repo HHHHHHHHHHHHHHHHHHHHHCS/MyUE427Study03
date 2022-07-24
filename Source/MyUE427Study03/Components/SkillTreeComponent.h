@@ -24,6 +24,10 @@ public:
 	UPROPERTY(EditAnywhere, Category="Skill")
 	TArray<FSkillTreeCategory> categories;
 
+
+	ASkillBase* upgradeSkill;
+	class UUI_SkillTree_Entry* entryUI;
+	
 protected:
 	class UUI_SkillTree_MainTree* mainTreeRef;
 	
@@ -59,5 +63,10 @@ public:
 	void DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget);
 
 	void HandleShowCommand();
-	
+
+	void SetupTree();
+
+	void ActiveConnections(TSubclassOf<ASkillBase> forSkill);
+
+	void UpdateAllEntries();
 };

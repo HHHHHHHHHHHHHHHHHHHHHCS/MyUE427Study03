@@ -4,6 +4,7 @@
 #include "SkillTreeComponent.h"
 
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/UserWidget/SkillTree/UI_SkillTree_Connection.h"
 #include "MyUE427Study03/UserWidget/SkillTree/UI_SkillTree_MainTree.h"
 
 // Sets default values for this component's properties
@@ -53,9 +54,9 @@ bool USkillTreeComponent::BCanUpgradeSpell(ASkillBase* skill)
 	{
 		bool result = true;
 		//如果有一个前置技能没有学习 则返回false
-		for(const auto& preSkill : skill->GetNextStage().requiredSkills)
+		for (const auto& preSkill : skill->GetNextStage().requiredSkills)
 		{
-			if(!BPlayerLearnedSpell(preSkill))
+			if (!BPlayerLearnedSpell(preSkill))
 			{
 				result = false;
 				break;
@@ -69,9 +70,9 @@ bool USkillTreeComponent::BCanUpgradeSpell(ASkillBase* skill)
 bool USkillTreeComponent::BSkillOnHotkey(ASkillBase* skill)
 {
 	bool result = false;
-	for(const auto& item : playerCharacter->mainUI->GetAllHotKeySlots())
+	for (const auto& item : playerCharacter->mainUI->GetAllHotKeySlots())
 	{
-		if(item->assignedSpell && item->assignedSpell == skill)
+		if (item->assignedSpell && item->assignedSpell == skill)
 		{
 			result = true;
 			break;
@@ -82,20 +83,56 @@ bool USkillTreeComponent::BSkillOnHotkey(ASkillBase* skill)
 
 void USkillTreeComponent::UpgradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget)
 {
+	this->upgradeSkill = skill;
+	this->entryUI = entryWidget;
+
+	if (BCanUpgradeSpell(skill))
+	{
+		skillPoints -= 1;
+		skill->InCreaseCurrentStageIndex();
+		if (skill->GetCurrentStageIndex() == 0)
+		{
+			// 第一次学习这个技能
+			playerCharacter->learnedSkills.Add(skill->GetClass());
+			entryWidget->OnSpellLearned();
+			ActiveConnections(skill->GetClass());
+
+			entryWidget->UpdateStageText();
+			entryWidget->UpdateIcon();
+			mainTreeRef->UpdateSP();
+			UpdateAllEntries();
+		}
+		else
+		{
+			entryWidget->UpdateStageText();
+			entryWidget->UpdateIcon();
+			mainTreeRef->UpdateSP();
+			UpdateAllEntries();
+		}
+	}
 }
 
 void USkillTreeComponent::DowngradeSpell(ASkillBase* skill, UUI_SkillTree_Entry* entryWidget)
 {
+	this->upgradeSkill = skill;
+	this->entryUI = entryWidget;
+
+	skill->DeCreaseCurrentStageIndex();
+	skillPoints += 1;
+	entryWidget->UpdateStageText();
+	entryWidget->UpdateIcon();
+	mainTreeRef->UpdateSP();
+	UpdateAllEntries();
 }
 
 void USkillTreeComponent::HandleShowCommand()
 {
-	if(bTreeSetup)
+	if (bTreeSetup)
 	{
-		if(bTreeShow)
+		if (bTreeShow)
 		{
 			mainTreeRef->SetVisibility(ESlateVisibility::Hidden);
-			bTreeShow= false;
+			bTreeShow = false;
 		}
 		else
 		{
@@ -103,6 +140,41 @@ void USkillTreeComponent::HandleShowCommand()
 			FInputModeGameAndUI inputMode;
 			playerCharacter->playerController->SetInputMode(inputMode);
 			bTreeShow = true;
+		}
+	}
+}
+
+void USkillTreeComponent::SetupTree()
+{
+	mainTreeRef = playerCharacter->mainUI->skillTree_MainTree;
+	if (mainTreeRef)
+	{
+		mainTreeRef->MyInitialize(this);
+		bTreeSetup = true;
+	}
+}
+
+void USkillTreeComponent::ActiveConnections(TSubclassOf<ASkillBase> forSkill)
+{
+	for (auto& subTree : mainTreeRef->subTreeWidgets)
+	{
+		for (auto& connection : subTree->connections)
+		{
+			if (connection->forSKill == forSkill)
+			{
+				connection->Active();
+			}
+		}
+	}
+}
+
+void USkillTreeComponent::UpdateAllEntries()
+{
+	for (auto& subTree : mainTreeRef->subTreeWidgets)
+	{
+		for (auto& entry : subTree->skillEntries)
+		{
+			entry->UpdateUpgradeBox();
 		}
 	}
 }

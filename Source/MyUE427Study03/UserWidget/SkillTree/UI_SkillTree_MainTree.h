@@ -56,4 +56,6 @@ public:
 	void UpdateSP();
 
 	void GenerateCategories();
+	
+	void MyInitialize(USkillTreeComponent* treeComp);
 };

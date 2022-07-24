@@ -113,12 +113,14 @@ FReply UUI_SkillHotkey::NativeOnMouseButtonDown(const FGeometry& InGeometry, con
 	return FReply::Handled();
 }
 
-void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
+                                           UDragDropOperation*& OutOperation)
 {
 	// UE_LOG(LogTemp, Warning, TEXT("NativeOnDragDetected"));
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
-	auto* cls = LoadClass<UUI_SkillDrag>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_SkillDrag.UI_SkillDrag_C'"));
+	auto* cls = LoadClass<UUI_SkillDrag>(
+		GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Skill/UI_SkillDrag.UI_SkillDrag_C'"));
 	UUI_SkillDrag* skillDrag = CreateWidget<UUI_SkillDrag>(GetWorld(), cls);
 
 	auto* icon = assignedSpell->GetCurrentStage().overrideIcon;
@@ -142,7 +144,8 @@ void UUI_SkillHotkey::NativeOnDragDetected(const FGeometry& InGeometry, const FP
 	}
 }
 
-bool UUI_SkillHotkey::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+bool UUI_SkillHotkey::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+                                       UDragDropOperation* InOperation)
 {
 	// UE_LOG(LogTemp, Warning, TEXT("NativeOnDragOver"));
 	Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
@@ -176,7 +179,8 @@ void UUI_SkillHotkey::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, U
 	}
 }
 
-bool UUI_SkillHotkey::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+bool UUI_SkillHotkey::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+                                   UDragDropOperation* InOperation)
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
@@ -196,16 +200,26 @@ bool UUI_SkillHotkey::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 				{
 					auto tempAS = assignedSpell;
 					ClearAssignedSpell();
-					skillDragOp->FromHotkey->ClearAssignedSpell();
-					SetAssignSpell(skillDragOp->skillActor);
-					skillDragOp->FromHotkey->SetAssignSpell(tempAS);
+					if (skillDragOp->FromHotkey)
+					{
+						skillDragOp->FromHotkey->ClearAssignedSpell();
+						SetAssignSpell(skillDragOp->skillActor);
+						skillDragOp->FromHotkey->SetAssignSpell(tempAS);
+					}
+					else
+					{
+						SetAssignSpell(skillDragOp->skillActor);
+					}
 					ResetStyle();
 					return true;
 				}
 			}
 			else
 			{
-				skillDragOp->FromHotkey->ClearAssignedSpell();
+				if (skillDragOp->FromHotkey)
+				{
+					skillDragOp->FromHotkey->ClearAssignedSpell();
+				}
 				SetAssignSpell(skillDragOp->skillActor);
 				return true;
 			}

@@ -8,6 +8,7 @@
 void UUI_SkillTree_Category::NativeConstruct()
 {
 	Super::NativeConstruct();
+	Text_CategoryName->SetText(categoryName);
 	Button_Category->OnHovered.AddDynamic(this, &UUI_SkillTree_Category::OnCategoryButtonHovered);
 	Button_Category->OnUnhovered.AddDynamic(this, &UUI_SkillTree_Category::OnCategoryButtonUnhovered);
 	Button_Category->OnClicked.AddDynamic(this, &UUI_SkillTree_Category::OnCategoryButtonClicked);
