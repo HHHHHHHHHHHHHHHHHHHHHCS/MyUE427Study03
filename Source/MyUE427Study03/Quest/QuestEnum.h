@@ -22,7 +22,7 @@ enum class EQuestCategories
 
 //任务目标的类型
 UENUM()
-enum class EGlobalTypes
+enum class EGoalTypes
 {
 	//该NPC没有任务
 	Custom,
