@@ -57,7 +57,7 @@ public:
 	bool bUpdateDesc; //任务结束
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
-	TArray<int> followingSubGoalIndices; //当前任务完成之后接下来的任务索引
+	TArray<int> followingSubGoalIndices; //当前子任务完成之后接下来的子任务索引
 };
 
 USTRUCT()
