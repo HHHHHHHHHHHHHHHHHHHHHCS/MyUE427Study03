@@ -20,7 +20,6 @@ class MYUE427STUDY03_API UUserWidget_Main : public UUserWidget
 {
 	GENERATED_BODY()
 
-
 public:
 	UTextBlock* levelText;
 

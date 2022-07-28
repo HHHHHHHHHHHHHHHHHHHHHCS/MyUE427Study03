@@ -9,6 +9,7 @@
 #include "MyUE427Study03/Components/SkillTreeComponent.h"
 #include "MyUE427Study03/Interface/DamageableInterface.h"
 #include "MyUE427Study03/Others/CursorDecal.h"
+#include "MyUE427Study03/Quest/QuestManager.h"
 #include "MyUE427Study03/Skill/ElementBase.h"
 #include "MyUE427Study03/Skill/SkillBuff.h"
 #include "MyUE427Study03/Skill/SkillMissile.h"
@@ -22,9 +23,6 @@ class MYUE427STUDY03_API ACharacterBase : public ACharacter, public IDamageableI
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	ACharacterBase();
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Camera")
 	USpringArmComponent* cameraBoom;
 
@@ -51,6 +49,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Move")
 	float canMoveDistance;
+
+public:
+	UPROPERTY(EditAnywhere, Category="Quest")
+	TSubclassOf<class AQuestManager> questManagerCls;
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
@@ -105,6 +107,8 @@ public:
 	TArray<ASkillBuff*> buffArray;
 
 	TArray<TSubclassOf<ASkillBase>> learnedSkills; //学习过的技能
+
+	class AQuestManager* questManager;
 	
 protected:
 	bool bMouseRightHold;
@@ -120,7 +124,9 @@ protected:
 
 	AActor* selectedActor;
 
-
+public:
+	// Sets default values for this character's properties
+	ACharacterBase();
 
 protected:
 	// Called when the game starts or when spawned

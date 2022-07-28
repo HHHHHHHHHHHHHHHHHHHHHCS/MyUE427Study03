@@ -111,6 +111,11 @@ void ACharacterBase::BeginPlay()
 	InCreaseLevel(0);
 	IncreaseCurrentExp(0);
 	skillTreeComp->SetupTree();
+
+	FActorSpawnParameters params;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
+	questManager->OnInit(this, mainUI);
 }
 
 
@@ -212,7 +217,7 @@ void ACharacterBase::AddControllerPitchInput(float val)
 void ACharacterBase::OnSetDestinationPressed()
 {
 	FHitResult hitResult;
-		playerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, hitResult);
+	playerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, hitResult);
 	if (hitResult.bBlockingHit)
 	{
 		CancelMoveToCursor();
