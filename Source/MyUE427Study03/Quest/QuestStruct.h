@@ -48,6 +48,9 @@ public:
 	FText goalText; // 任务的记录描述
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	FText additionalName; //任务做用的目标
+	
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	int aAmountToHunt; //要杀死的怪物数量
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")

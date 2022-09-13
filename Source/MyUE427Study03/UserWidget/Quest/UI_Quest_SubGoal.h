@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_Quest_Quest.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "MyUE427Study03/Quest/QuestBase.h"
+#include "MyUE427Study03/Quest/QuestStruct.h"
 #include "UI_Quest_SubGoal.generated.h"
 
 /**
@@ -27,4 +30,14 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	UTextBlock* Text_Goal;
+
+	FGoalInfo goalInfo;
+
+	AQuestBase* assignedQuest;
+	UUI_Quest_Quest* questWidget;
+
+	int goalIndex;
+
+public:
+	void Update();
 };
