@@ -17,7 +17,7 @@ public:
 
 	TArray<int> startingSubGoalIndices = {0}; // 初始的子任务, 有一个可能也有多个
 
-protected:
+public:
 	TArray<int> currentGoalIndices; // 当前的任务索引
 
 	TArray<FGoalInfo> currentGoals;// 当前的所有任务

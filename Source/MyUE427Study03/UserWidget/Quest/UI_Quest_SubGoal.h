@@ -39,5 +39,7 @@ public:
 	int goalIndex;
 
 public:
+	virtual void NativeConstruct() override;
+
 	void Update();
 };

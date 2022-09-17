@@ -22,7 +22,7 @@ public:
 
 //目标的位置
 USTRUCT()
-struct FGlobalLocation
+struct FGoalLocation
 {
 	GENERATED_BODY()
 public:
@@ -49,18 +49,35 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	FText additionalName; //任务做用的目标
-	
+
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
-	int aAmountToHunt; //要杀死的怪物数量
+	int amountToHunt; //要杀死的怪物数量
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	bool bUpdateQuestDesc; //当前任务完成, 会有下一个任务的更新提示
+
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	FGoalLocation goalLocation;
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	bool bUpdateDesc; //任务结束
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	TArray<int> followingSubGoalIndices; //当前子任务完成之后接下来的子任务索引
+
+	bool operator ==(const FGoalInfo& goalInfo)
+	{
+		return (goalInfo.type == type)
+			&& (goalInfo.bCustomGoal == bCustomGoal)
+			&& (goalInfo.goalText.EqualTo(goalText))
+			&& (goalInfo.additionalName.EqualTo(additionalName))
+			&& (goalInfo.amountToHunt == amountToHunt)
+			&& (goalInfo.goalLocation.bHasLocation == goalLocation.bHasLocation
+				&& goalInfo.goalLocation.location == goalLocation.location)
+			&& (goalInfo.bUpdateQuestDesc == bUpdateQuestDesc
+				&& goalInfo.bUpdateDesc == bUpdateDesc)
+			&& (goalInfo.followingSubGoalIndices == followingSubGoalIndices);
+	}
 };
 
 USTRUCT()

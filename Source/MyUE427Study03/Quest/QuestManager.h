@@ -15,6 +15,8 @@ public:
 	class ACharacterBase* playerCharacter;
 	class UUserWidget_Main* mainUI;
 
+	class AQuestBase* currentQuest; //当前处理的任务
+	
 private:
 	static AQuestManager* instance;
 
