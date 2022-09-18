@@ -57,3 +57,24 @@ bool UUI_Quest_Quest::BCurrentQuest()
 {
 	return assignedQuest == questManager->currentQuest;
 }
+
+void UUI_Quest_Quest::SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI)
+{
+	if (selectSubGoalWidget)
+	{
+		selectSubGoalWidget->Border_Goal->SetContentColorAndOpacity(FLinearColor(1, 1, 1, 0.5));
+		selectSubGoalWidget->Button_Select->SetIsEnabled(true);
+	}
+
+	if (clickedSubGoalUI)
+	{
+		selectSubGoalWidget = clickedSubGoalUI;
+		selectSubGoalWidget->Border_Goal->SetContentColorAndOpacity(FLinearColor::White);
+		selectSubGoalWidget->Button_Select->SetIsEnabled(false);
+		assignedQuest->selectedSubGoalIndex = selectSubGoalWidget->goalIndex;
+	}
+	else
+	{
+		selectSubGoalWidget = nullptr;
+	}
+}

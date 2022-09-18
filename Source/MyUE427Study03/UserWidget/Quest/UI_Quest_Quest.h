@@ -35,4 +35,6 @@ public:
 	void UpdateQuest();
 
 	bool BCurrentQuest();
+
+	void SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI);
 };
