@@ -8,6 +8,8 @@
 #include "Components/Border.h"
 #include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
+#include "Components/ScrollBox.h"
+#include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "UserWidget_Main.generated.h"
@@ -48,6 +50,10 @@ public:
 	UTextBlock* expMaxText;
 
 	class UUI_SkillTree_MainTree* skillTree_MainTree;
+
+	USizeBox* questListSizeBox;
+	
+	UScrollBox* questList;
 
 public:
 	virtual bool Initialize() override;

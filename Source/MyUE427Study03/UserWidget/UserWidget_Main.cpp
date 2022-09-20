@@ -34,6 +34,10 @@ bool UUserWidget_Main::Initialize()
 	expMaxText = Cast<UTextBlock>(GetWidgetFromName("Text_MaxExp"));
 
 	skillTree_MainTree = Cast<UUI_SkillTree_MainTree>(GetWidgetFromName("SkillTree_MainTree"));
+	
+	questListSizeBox = Cast<USizeBox>(GetWidgetFromName("SizeBox_QuestList"));
+
+	questList = Cast<UScrollBox>(GetWidgetFromName("ScrollBox_QuestList"));
 
 	return true;
 }
@@ -122,7 +126,7 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
 	if (skillDragOp)
 	{
-		if(skillDragOp->FromHotkey)
+		if (skillDragOp->FromHotkey)
 		{
 			skillDragOp->FromHotkey->ClearAssignedSpell();
 		}
