@@ -55,6 +55,11 @@ public:
 	
 	UScrollBox* questList;
 
+private:
+	class AQuestManager* questManager;
+
+	TArray<class UUI_Quest_Quest*> questWidgetArray;
+	
 public:
 	virtual bool Initialize() override;
 
@@ -79,4 +84,6 @@ public:
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	void SetExpPanel(float currExp, float maxExp);
+
+	class UUI_Quest_Quest* AddQuestToList(class AQuestBase* quest);
 };

@@ -7,6 +7,8 @@
 #include "UI_HotkeyRow.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
+#include "Components/ScrollBoxSlot.h"
+#include "Quest/UI_Quest_Quest.h"
 #include "SkillTree/UI_SkillTree_MainTree.h"
 
 bool UUserWidget_Main::Initialize()
@@ -34,7 +36,7 @@ bool UUserWidget_Main::Initialize()
 	expMaxText = Cast<UTextBlock>(GetWidgetFromName("Text_MaxExp"));
 
 	skillTree_MainTree = Cast<UUI_SkillTree_MainTree>(GetWidgetFromName("SkillTree_MainTree"));
-	
+
 	questListSizeBox = Cast<USizeBox>(GetWidgetFromName("SizeBox_QuestList"));
 
 	questList = Cast<UScrollBox>(GetWidgetFromName("ScrollBox_QuestList"));
@@ -141,4 +143,25 @@ void UUserWidget_Main::SetExpPanel(float currExp, float maxExp)
 	expProgressBar->SetPercent(currExp / maxExp);
 	expCurrText->SetText(FText::AsNumber(currExp));
 	expMaxText->SetText(FText::AsNumber(maxExp));
+}
+
+UUI_Quest_Quest* UUserWidget_Main::AddQuestToList(AQuestBase* quest)
+{
+	if (quest)
+	{
+		auto cls = LoadClass<UUI_Quest_Quest>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest.UI_Quest_C'"));
+		UUI_Quest_Quest* tempQuest = CreateWidget<UUI_Quest_Quest>(GetWorld(), cls);
+		tempQuest->questManager = questManager;
+		tempQuest->assignedQuest = quest;
+		questWidgetArray.Add(tempQuest);
+
+		UScrollBoxSlot* temp = Cast<UScrollBoxSlot>(questList->AddChild(tempQuest));
+		temp->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
+		temp->SetPadding(FMargin(0, 8, 0, 0));
+		return tempQuest;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
