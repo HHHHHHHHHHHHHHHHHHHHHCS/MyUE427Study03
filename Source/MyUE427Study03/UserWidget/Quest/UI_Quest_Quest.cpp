@@ -5,6 +5,7 @@
 
 #include "UI_Quest_SubGoal.h"
 #include "Components/VerticalBox.h"
+#include "MyUE427Study03/Quest/QuestManager.h"
 
 void UUI_Quest_Quest::GenerateSubWidgets()
 {
@@ -77,4 +78,9 @@ void UUI_Quest_Quest::SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI)
 	{
 		selectSubGoalWidget = nullptr;
 	}
+}
+
+void UUI_Quest_Quest::OnQuestSelected(UUI_Quest_SubGoal* subGoalWidget)
+{
+	SelectSubGoal(subGoalWidget);
 }

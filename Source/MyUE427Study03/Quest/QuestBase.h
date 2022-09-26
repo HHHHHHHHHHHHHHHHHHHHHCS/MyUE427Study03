@@ -42,6 +42,8 @@ protected:
 
 	
 public:
+	class UUI_Quest_Quest* questUI;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

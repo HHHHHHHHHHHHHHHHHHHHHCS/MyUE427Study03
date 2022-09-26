@@ -6,8 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
-#include "MyUE427Study03/Quest/QuestBase.h"
-#include "MyUE427Study03/Quest/QuestManager.h"
 #include "UI_Quest_Quest.generated.h"
 
 /**
@@ -25,8 +23,8 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	UVerticalBox* VBOX_SubGoal;
 
-	AQuestManager* questManager;
-	AQuestBase* assignedQuest;
+	class AQuestManager* questManager;
+	class AQuestBase* assignedQuest;
 	TArray<class UUI_Quest_SubGoal*> subGoalWidgets;
 	UUI_Quest_SubGoal* selectSubGoalWidget;
 
@@ -37,4 +35,6 @@ public:
 	bool BCurrentQuest();
 
 	void SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI);
+
+	void OnQuestSelected(UUI_Quest_SubGoal* subGoalWidget);
 };
