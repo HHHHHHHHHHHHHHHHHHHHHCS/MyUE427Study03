@@ -20,8 +20,8 @@ public:
 public:
 	TArray<int> currentGoalIndices; // 当前的任务索引
 
-	TArray<FGoalInfo> currentGoals;// 当前的所有任务
-	
+	TArray<FGoalInfo> currentGoals; // 当前的所有任务
+
 	int selectedSubGoalIndex; //当前选择的要完成的任务索引
 
 	int currentHuntedAmount; //当前杀死的怪物数量
@@ -30,20 +30,19 @@ public:
 	// Sets default values for this actor's properties
 	AQuestBase();
 
+	void SetupStartingGoals();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void UpdateSubGoals();
 
-	void SetupStartingGoals();
-
 	bool GoToNextSubGoal();
 
-	
 public:
 	class UUI_Quest_Quest* questUI;
-	
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

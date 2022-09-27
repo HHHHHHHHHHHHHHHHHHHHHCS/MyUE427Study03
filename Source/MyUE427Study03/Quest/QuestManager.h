@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "QuestStruct.h"
 #include "GameFramework/Actor.h"
 #include "QuestManager.generated.h"
 
@@ -16,7 +17,11 @@ public:
 	class UUserWidget_Main* mainUI;
 
 	class AQuestBase* currentQuest; //当前处理的任务
-	
+
+	TArray<TSubclassOf<AQuestBase>> allQuestClasses;
+	TArray<AQuestBase*> questActors;
+	FGoalInfo currentSubGoal;
+
 private:
 	static AQuestManager* instance;
 
@@ -29,15 +34,17 @@ protected:
 	virtual void BeginPlay() override;
 
 	void SelectNewQuest(AQuestBase* newQuest, class UUI_Quest_SubGoal* uiSubGoal);
-	
+
+	bool AddNewQuest(TSubclassOf<AQuestBase> questCls);
+
 public:
 	FORCEINLINE static AQuestManager* GetInstance()
 	{
 		return instance;
 	}
-	
+
 	void OnInit(ACharacterBase* _player, UUserWidget_Main* _mainUI);
-	
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };
