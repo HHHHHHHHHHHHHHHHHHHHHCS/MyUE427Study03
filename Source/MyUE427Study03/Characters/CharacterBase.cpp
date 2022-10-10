@@ -105,6 +105,7 @@ void ACharacterBase::BeginPlay()
 			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
 	mainUI->AddToViewport();
 	mainUI->GenerateHotkeys(keys, keysPerRow);
+	mainUI->questManager = questManager;
 	UpdatePlayerDataUI();
 	// 取消初始技能的升级
 	// GenerateStartingSkills();

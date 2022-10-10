@@ -35,6 +35,7 @@ protected:
 
 	void SelectNewQuest(AQuestBase* newQuest, class UUI_Quest_SubGoal* uiSubGoal);
 
+	UFUNCTION(BlueprintCallable)
 	bool AddNewQuest(TSubclassOf<AQuestBase> questCls);
 
 public:

@@ -13,8 +13,10 @@ class MYUE427STUDY03_API AQuestBase : public AActor
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, Category="QuestInfomation")
 	FQuestInfo questInfo;
 
+	UPROPERTY(EditAnywhere, Category="QuestInfomation")
 	TArray<int> startingSubGoalIndices = {0}; // 初始的子任务, 有一个可能也有多个
 
 public:

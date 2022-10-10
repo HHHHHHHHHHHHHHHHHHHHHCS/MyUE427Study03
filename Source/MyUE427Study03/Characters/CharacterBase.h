@@ -53,7 +53,7 @@ public:
 public:
 	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<class AQuestManager> questManagerCls;
-
+	
 protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	FString currentName;
@@ -108,6 +108,7 @@ public:
 
 	TArray<TSubclassOf<ASkillBase>> learnedSkills; //学习过的技能
 
+	UPROPERTY(BlueprintReadOnly)
 	class AQuestManager* questManager;
 	
 protected:

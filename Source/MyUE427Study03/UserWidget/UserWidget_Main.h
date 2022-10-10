@@ -55,8 +55,9 @@ public:
 	
 	UScrollBox* questList;
 
-private:
 	class AQuestManager* questManager;
+	
+private:
 
 	TArray<class UUI_Quest_Quest*> questWidgetArray;
 	

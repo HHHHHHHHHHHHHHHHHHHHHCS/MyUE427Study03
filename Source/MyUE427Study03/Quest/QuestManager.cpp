@@ -41,8 +41,8 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 		AQuestBase* tempQuest = GetWorld()->SpawnActor<AQuestBase>(questCls, FVector::ZeroVector, FRotator::ZeroRotator);
 		questActors.Add(tempQuest);
 		tempQuest->SetupStartingGoals();
-		tempQuest->questUI->questManager = this;
 		tempQuest->questUI = mainUI->AddQuestToList(tempQuest);
+		tempQuest->questUI->questManager = this;
 		tempQuest->questUI->UpdateQuest();
 		// 如果是第一个就默认选择
 		if (questActors.Num() <= 1)
