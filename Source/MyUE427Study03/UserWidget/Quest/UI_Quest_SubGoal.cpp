@@ -3,12 +3,15 @@
 
 #include "UI_Quest_SubGoal.h"
 
+#include "MyUE427Study03/Quest/QuestManager.h"
+
 #define LOCTEXT_NAMESPACE "UI_Quest_SubGoal"
 
 
 void UUI_Quest_SubGoal::NativeConstruct()
 {
 	Super::NativeConstruct();
+	Button_Select->OnClicked.AddDynamic(this, &UUI_Quest_SubGoal::OnSelectButtonClicked);
 	Update();
 }
 
@@ -58,6 +61,18 @@ void UUI_Quest_SubGoal::Update()
 		{
 			goalIndex = i;
 		}
+	}
+}
+
+void UUI_Quest_SubGoal::OnSelectButtonClicked()
+{
+	if (questWidget->BCurrentQuest())
+	{
+		questWidget->SelectSubGoal(this);
+	}
+	else
+	{
+		questWidget->questManager->SelectNewQuest(assignedQuest, this);
 	}
 }
 

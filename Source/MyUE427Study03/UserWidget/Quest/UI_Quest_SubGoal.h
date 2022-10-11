@@ -42,4 +42,7 @@ public:
 	virtual void NativeConstruct() override;
 
 	void Update();
+
+	UFUNCTION()
+	void OnSelectButtonClicked();
 };
