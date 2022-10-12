@@ -26,6 +26,7 @@ void AQuestManager::SelectNewQuest(AQuestBase* newQuest, UUI_Quest_SubGoal* uiSu
 {
 	if (currentQuest)
 	{
+		currentQuest->questUI->Text_QuestName->SetIsEnabled(false);
 		currentQuest->questUI->SelectSubGoal(nullptr);
 	}
 
@@ -48,6 +49,10 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 		if (questActors.Num() <= 1)
 		{
 			SelectNewQuest(tempQuest, tempQuest->questUI->subGoalWidgets[0]);
+		}
+		else
+		{
+			tempQuest->questUI->Text_QuestName->SetIsEnabled(false);
 		}
 		return true;
 	}

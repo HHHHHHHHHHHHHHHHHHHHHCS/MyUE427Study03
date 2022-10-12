@@ -82,5 +82,6 @@ void UUI_Quest_Quest::SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI)
 
 void UUI_Quest_Quest::OnQuestSelected(UUI_Quest_SubGoal* subGoalWidget)
 {
+	Text_QuestName->SetIsEnabled(true);
 	SelectSubGoal(subGoalWidget);
 }
