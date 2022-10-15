@@ -10,6 +10,7 @@ AMinimapCamera::AMinimapCamera()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	GetCaptureComponent2D()->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
+	GetCaptureComponent2D()->ProjectionType = ECameraProjectionMode::Type::Orthographic;
 	offsetZ = 1200.0f;
 	FVector location = GetActorLocation();
 	location.Z = offsetZ;
