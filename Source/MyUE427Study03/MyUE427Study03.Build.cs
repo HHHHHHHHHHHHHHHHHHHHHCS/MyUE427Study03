@@ -9,7 +9,7 @@ public class MyUE427Study03 : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[]
-			{ "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "UMG", "NavigationSystem" });
+			{ "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "UMG", "NavigationSystem", "Paper2D" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 

@@ -2,26 +2,44 @@
 
 
 #include "GoalActor.h"
+#include "GameFramework/Character.h"
+#include "Paper2D/Classes/PaperSprite.h"
+#include "Paper2D/Classes/PaperSpriteComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGoalActor::AGoalActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	defaultRootComp = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRootComp"));
+	RootComponent = defaultRootComp;
+	minimapIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("MinimapIcon"));
+	minimapIcon->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> sprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/NpcIcon_Sprite.NpcIcon_Sprite'"));
+	if (sprite.Succeeded())
+	{
+		minimapIcon->SetSprite(sprite.Object);
+	}
+
+	minimapIcon->SetRelativeLocation(FVector(0, 0, 150));
+	minimapIcon->SetRelativeRotation(FRotator(0, 0, 90));
+	minimapIcon->SetRelativeScale3D(FVector(2, 2, 2));
+	minimapIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	minimapIcon->SetGenerateOverlapEvents(false);
 }
 
 // Called when the game starts or when spawned
 void AGoalActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetOwner(UGameplayStatics::GetPlayerCharacter(this, 0));
+	minimapIcon->SetOwnerNoSee(true);
 }
 
 // Called every frame
 void AGoalActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
