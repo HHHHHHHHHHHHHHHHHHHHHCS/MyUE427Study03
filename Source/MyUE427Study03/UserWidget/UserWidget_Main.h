@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_Minimap.h"
 #include "UI_SkillHotkey.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Border.h"
@@ -48,6 +49,8 @@ public:
 	UTextBlock* expCurrText;
 
 	UTextBlock* expMaxText;
+
+	UUI_Minimap* minimapWidget;
 
 	class UUI_SkillTree_MainTree* skillTree_MainTree;
 

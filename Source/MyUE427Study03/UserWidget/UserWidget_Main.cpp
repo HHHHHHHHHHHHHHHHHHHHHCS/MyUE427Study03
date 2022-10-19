@@ -40,6 +40,8 @@ bool UUserWidget_Main::Initialize()
 	questListSizeBox = Cast<USizeBox>(GetWidgetFromName("SizeBox_QuestList"));
 
 	questList = Cast<UScrollBox>(GetWidgetFromName("ScrollBox_QuestList"));
+	
+	minimapWidget = Cast<UUI_Minimap>(GetWidgetFromName("UI_Minimap"));
 
 	return true;
 }
