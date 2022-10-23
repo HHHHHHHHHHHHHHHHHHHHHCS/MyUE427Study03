@@ -4,6 +4,8 @@
 #include "QuestManager.h"
 
 #include "QuestBase.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
 
@@ -73,4 +75,45 @@ void AQuestManager::OnInit(ACharacterBase* _player, UUserWidget_Main* _mainUI)
 void AQuestManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+float AQuestManager::GetDistanceToGoal()
+{
+	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation()));
+}
+
+void AQuestManager::UpdateDirectionArrow()
+{
+	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation());
+	mainUI->minimapWidget->RotateDirectionArrow(rotator.Yaw);
+}
+
+void AQuestManager::OnSwitchSubQuest()
+{
+	if (currentGoal)
+	{
+		currentGoal->Destroy();
+	}
+	currentSubGoal = currentQuest->questInfo.subGoals[currentQuest->selectedSubGoalIndex];
+
+	if (currentSubGoal.goalLocation.bHasLocation)
+	{
+		currentGoal = GetWorld()->SpawnActor<AGoalActor>(goalActorCls, currentSubGoal.goalLocation.location, FRotator::ZeroRotator);
+		float dist = GetDistanceToGoal();
+		mainUI->minimapWidget->SetDistanceText(dist);
+		UpdateDirectionArrow();
+		if (GetDistanceToGoal() > ShowHintDistance)
+		{
+			mainUI->minimapWidget->SetGoalHitVisible(true);
+		}
+		else
+		{
+			mainUI->minimapWidget->SetGoalHitVisible(false);
+		}
+	}
+	else
+	{
+		currentGoal = nullptr;
+		mainUI->minimapWidget->SetGoalHitVisible(false);
+	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GoalActor.h"
 #include "QuestStruct.h"
 #include "GameFramework/Actor.h"
 #include "QuestManager.generated.h"
@@ -21,6 +22,11 @@ public:
 	TArray<TSubclassOf<AQuestBase>> allQuestClasses;
 	TArray<AQuestBase*> questActors;
 	FGoalInfo currentSubGoal;
+	AGoalActor* currentGoal;
+	TSubclassOf<AGoalActor> goalActorCls;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	float ShowHintDistance;
 
 private:
 	static AQuestManager* instance;
@@ -39,6 +45,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool AddNewQuest(TSubclassOf<AQuestBase> questCls);
 
+
 public:
 	FORCEINLINE static AQuestManager* GetInstance()
 	{
@@ -49,4 +56,10 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	float GetDistanceToGoal();
+
+	void UpdateDirectionArrow();
+
+	void OnSwitchSubQuest();
 };
