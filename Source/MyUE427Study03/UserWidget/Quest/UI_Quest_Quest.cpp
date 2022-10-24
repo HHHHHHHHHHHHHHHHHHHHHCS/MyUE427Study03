@@ -73,6 +73,7 @@ void UUI_Quest_Quest::SelectSubGoal(UUI_Quest_SubGoal* clickedSubGoalUI)
 		selectSubGoalWidget->Border_Goal->SetContentColorAndOpacity(FLinearColor::White);
 		selectSubGoalWidget->Button_Select->SetIsEnabled(false);
 		assignedQuest->selectedSubGoalIndex = selectSubGoalWidget->goalIndex;
+		questManager->OnSwitchSubQuest();
 	}
 	else
 	{

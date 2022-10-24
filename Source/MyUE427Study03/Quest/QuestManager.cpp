@@ -69,6 +69,7 @@ void AQuestManager::OnInit(ACharacterBase* _player, UUserWidget_Main* _mainUI)
 	instance = this;
 	playerCharacter = _player;
 	mainUI = _mainUI;
+	mainUI->minimapWidget->SetGoalHitVisible(false);
 }
 
 // Called every frame
@@ -79,7 +80,7 @@ void AQuestManager::Tick(float DeltaTime)
 
 float AQuestManager::GetDistanceToGoal()
 {
-	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation()));
+	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation())/100.0f);
 }
 
 void AQuestManager::UpdateDirectionArrow()
@@ -115,5 +116,22 @@ void AQuestManager::OnSwitchSubQuest()
 	{
 		currentGoal = nullptr;
 		mainUI->minimapWidget->SetGoalHitVisible(false);
+	}
+}
+
+void AQuestManager::OnPlayMove()
+{
+	if(currentGoal)
+	{
+		mainUI->minimapWidget->SetDistanceText(GetDistanceToGoal());
+		UpdateDirectionArrow();
+		if (GetDistanceToGoal() > ShowHintDistance)
+		{
+			mainUI->minimapWidget->SetGoalHitVisible(true);
+		}
+		else
+		{
+			mainUI->minimapWidget->SetGoalHitVisible(false);
+		}
 	}
 }

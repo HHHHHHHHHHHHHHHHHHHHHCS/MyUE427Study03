@@ -18,11 +18,11 @@ void UUI_Minimap::SetGoalHitVisible(bool isVisible)
 	if(isVisible)
 	{
 		Minimap_Arrow->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-		Text_Distance->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HBox_Distance->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
 	else
 	{
 		Minimap_Arrow->SetVisibility(ESlateVisibility::Hidden);
-		Text_Distance->SetVisibility(ESlateVisibility::Hidden);
+		HBox_Distance->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

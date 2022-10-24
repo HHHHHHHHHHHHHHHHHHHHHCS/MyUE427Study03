@@ -23,6 +23,8 @@ public:
 	TArray<AQuestBase*> questActors;
 	FGoalInfo currentSubGoal;
 	AGoalActor* currentGoal;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<AGoalActor> goalActorCls;
 
 	UPROPERTY(EditAnywhere, Category="Quest")
@@ -62,4 +64,6 @@ public:
 	void UpdateDirectionArrow();
 
 	void OnSwitchSubQuest();
+
+	void OnPlayMove();
 };

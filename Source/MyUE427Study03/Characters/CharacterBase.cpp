@@ -164,6 +164,7 @@ void ACharacterBase::MoveForward(float val)
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
 	AddMovementInput(direction, val);
+	questManager->OnPlayMove();
 }
 
 void ACharacterBase::MoveRight(float val)
@@ -272,6 +273,7 @@ void ACharacterBase::SetNewMoveDestination(const FVector& desLocation)
 	{
 		bMouseMoving = true;
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(playerController, desLocation);
+		questManager->OnPlayMove();
 	}
 }
 
