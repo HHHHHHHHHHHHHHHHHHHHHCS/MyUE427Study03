@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InteractionInterface.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "NPCBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API ANPCBase : public ACharacter
+class MYUE427STUDY03_API ANPCBase : public ACharacter, public IInteractionInterface
 {
 	GENERATED_BODY()
 
@@ -33,4 +34,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void OnEnterPlayerRadius(class ACharacterBase* character) override;
+
+	virtual void OnLeavePlayerRadius(class ACharacterBase* character) override;
+
+	virtual void OnInteractWith(class ACharacterBase* character) override;
 };

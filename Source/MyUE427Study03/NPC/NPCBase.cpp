@@ -29,3 +29,15 @@ void ANPCBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+void ANPCBase::OnEnterPlayerRadius(ACharacterBase* character)
+{
+}
+
+void ANPCBase::OnLeavePlayerRadius(ACharacterBase* character)
+{
+}
+
+void ANPCBase::OnInteractWith(ACharacterBase* character)
+{
+}
