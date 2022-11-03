@@ -37,15 +37,14 @@ public:
 	// Sets default values for this actor's properties
 	AQuestManager();
 
-
 	void SelectNewQuest(AQuestBase* newQuest, class UUI_Quest_SubGoal* uiSubGoal);
+
+	UFUNCTION(BlueprintCallable)
+	bool AddNewQuest(TSubclassOf<AQuestBase> questCls);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintCallable)
-	bool AddNewQuest(TSubclassOf<AQuestBase> questCls);
 
 
 public:

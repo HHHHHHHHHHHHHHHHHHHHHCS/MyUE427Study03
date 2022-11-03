@@ -6,6 +6,7 @@
 #include "InteractionInterface.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
+#include "MyUE427Study03/Quest/QuestBase.h"
 #include "NPCBase.generated.h"
 
 UCLASS()
@@ -19,6 +20,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Quest")
 	FText name;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	TSubclassOf<class AQuestBase> myQuest;
 
 public:
 	// Sets default values for this character's properties
