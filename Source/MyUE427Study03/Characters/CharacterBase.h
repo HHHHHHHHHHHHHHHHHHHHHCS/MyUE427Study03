@@ -39,7 +39,10 @@ public:
 	float maxCameraZoom;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
-	float camerZoomStep;
+	float cameraZoomStep;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	class UCapsuleComponent* interactionComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Player")
 	APlayerController* playerController;
@@ -53,7 +56,7 @@ public:
 public:
 	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<class AQuestManager> questManagerCls;
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	FString currentName;
@@ -110,7 +113,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	class AQuestManager* questManager;
-	
+
 protected:
 	bool bMouseRightHold;
 
@@ -235,4 +238,10 @@ public:
 	UUI_BuffWidget* AddBuff(ASkillBuff* skillBuff);
 
 	void RemoveBuff(ASkillBuff* skillBuff);
+
+	UFUNCTION()
+	void OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnInteractionCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

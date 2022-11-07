@@ -5,11 +5,13 @@
 
 #include "CharacterInfo.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/DataTable.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/Skill/SkillBase.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
@@ -28,7 +30,7 @@ ACharacterBase::ACharacterBase()
 	cameraBoom->SetRelativeRotation(FRotator(-30, 0, 0));
 	minCameraZoom = 75.0f;
 	maxCameraZoom = 1000.0f;
-	camerZoomStep = 25.0f;
+	cameraZoomStep = 25.0f;
 
 	followCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	followCamera->SetupAttachment(cameraBoom);
@@ -44,6 +46,15 @@ ACharacterBase::ACharacterBase()
 	{
 		portraitComponent->TextureTarget = Cast<UTextureRenderTarget2D>(portraitRT.Object);
 	}
+
+	interactionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractionComp"));
+	interactionComp->SetupAttachment(RootComponent);
+	interactionComp->SetRelativeLocation(FVector(120, 0, 0));
+	interactionComp->SetRelativeRotation(FRotator(90, 0, 0));
+	interactionComp->SetCapsuleHalfHeight(220.0f);
+	interactionComp->SetCapsuleRadius(100.0f);
+	interactionComp->OnComponentBeginOverlap.AddDynamic(this, &ACharacterBase::OnInteractionCompBeginOverlap);
+	interactionComp->OnComponentEndOverlap.AddDynamic(this, &ACharacterBase::OnInteractionCompEndOverlap);
 
 	bUseControllerRotationYaw = false;
 	cameraBoom->bUsePawnControlRotation = true;
@@ -279,12 +290,12 @@ void ACharacterBase::SetNewMoveDestination(const FVector& desLocation)
 
 void ACharacterBase::CameraZoomIn()
 {
-	cameraBoom->TargetArmLength = FMath::Max(cameraBoom->TargetArmLength - camerZoomStep, minCameraZoom);
+	cameraBoom->TargetArmLength = FMath::Max(cameraBoom->TargetArmLength - cameraZoomStep, minCameraZoom);
 }
 
 void ACharacterBase::CameraZoomOut()
 {
-	cameraBoom->TargetArmLength = FMath::Min(cameraBoom->TargetArmLength + camerZoomStep, maxCameraZoom);
+	cameraBoom->TargetArmLength = FMath::Min(cameraBoom->TargetArmLength + cameraZoomStep, maxCameraZoom);
 }
 
 void ACharacterBase::OnAnyKeyPressed(FKey key)
@@ -519,4 +530,29 @@ void ACharacterBase::RemoveBuff(ASkillBuff* skillBuff)
 
 	buffArray.Remove(skillBuff);
 	skillBuff->buffWidgetRef->RemoveFromParent();
+}
+
+void ACharacterBase::OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                   const FHitResult& SweepResult)
+{
+	IInteractionInterface* actor = Cast<IInteractionInterface>(OtherActor);
+
+	if (!actor)
+	{
+		return;
+	}
+
+	actor->OnEnterPlayerRadius(this);
+}
+
+void ACharacterBase::OnInteractionCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	IInteractionInterface* actor = Cast<IInteractionInterface>(OtherActor);
+
+	if (!actor)
+	{
+		return;
+	}
+
+	actor->OnLeavePlayerRadius(this);
 }
