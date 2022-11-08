@@ -244,4 +244,6 @@ public:
 
 	UFUNCTION()
 	void OnInteractionCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	void InteractToNPC();
 };

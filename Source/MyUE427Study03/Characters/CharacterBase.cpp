@@ -154,6 +154,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
 	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
 	PlayerInputComponent->BindAction("ToggleShowSkillTree", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowSkillTree);
+	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -555,4 +556,19 @@ void ACharacterBase::OnInteractionCompEndOverlap(UPrimitiveComponent* Overlapped
 	}
 
 	actor->OnLeavePlayerRadius(this);
+}
+
+void ACharacterBase::InteractToNPC()
+{
+	TArray<AActor*> overlapActors;
+	interactionComp->GetOverlappingActors(overlapActors);
+	for (auto item : overlapActors)
+	{
+		IInteractionInterface* it = Cast<IInteractionInterface>(item);
+		if (it)
+		{
+			it->OnInteractWith(this);
+			break;
+		}
+	}
 }
