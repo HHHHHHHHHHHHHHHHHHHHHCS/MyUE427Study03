@@ -18,6 +18,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class UPaperSpriteComponent* minimapIcon;
 
+	class UPaperSpriteComponent* questAreaIcon;
 
 public:
 	// Sets default values for this actor's properties

@@ -17,10 +17,10 @@ AGoalActor::AGoalActor()
 	RootComponent = defaultRootComp;
 	minimapIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("MinimapIcon"));
 	minimapIcon->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<UPaperSprite> sprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/NpcIcon_Sprite.NpcIcon_Sprite'"));
-	if (sprite.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> minimapSprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/NpcIcon_Sprite.NpcIcon_Sprite'"));
+	if (minimapSprite.Succeeded())
 	{
-		minimapIcon->SetSprite(sprite.Object);
+		minimapIcon->SetSprite(minimapSprite.Object);
 	}
 
 	minimapIcon->SetRelativeLocation(FVector(0, 0, 150));
@@ -28,6 +28,17 @@ AGoalActor::AGoalActor()
 	minimapIcon->SetRelativeScale3D(FVector(2, 2, 2));
 	minimapIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	minimapIcon->SetGenerateOverlapEvents(false);
+
+	questAreaIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestAreaIcon"));
+	questAreaIcon->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> questAreaSprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/GoalCircle_Sprite.GoalCircle_Sprite'"));
+	if (questAreaSprite.Succeeded())
+	{
+		questAreaIcon->SetSprite(questAreaSprite.Object);
+	}
+	questAreaIcon->SetRelativeLocation(FVector(0, 0, 150));
+	questAreaIcon->SetRelativeRotation(FRotator(0, 0, 90));
+	// questAreaIcon->SetRelativeScale3D(FVector(2, 2, 2));
 }
 
 // Called when the game starts or when spawned
