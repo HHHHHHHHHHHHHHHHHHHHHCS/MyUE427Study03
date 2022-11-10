@@ -26,9 +26,11 @@ AGoalActor::AGoalActor()
 	minimapIcon->SetRelativeLocation(FVector(0, 0, 150));
 	minimapIcon->SetRelativeRotation(FRotator(0, 0, 90));
 	minimapIcon->SetRelativeScale3D(FVector(2, 2, 2));
-	minimapIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	minimapIcon->SetGenerateOverlapEvents(false);
-
+	// minimapIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// minimapIcon->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	minimapIcon->SetCollisionProfileName(TEXT("NoCollision"));
+	
 	questAreaIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestAreaIcon"));
 	questAreaIcon->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UPaperSprite> questAreaSprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/GoalCircle_Sprite.GoalCircle_Sprite'"));
@@ -39,6 +41,10 @@ AGoalActor::AGoalActor()
 	questAreaIcon->SetRelativeLocation(FVector(0, 0, 150));
 	questAreaIcon->SetRelativeRotation(FRotator(0, 0, 90));
 	// questAreaIcon->SetRelativeScale3D(FVector(2, 2, 2));
+	questAreaIcon->SetGenerateOverlapEvents(false);
+	// questAreaIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// questAreaIcon->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	questAreaIcon->SetCollisionProfileName(TEXT("NoCollision"));
 }
 
 // Called when the game starts or when spawned
@@ -47,6 +53,7 @@ void AGoalActor::BeginPlay()
 	Super::BeginPlay();
 	SetOwner(UGameplayStatics::GetPlayerCharacter(this, 0));
 	minimapIcon->SetOwnerNoSee(true);
+	questAreaIcon->SetOwnerNoSee(true);
 }
 
 // Called every frame

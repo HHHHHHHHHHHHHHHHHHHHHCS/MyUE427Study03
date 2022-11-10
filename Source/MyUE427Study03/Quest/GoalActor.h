@@ -18,6 +18,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class UPaperSpriteComponent* minimapIcon;
 
+	UPROPERTY(VisibleAnywhere)
 	class UPaperSpriteComponent* questAreaIcon;
 
 public:
