@@ -30,7 +30,7 @@ AGoalActor::AGoalActor()
 	// minimapIcon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	// minimapIcon->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	minimapIcon->SetCollisionProfileName(TEXT("NoCollision"));
-	
+
 	questAreaIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestAreaIcon"));
 	questAreaIcon->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<UPaperSprite> questAreaSprite(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/GoalCircle_Sprite.GoalCircle_Sprite'"));
@@ -60,4 +60,15 @@ void AGoalActor::BeginPlay()
 void AGoalActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AGoalActor::InitializeMinimapIcon(bool bUseRadius, float radius, FLinearColor circleColor)
+{
+	minimapIcon->SetVisibility(!bUseRadius);
+	questAreaIcon->SetVisibility(bUseRadius);
+	if(bUseRadius)
+	{
+		questAreaIcon->SetRelativeScale3D(FVector(radius, radius, radius));
+		questAreaIcon->SetSpriteColor(circleColor);
+	}
 }

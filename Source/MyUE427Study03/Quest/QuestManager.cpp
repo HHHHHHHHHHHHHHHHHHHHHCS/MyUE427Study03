@@ -80,7 +80,7 @@ void AQuestManager::Tick(float DeltaTime)
 
 float AQuestManager::GetDistanceToGoal()
 {
-	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation())/100.0f);
+	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation()) / 100.0f);
 }
 
 void AQuestManager::UpdateDirectionArrow()
@@ -100,6 +100,7 @@ void AQuestManager::OnSwitchSubQuest()
 	if (currentSubGoal.goalLocation.bHasLocation)
 	{
 		currentGoal = GetWorld()->SpawnActor<AGoalActor>(goalActorCls, currentSubGoal.goalLocation.location, FRotator::ZeroRotator);
+		currentGoal->InitializeMinimapIcon(currentSubGoal.useRadius, currentSubGoal.radius, currentSubGoal.circleColor);
 		float dist = GetDistanceToGoal();
 		mainUI->minimapWidget->SetDistanceText(dist);
 		UpdateDirectionArrow();
@@ -121,7 +122,7 @@ void AQuestManager::OnSwitchSubQuest()
 
 void AQuestManager::OnPlayMove()
 {
-	if(currentGoal)
+	if (currentGoal)
 	{
 		mainUI->minimapWidget->SetDistanceText(GetDistanceToGoal());
 		UpdateDirectionArrow();

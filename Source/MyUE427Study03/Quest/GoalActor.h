@@ -32,4 +32,6 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void InitializeMinimapIcon(bool bUseRadius, float radius, FLinearColor circleColor);
 };

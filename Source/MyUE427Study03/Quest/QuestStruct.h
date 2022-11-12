@@ -65,7 +65,16 @@ public:
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	TArray<int> followingSubGoalIndices; //当前子任务完成之后接下来的子任务索引
 
-	bool operator ==(const FGoalInfo& goalInfo)
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	bool useRadius;
+
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	float radius;
+
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	FLinearColor circleColor;
+
+	bool operator ==(const FGoalInfo& goalInfo) const
 	{
 		return (goalInfo.type == type)
 			&& (goalInfo.bCustomGoal == bCustomGoal)
@@ -76,7 +85,10 @@ public:
 				&& goalInfo.goalLocation.location == goalLocation.location)
 			&& (goalInfo.bUpdateQuestDesc == bUpdateQuestDesc
 				&& goalInfo.bUpdateDesc == bUpdateDesc)
-			&& (goalInfo.followingSubGoalIndices == followingSubGoalIndices);
+			&& (goalInfo.followingSubGoalIndices == followingSubGoalIndices)
+			&& (goalInfo.useRadius == useRadius)
+			&& (goalInfo.radius == radius)
+			&& (goalInfo.circleColor == circleColor);
 	}
 };
 

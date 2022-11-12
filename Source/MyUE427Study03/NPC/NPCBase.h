@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InteractionInterface.h"
+#include "PaperSpriteComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "MyUE427Study03/Quest/QuestBase.h"
@@ -18,12 +19,18 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* interactionWidget;
 
+	UPROPERTY(VisibleAnywhere)
+	UPaperSpriteComponent* questIcon;
+	
+	
 	UPROPERTY(EditAnywhere, Category="Quest")
 	FText name;
 
 	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<class AQuestBase> myQuest;
 
+	UPROPERTY(EditAnywhere, Category="Quest")
+	bool bHasQuest;
 public:
 	// Sets default values for this character's properties
 	ANPCBase();

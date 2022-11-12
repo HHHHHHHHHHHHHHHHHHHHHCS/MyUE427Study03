@@ -14,6 +14,17 @@ ANPCBase::ANPCBase()
 	interactionWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidget"));
 	interactionWidget->SetupAttachment(RootComponent);
 	interactionWidget->SetVisibility(false);
+	interactionWidget->SetCollisionProfileName(TEXT("NoCollision"));
+	interactionWidget->SetGenerateOverlapEvents(false);
+	
+	questIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestIcon"));
+	questIcon->SetupAttachment(RootComponent);
+	questIcon->SetRelativeLocation(FVector(0, 0, 150));
+	questIcon->SetRelativeRotation(FRotator(180, 90, 180));
+	questIcon->SetRelativeScale3D(FVector(1, 1, 1));
+	questIcon->SetSpriteColor(FLinearColor::Yellow);
+	questIcon->SetCollisionProfileName(TEXT("NoCollision"));
+	questIcon->SetGenerateOverlapEvents(false);
 }
 
 // Called when the game starts or when spawned
@@ -47,8 +58,9 @@ void ANPCBase::OnLeavePlayerRadius(ACharacterBase* character)
 
 void ANPCBase::OnInteractWith(ACharacterBase* character)
 {
-	if(!character->questManager->allQuestClasses.Contains(myQuest))
+	if (!character->questManager->allQuestClasses.Contains(myQuest))
 	{
 		character->questManager->AddNewQuest(myQuest);
+		questIcon->SetVisibility(false);
 	}
 }
