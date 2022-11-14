@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/NPC/InteractionInterface.h"
+#include "MyUE427Study03/NPC/NPCBase.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/Skill/SkillBase.h"
 #include "MyUE427Study03/Skill/SkillEnum.h"
@@ -561,7 +562,7 @@ void ACharacterBase::OnInteractionCompEndOverlap(UPrimitiveComponent* Overlapped
 void ACharacterBase::InteractToNPC()
 {
 	TArray<AActor*> overlapActors;
-	interactionComp->GetOverlappingActors(overlapActors);
+	interactionComp->GetOverlappingActors(overlapActors, TSubclassOf<ANPCBase>());
 	for (auto item : overlapActors)
 	{
 		IInteractionInterface* it = Cast<IInteractionInterface>(item);

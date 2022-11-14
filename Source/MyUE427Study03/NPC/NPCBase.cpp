@@ -3,6 +3,8 @@
 
 #include "NPCBase.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "PaperSprite.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
 
@@ -16,22 +18,32 @@ ANPCBase::ANPCBase()
 	interactionWidget->SetVisibility(false);
 	interactionWidget->SetCollisionProfileName(TEXT("NoCollision"));
 	interactionWidget->SetGenerateOverlapEvents(false);
-	
+
 	questIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestIcon"));
 	questIcon->SetupAttachment(RootComponent);
 	questIcon->SetRelativeLocation(FVector(0, 0, 150));
 	questIcon->SetRelativeRotation(FRotator(180, 90, 180));
-	questIcon->SetRelativeScale3D(FVector(1, 1, 1));
+	questIcon->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
 	questIcon->SetSpriteColor(FLinearColor::Yellow);
 	questIcon->SetCollisionProfileName(TEXT("NoCollision"));
 	questIcon->SetGenerateOverlapEvents(false);
+
+	static auto questIconSprite = ConstructorHelpers::FObjectFinder<UPaperSprite>(TEXT("PaperSprite'/Game/Textures/UI/QuestTextures/Quest_Icon_Sprite.Quest_Icon_Sprite'"));
+	if (questIconSprite.Succeeded())
+	{
+		questIcon->SetSprite(questIconSprite.Object);
+	}
 }
 
 // Called when the game starts or when spawned
 void ANPCBase::BeginPlay()
 {
 	Super::BeginPlay();
+	questIcon->SetWorldRotation(FRotator(0, 88.5f, -90));
 	Cast<UUI_Interaction>(interactionWidget->GetUserWidgetObject())->SetNameText(name);
+	questIcon->SetVisibility(bHasQuest);
+	SetOwner(UGameplayStatics::GetPlayerCharacter(this, 0));
+	questIcon->SetOwnerNoSee(true);
 }
 
 // Called every frame
