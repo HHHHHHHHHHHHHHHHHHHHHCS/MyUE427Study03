@@ -31,11 +31,11 @@ public:
 	UProgressBar* mpProgressBar;
 
 	UVerticalBox* hotkeyRowContainer;
-	
+
 	TArray<UUI_SkillHotkey*> allHotkeySlots;
 
 	UBorder* enemyBorder;
-	
+
 	UTextBlock* enemyNameLevelText;
 
 	UTextBlock* enemyHpText;
@@ -55,15 +55,18 @@ public:
 	class UUI_SkillTree_MainTree* skillTree_MainTree;
 
 	USizeBox* questListSizeBox;
-	
+
 	UScrollBox* questList;
 
 	class AQuestManager* questManager;
-	
-private:
 
+	UPROPERTY(BlueprintReadOnly)
 	TArray<class UUI_Quest_Quest*> questWidgetArray;
-	
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bOutSide = true;
+
+private:
 public:
 	virtual bool Initialize() override;
 
