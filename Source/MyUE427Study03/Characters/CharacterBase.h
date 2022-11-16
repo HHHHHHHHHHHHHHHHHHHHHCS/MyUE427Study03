@@ -101,6 +101,7 @@ public:
 
 	bool bCanFindKey;
 
+	UPROPERTY(BlueprintReadOnly)
 	UUserWidget_Main* mainUI;
 
 	class AEnemyNormal* selectEnemy;
