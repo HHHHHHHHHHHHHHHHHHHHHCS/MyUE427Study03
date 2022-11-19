@@ -157,6 +157,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("ToggleShowSkillTree", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowSkillTree);
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 	PlayerInputComponent->BindAction("PlaySlideOutAnim", EInputEvent::IE_Pressed, this, &ACharacterBase::PlaySlideOutAnim);
+	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
+
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -325,6 +327,11 @@ void ACharacterBase::OnAnyKeyPressed(FKey key)
 void ACharacterBase::ToggleShowSkillTree()
 {
 	skillTreeComp->HandleShowCommand();
+}
+
+void ACharacterBase::TestCompleteQuest()
+{
+	questManager->questActors[0]->OnSubGoalCompleted(0);
 }
 
 

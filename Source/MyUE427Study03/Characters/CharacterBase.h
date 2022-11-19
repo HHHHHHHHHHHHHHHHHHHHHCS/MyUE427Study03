@@ -161,6 +161,8 @@ protected:
 
 	void ToggleShowSkillTree();
 
+	void TestCompleteQuest();
+
 public:
 	FORCEINLINE void SetCharacterName(FString name)
 	{

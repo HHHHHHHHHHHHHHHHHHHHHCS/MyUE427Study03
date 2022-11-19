@@ -8,7 +8,8 @@
 #include "QuestBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API AQuestBase : public AActor
+class MYUE427STUDY03_API
+AQuestBase : public AActor
 {
 	GENERATED_BODY()
 
@@ -19,8 +20,11 @@ public:
 	UPROPERTY(EditAnywhere, Category="QuestInfomation")
 	TArray<int> startingSubGoalIndices = {0}; // 初始的子任务, 有一个可能也有多个
 
+	UPROPERTY(VisibleAnywhere, Category="QuestInfomation")
+	TArray<FGoalInfo> completedSubGoals;
+	
 public:
-	TArray<int> currentGoalIndices; // 当前的任务索引
+	TArray<int> currentGoalIndices; // 当前的子任务索引
 
 	TArray<FGoalInfo> currentGoals; // 当前的所有任务
 
@@ -33,6 +37,8 @@ public:
 	AQuestBase();
 
 	void SetupStartingGoals();
+
+	bool OnSubGoalCompleted(int subGoalIndex);
 
 protected:
 	// Called when the game starts or when spawned

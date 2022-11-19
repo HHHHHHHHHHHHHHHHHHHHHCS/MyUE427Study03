@@ -3,6 +3,9 @@
 
 #include "QuestBase.h"
 
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_SubGoal.h"
+
 // Sets default values
 AQuestBase::AQuestBase()
 {
@@ -30,6 +33,46 @@ void AQuestBase::SetupStartingGoals()
 	currentGoalIndices.Empty();
 	currentGoalIndices = startingSubGoalIndices;
 	UpdateSubGoals();
+}
+
+bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
+{
+	if (currentGoalIndices.Contains(subGoalIndex))
+	{
+		FGoalInfo completedGoal = questInfo.subGoals[subGoalIndex];
+		completedSubGoals.Add(completedGoal);
+		currentGoals.Remove(completedGoal);
+
+		int widgetIndex = currentGoalIndices.Find(subGoalIndex);
+		questUI->subGoalWidgets[widgetIndex]->RemoveFromParent();
+		questUI->subGoalWidgets.RemoveAt(widgetIndex);
+		currentGoalIndices.Remove(subGoalIndex);
+
+		for (int i : completedGoal.followingSubGoalIndices)
+		{
+			currentGoalIndices.Add(i);
+			currentGoals.Add(questInfo.subGoals[i]);
+
+			auto cls = LoadClass<UUI_Quest_SubGoal>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_SubGoal.UI_SubGoal_C'"));
+			UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);
+			subGoalUI->goalInfo = questInfo.subGoals[i];
+			subGoalUI->assignedQuest = this;
+
+			questUI->subGoalWidgets.Add(subGoalUI);
+			questUI->VBOX_SubGoal->AddChild(subGoalUI);
+		}
+
+		if (subGoalIndex == selectedSubGoalIndex)
+		{
+			questUI->SelectSubGoal(questUI->subGoalWidgets[0]);
+		}
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool AQuestBase::GoToNextSubGoal()
