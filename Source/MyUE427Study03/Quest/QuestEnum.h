@@ -55,3 +55,11 @@ class MYUE427STUDY03_API UQuestEnum : public UObject
 {
 	GENERATED_BODY()
 };
+
+UENUM()
+enum class EQuestStates
+{
+	CurrentQuest,
+	CompletedQuest,
+	FailedQuest,
+};
