@@ -28,10 +28,11 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UVerticalBox* VBOX_QuestBox;
 
+	UPROPERTY(EditAnywhere)
 	EQuestStates currentStates = EQuestStates::CurrentQuest;
 
 public:
 	virtual void NativeConstruct() override;
-	
+
 	void SetCategoryName(FText text);
 };
