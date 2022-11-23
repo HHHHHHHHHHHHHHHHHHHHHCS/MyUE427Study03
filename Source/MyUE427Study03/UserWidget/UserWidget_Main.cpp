@@ -8,6 +8,7 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
 #include "Components/ScrollBoxSlot.h"
+#include "Quest/UI_Quest_Journal.h"
 #include "Quest/UI_Quest_Quest.h"
 #include "SkillTree/UI_SkillTree_MainTree.h"
 
@@ -40,8 +41,10 @@ bool UUserWidget_Main::Initialize()
 	questListSizeBox = Cast<USizeBox>(GetWidgetFromName("SizeBox_QuestList"));
 
 	questList = Cast<UScrollBox>(GetWidgetFromName("ScrollBox_QuestList"));
-	
+
 	minimapWidget = Cast<UUI_Minimap>(GetWidgetFromName("UI_Minimap"));
+
+	questJournal = Cast<UUI_Quest_Journal>(GetWidgetFromName("QuestJournal"));
 
 	return true;
 }

@@ -66,6 +66,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bOutSide = true;
 
+	class UUI_Quest_Journal* questJournal;
+	
 private:
 public:
 	virtual bool Initialize() override;
