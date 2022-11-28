@@ -18,7 +18,7 @@ class MYUE427STUDY03_API UUI_Quest_Journal : public UUserWidget
 
 public:
 	UPROPERTY(meta=(BindWidget))
-	UScrollBox* SBOX_QuestList;
+	UScrollBox* SBox_QuestList;
 
 	UPROPERTY(meta=(BindWidget))
 	UUI_QuestCategory* UI_QuestCategory_Current;
