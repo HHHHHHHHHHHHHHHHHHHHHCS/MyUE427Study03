@@ -56,7 +56,7 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 		{
 			tempQuest->questUI->Text_QuestName->SetIsEnabled(false);
 		}
-		playerCharacter->PlaySlideOutAnim();
+		playerCharacter->PlayAddNewAnim();
 		return true;
 	}
 	else

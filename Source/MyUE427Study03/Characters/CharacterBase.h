@@ -252,4 +252,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlaySlideOutAnim();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayAddNewAnim();
 };

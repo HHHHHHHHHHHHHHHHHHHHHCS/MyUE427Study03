@@ -28,5 +28,37 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UUI_QuestCategory* UI_QuestCategory_Failed;
-	
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_QuestName;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_QuestCategory;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_QuestRegion;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_SuggestedLevel;
+
+	UPROPERTY(meta=(BindWidget))
+	UVerticalBox* VBox_RewardDetail;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_ExpReward;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_GoldReward;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_Description;
+
+	UPROPERTY(meta=(BindWidget))
+	UVerticalBox* VBox_QuestGoals;
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Select;
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* Button_Cancel;
 };

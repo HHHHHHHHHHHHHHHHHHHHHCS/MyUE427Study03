@@ -331,7 +331,10 @@ void ACharacterBase::ToggleShowSkillTree()
 
 void ACharacterBase::TestCompleteQuest()
 {
-	questManager->questActors[0]->OnSubGoalCompleted(0);
+	if(questManager->questActors.Num()>0)
+	{
+		questManager->questActors[0]->OnSubGoalCompleted(0);
+	}
 }
 
 
