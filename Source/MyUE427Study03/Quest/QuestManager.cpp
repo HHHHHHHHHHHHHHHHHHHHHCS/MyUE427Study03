@@ -42,13 +42,13 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 	{
 		allQuestClasses.Add(questCls);
 		AQuestBase* tempQuest = GetWorld()->SpawnActor<AQuestBase>(questCls, FVector::ZeroVector, FRotator::ZeroRotator);
-		questActors.Add(tempQuest);
+		currentQuestActors.Add(tempQuest);
 		tempQuest->SetupStartingGoals();
 		tempQuest->questUI = mainUI->AddQuestToList(tempQuest);
 		tempQuest->questUI->questManager = this;
 		tempQuest->questUI->UpdateQuest();
 		// 如果是第一个就默认选择
-		if (questActors.Num() <= 1)
+		if (currentQuestActors.Num() <= 1)
 		{
 			SelectNewQuest(tempQuest, tempQuest->questUI->subGoalWidgets[0]);
 		}

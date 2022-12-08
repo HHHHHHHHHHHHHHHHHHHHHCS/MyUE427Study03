@@ -46,6 +46,14 @@ enum class ERegions
 	NanJing,
 };
 
+enum class EGoalStates
+{
+	Current,
+
+	Success,
+
+	Failed,
+};
 
 /**
  * 

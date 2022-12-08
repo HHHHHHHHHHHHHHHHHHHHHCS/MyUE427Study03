@@ -20,7 +20,10 @@ public:
 	class AQuestBase* currentQuest; //当前处理的任务
 
 	TArray<TSubclassOf<AQuestBase>> allQuestClasses;
-	TArray<AQuestBase*> questActors;
+	TArray<AQuestBase*> currentQuestActors;
+	TArray<AQuestBase*> completedQuestActors;
+	TArray<AQuestBase*> FailQuestActors;
+
 	FGoalInfo currentSubGoal;
 	AGoalActor* currentGoal;
 

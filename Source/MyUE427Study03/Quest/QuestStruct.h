@@ -122,6 +122,16 @@ public:
 	TArray<FGoalInfo> subGoals;
 };
 
+USTRUCT()
+struct FCompletedGoal
+{
+	GENERATED_BODY()
+public:
+	int goalIndex;
+	FGoalInfo goalInfo;
+	bool bSuccessful;
+};
+
 /**
  * 
  */
