@@ -33,6 +33,7 @@ void AQuestBase::SetupStartingGoals()
 	currentGoalIndices.Empty();
 	currentGoalIndices = startingSubGoalIndices;
 	UpdateSubGoals();
+	currentDescription = questInfo.desc;
 }
 
 bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
@@ -40,7 +41,7 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 	if (currentGoalIndices.Contains(subGoalIndex))
 	{
 		FGoalInfo completedGoal = questInfo.subGoals[subGoalIndex];
-		completedSubGoals.Add(completedGoal);
+		completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, true});
 		currentGoals.Remove(completedGoal);
 
 		int widgetIndex = currentGoalIndices.Find(subGoalIndex);

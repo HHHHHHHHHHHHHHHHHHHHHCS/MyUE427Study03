@@ -9,7 +9,7 @@
 
 UCLASS()
 class MYUE427STUDY03_API
-AQuestBase : public AActor
+	AQuestBase : public AActor
 {
 	GENERATED_BODY()
 
@@ -21,8 +21,8 @@ public:
 	TArray<int> startingSubGoalIndices = {0}; // 初始的子任务, 有一个可能也有多个
 
 	UPROPERTY(VisibleAnywhere, Category="QuestInfomation")
-	TArray<FGoalInfo> completedSubGoals;
-	
+	TArray<FCompletedGoal> completedSubGoals;
+
 public:
 	TArray<int> currentGoalIndices; // 当前的子任务索引
 
@@ -31,6 +31,14 @@ public:
 	int selectedSubGoalIndex; //当前选择的要完成的任务索引
 
 	int currentHuntedAmount; //当前杀死的怪物数量
+
+	EQuestStates currentState;
+
+	FText currentDescription;
+
+	class UUI_QuestList_Entry* listEntryUI;
+
+	class UUI_Quest_Quest* questUI;
 
 public:
 	// Sets default values for this actor's properties
@@ -49,8 +57,8 @@ protected:
 	bool GoToNextSubGoal();
 
 public:
-	class UUI_Quest_Quest* questUI;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 };

@@ -61,4 +61,8 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Cancel;
+	
+	class AQuestBase* selectedQuest;
+
+	class ACharacterBase* playerChar;
 };

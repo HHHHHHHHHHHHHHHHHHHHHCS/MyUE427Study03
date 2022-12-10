@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI_Quest_Journal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
+#include "MyUE427Study03/Quest/QuestStruct.h"
 #include "UI_Quest_GoalEntry.generated.h"
 
 class UTextBlock;
@@ -22,6 +23,25 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_GoalDesc;
 
+	FGoalInfo goalInfo;
+
+	EGoalStates goalStates;
+
+	UUI_Quest_Journal* journalUI;
+
+	UPROPERTY(EditAnywhere, Category="StateIcon")
+	UTexture2D* currentTex2D;
+
+	UPROPERTY(EditAnywhere, Category="StateIcon")
+	UTexture2D* successTex2D;
+
+	UPROPERTY(EditAnywhere, Category="StateIcon")
+	UTexture2D* failedTex2D;
+
 public:
+	virtual void NativeConstruct() override;
+
 	void SetGoalText(FText text);
+
+	void Update();
 };

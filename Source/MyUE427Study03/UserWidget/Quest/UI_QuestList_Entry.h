@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "MyUE427Study03/Quest/QuestBase.h"
 #include "UI_QuestList_Entry.generated.h"
 
 /**
@@ -29,10 +30,16 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Quest;
 
+	class UUI_Quest_Journal* questJournal;
+	
+	AQuestBase* assignedQuest;
+
 public:
 	void SetQuestName(FText questNameText);
 
 	void SetRegionName(FText regionNameText);
 
 	void SetSuggestedLevel(FText levelText);
+
+	void UpdateLevelColor();
 };
