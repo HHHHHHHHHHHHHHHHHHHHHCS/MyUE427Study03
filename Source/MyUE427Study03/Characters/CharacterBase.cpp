@@ -158,7 +158,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 	PlayerInputComponent->BindAction("PlaySlideOutAnim", EInputEvent::IE_Pressed, this, &ACharacterBase::PlaySlideOutAnim);
 	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
-
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -331,7 +330,7 @@ void ACharacterBase::ToggleShowSkillTree()
 
 void ACharacterBase::TestCompleteQuest()
 {
-	if(questManager->currentQuestActors.Num()>0)
+	if (questManager->currentQuestActors.Num() > 0)
 	{
 		questManager->currentQuestActors[0]->OnSubGoalCompleted(0);
 	}
@@ -584,3 +583,5 @@ void ACharacterBase::InteractToNPC()
 		}
 	}
 }
+
+

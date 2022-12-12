@@ -41,9 +41,9 @@ enum class EGoalTypes
 UENUM()
 enum class ERegions
 {
-	BeiJing,
+	Forest UMETA(DisplayName="Forest"),
 
-	NanJing,
+	Grass UMETA(DisplayName="Grass"),
 };
 
 enum class EGoalStates

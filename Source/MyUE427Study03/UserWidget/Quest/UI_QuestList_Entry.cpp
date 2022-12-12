@@ -42,3 +42,31 @@ void UUI_QuestList_Entry::UpdateLevelColor()
 	}
 	Text_SuggestedtLv->SetColorAndOpacity(tempColor);
 }
+
+void UUI_QuestList_Entry::UpdateQuestInfo()
+{
+	if (assignedQuest->questInfo.name.ToString().Len() < 20)
+	{
+		SetQuestName(assignedQuest->questInfo.name);
+	}
+	else
+	{
+		SetQuestName(FText::FromString(assignedQuest->questInfo.name.ToString().LeftChop(assignedQuest->questInfo.name.ToString().Len() - 17).Append("...")));
+	}
+	SetSuggestedLevel(FText::AsNumber(assignedQuest->questInfo.suggestedLevel));
+	UpdateLevelColor();
+	//枚举转换成字符串
+	SetRegionName(FText::FromString(GetRegionEnumString(assignedQuest->questInfo.region)));
+}
+
+FString UUI_QuestList_Entry::GetRegionEnumString(ERegions region)
+{
+	const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ERegions"), true);
+	if (!enumPtr)
+	{
+		return FString("InValid");
+	}
+	FString str = enumPtr->GetNameStringByValue((int64)region);
+	str.RemoveFromStart("ERegions::");
+	return str;
+}

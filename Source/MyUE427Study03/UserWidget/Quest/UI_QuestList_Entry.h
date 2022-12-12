@@ -42,4 +42,8 @@ public:
 	void SetSuggestedLevel(FText levelText);
 
 	void UpdateLevelColor();
+
+	void UpdateQuestInfo();
+
+	FString GetRegionEnumString(ERegions region);
 };
