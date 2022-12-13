@@ -35,6 +35,8 @@ public:
 	AQuestBase* assignedQuest;
 
 public:
+	virtual void NativeConstruct() override;
+
 	void SetQuestName(FText questNameText);
 
 	void SetRegionName(FText regionNameText);

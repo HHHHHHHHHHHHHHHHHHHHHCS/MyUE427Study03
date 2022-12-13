@@ -31,8 +31,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	EQuestStates currentStates = EQuestStates::CurrentQuest;
 
+private:
+	bool bIsExpand = false;
+	
 public:
 	virtual void NativeConstruct() override;
 
 	void SetCategoryName(FText text);
+
+	UFUNCTION()
+	void OnExpandButtonClicked();
 };

@@ -6,6 +6,12 @@
 #include "UI_Quest_Journal.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 
+void UUI_QuestList_Entry::NativeConstruct()
+{
+	Super::NativeConstruct();
+	UpdateQuestInfo();
+}
+
 void UUI_QuestList_Entry::SetQuestName(FText questNameText)
 {
 	Text_QuestName->SetText(questNameText);

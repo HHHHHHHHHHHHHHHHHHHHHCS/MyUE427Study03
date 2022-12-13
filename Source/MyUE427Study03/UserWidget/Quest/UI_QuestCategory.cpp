@@ -22,9 +22,17 @@ void UUI_QuestCategory::NativeConstruct()
 	default:
 		break;
 	}
+	Button_Expand->OnClicked.AddDynamic(this, &UUI_QuestCategory::OnExpandButtonClicked);
 }
 
 void UUI_QuestCategory::SetCategoryName(FText text)
 {
 	Text_CategoryName->SetText(text);
+}
+
+void UUI_QuestCategory::OnExpandButtonClicked()
+{
+	bIsExpand = !bIsExpand;
+	Button_Expand->SetRenderTransformAngle(bIsExpand ? 0 : -90);
+	VBOX_QuestBox->SetVisibility(bIsExpand ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 }
