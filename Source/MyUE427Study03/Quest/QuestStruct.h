@@ -60,7 +60,7 @@ public:
 	FGoalLocation goalLocation;
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
-	bool bUpdateDesc; //任务结束
+	FText updateDesc; //更新任务的描述
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	TArray<int> followingSubGoalIndices; //当前子任务完成之后接下来的子任务索引
@@ -84,7 +84,7 @@ public:
 			&& (goalInfo.goalLocation.bHasLocation == goalLocation.bHasLocation
 				&& goalInfo.goalLocation.location == goalLocation.location)
 			&& (goalInfo.bUpdateQuestDesc == bUpdateQuestDesc
-				&& goalInfo.bUpdateDesc == bUpdateDesc)
+				&& goalInfo.updateDesc.EqualTo(updateDesc))
 			&& (goalInfo.followingSubGoalIndices == followingSubGoalIndices)
 			&& (goalInfo.useRadius == useRadius)
 			&& (goalInfo.radius == radius)

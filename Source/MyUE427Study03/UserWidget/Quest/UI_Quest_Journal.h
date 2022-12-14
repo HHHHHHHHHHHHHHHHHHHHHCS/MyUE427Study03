@@ -65,4 +65,9 @@ public:
 	class AQuestBase* selectedQuest;
 
 	class ACharacterBase* playerChar;
+
+public:
+	void UpdateSuggestedLevelColor();
+
+	void UpdateDesc();
 };
