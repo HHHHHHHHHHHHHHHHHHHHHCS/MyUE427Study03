@@ -3,6 +3,7 @@
 
 #include "UI_Quest_Journal.h"
 
+#include "UI_Quest_GoalEntry.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Quest/QuestBase.h"
 
@@ -31,4 +32,27 @@ void UUI_Quest_Journal::UpdateSuggestedLevelColor()
 void UUI_Quest_Journal::UpdateDesc()
 {
 	Text_Description->SetText(FText::FromString(selectedQuest->currentDescription.ToString().Replace(TEXT("\n"),TEXT(" "))));
+}
+
+void UUI_Quest_Journal::GenerateSubGoals()
+{
+	for (FCompletedGoal& completedGoal : selectedQuest->completedSubGoals)
+	{
+		UClass* cls = LoadClass<UUI_Quest_GoalEntry>(GetWorld(),TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest_GoalEntry.UI_Quest_GoalEntry_C'"));
+		UUI_Quest_GoalEntry* goalEntryUI = CreateWidget<UUI_Quest_GoalEntry>(GetWorld(), cls);
+		goalEntryUI->goalInfo = completedGoal.goalInfo;
+		goalEntryUI->journalUI = this;
+		goalEntryUI->goalStates = completedGoal.bSuccessful ? EGoalStates::Success : EGoalStates::Failed;
+		VBox_QuestGoals->AddChildToVerticalBox(goalEntryUI);
+	}
+
+	for (FGoalInfo& item : selectedQuest->currentGoals)
+	{
+		UClass* cls = LoadClass<UUI_Quest_GoalEntry>(GetWorld(),TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest_GoalEntry.UI_Quest_GoalEntry_C'"));
+		UUI_Quest_GoalEntry* goalEntryUI = CreateWidget<UUI_Quest_GoalEntry>(GetWorld(), cls);
+		goalEntryUI->goalInfo = item;
+		goalEntryUI->journalUI = this;
+		goalEntryUI->goalStates = EGoalStates::Current;
+		VBox_QuestGoals->AddChildToVerticalBox(goalEntryUI);
+	}
 }

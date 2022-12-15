@@ -70,4 +70,6 @@ public:
 	void UpdateSuggestedLevelColor();
 
 	void UpdateDesc();
+
+	void GenerateSubGoals();
 };
