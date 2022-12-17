@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI_QuestCategory.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/HorizontalBox.h"
 #include "Components/ScrollBox.h"
 #include "UI_Quest_Journal.generated.h"
 
@@ -20,6 +21,9 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UScrollBox* SBox_QuestList;
 
+	UPROPERTY(meta=(BindWidget))
+	UScrollBox* SBox_QuestDetail;
+	
 	UPROPERTY(meta=(BindWidget))
 	UUI_QuestCategory* UI_QuestCategory_Current;
 
@@ -57,6 +61,9 @@ public:
 	UVerticalBox* VBox_QuestGoals;
 
 	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* HBox_Button;
+	
+	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Select;
 
 	UPROPERTY(meta=(BindWidget))
@@ -72,4 +79,6 @@ public:
 	void UpdateDesc();
 
 	void GenerateSubGoals();
+
+	void UpdateDetailWindow();
 };

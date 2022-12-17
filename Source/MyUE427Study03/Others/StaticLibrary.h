@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Enemies/EnemyNormal.h"
-#include "MyUE427Study03/Skill/SkillBase.h"
 #include "MyUE427Study03/Skill/ElementBase.h"
 #include "StaticLibrary.generated.h"
 
@@ -37,5 +36,19 @@ public:
 	{
 		return actor->GetClass() == ACharacterBase::StaticClass()
 			|| actor->GetClass()->IsChildOf(ACharacterBase::StaticClass());
+	}
+
+	template <typename TEnum>
+	FORCEINLINE static FString GetEnumValueAsString(const FString& name, TEnum value)
+	{
+		const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *name, true);
+		if (enumPtr == nullptr)
+		{
+			return FString("InValid");
+		}
+
+		FString tempString = enumPtr->GetNameStringByValue((int64)value);
+		tempString.RemoveFromStart(name + "::");
+		return tempString;
 	}
 };

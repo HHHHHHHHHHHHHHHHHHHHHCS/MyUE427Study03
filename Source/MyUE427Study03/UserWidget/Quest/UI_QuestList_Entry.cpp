@@ -5,6 +5,7 @@
 
 #include "UI_Quest_Journal.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/Others/StaticLibrary.h"
 
 void UUI_QuestList_Entry::NativeConstruct()
 {
