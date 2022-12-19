@@ -8,6 +8,8 @@
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/Quest/QuestBase.h"
 
+#define LOCTEXT_NAMESPACE "UUI_Quest_Journal"
+
 void UUI_Quest_Journal::UpdateSuggestedLevelColor()
 {
 	int playerLevel = playerChar->GetCurrentLevel();
@@ -89,6 +91,38 @@ void UUI_Quest_Journal::UpdateDetailWindow()
 		Text_SuggestedLevel->SetText(FText::AsNumber(selectedQuest->questInfo.suggestedLevel));
 		UpdateSuggestedLevelColor();
 
+		int experience = selectedQuest->questInfo.completionReward.experience;
+		int gold = selectedQuest->questInfo.completionReward.gold;
+
+		if (experience > 0)
+		{
+			HBOX_ExpReward->SetVisibility(ESlateVisibility::Visible);
+			Text_ExpReward->SetText(FText::Format(LOCTEXT("UUI_Quest_Journal", "+{0} Exp"), FText::AsNumber(experience)));
+		}
+		else
+		{
+			HBOX_ExpReward->SetVisibility(ESlateVisibility::Collapsed);
+		}
+
+		if (gold > 0)
+		{
+			HBOX_GoldReward->SetVisibility(ESlateVisibility::Visible);
+			Text_GoldReward->SetText(FText::Format(LOCTEXT("UUI_Quest_Journal", "+{0} Gold"), FText::AsNumber(gold)));
+		}
+		else
+		{
+			HBOX_GoldReward->SetVisibility(ESlateVisibility::Collapsed);
+		}
+
+		if (experience > 0 && gold > 0)
+		{
+			VBox_RewardDetail->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			VBox_RewardDetail->SetVisibility(ESlateVisibility::Collapsed);
+		}
+
 		UpdateDesc();
 		GenerateSubGoals();
 
@@ -100,9 +134,12 @@ void UUI_Quest_Journal::UpdateDetailWindow()
 		{
 			Button_Cancel->SetVisibility(ESlateVisibility::Collapsed);
 		}
+		
+		SBox_QuestDetail->SetVisibility(ESlateVisibility::Visible);
 	}
 	else
 	{
 		SBox_QuestDetail->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
+#undef LOCTEXT_NAMESPACE

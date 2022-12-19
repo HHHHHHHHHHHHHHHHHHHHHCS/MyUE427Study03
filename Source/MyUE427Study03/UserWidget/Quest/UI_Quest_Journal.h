@@ -23,7 +23,7 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UScrollBox* SBox_QuestDetail;
-	
+
 	UPROPERTY(meta=(BindWidget))
 	UUI_QuestCategory* UI_QuestCategory_Current;
 
@@ -62,13 +62,19 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UHorizontalBox* HBox_Button;
-	
+
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Select;
 
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Cancel;
-	
+
+	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* HBOX_ExpReward;
+
+	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* HBOX_GoldReward;
+
 	class AQuestBase* selectedQuest;
 
 	class ACharacterBase* playerChar;

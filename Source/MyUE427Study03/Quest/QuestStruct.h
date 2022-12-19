@@ -17,7 +17,7 @@ public:
 	int experience;
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
-	int coin;
+	int gold;
 };
 
 //目标的位置
