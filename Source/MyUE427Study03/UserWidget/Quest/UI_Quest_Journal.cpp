@@ -3,6 +3,7 @@
 
 #include "UI_Quest_Journal.h"
 
+#include "UI_QuestList_Entry.h"
 #include "UI_Quest_GoalEntry.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
@@ -134,12 +135,35 @@ void UUI_Quest_Journal::UpdateDetailWindow()
 		{
 			Button_Cancel->SetVisibility(ESlateVisibility::Collapsed);
 		}
-		
+
 		SBox_QuestDetail->SetVisibility(ESlateVisibility::Visible);
 	}
 	else
 	{
 		SBox_QuestDetail->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
+void UUI_Quest_Journal::AddQuestEntry(AQuestBase* questBase)
+{
+	auto cls = LoadClass<UUI_QuestList_Entry>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_QuestList_Entry.UI_QuestList_Entry_C'"));
+	UUI_QuestList_Entry* questListEntry = CreateWidget<UUI_QuestList_Entry>(GetWorld(), cls);
+	questListEntry->questJournal = this;
+	questListEntry->assignedQuest = questBase;
+	questBase->listEntryUI = questListEntry;
+	allQuestListEntries.Add(questListEntry);
+
+	switch (questBase->currentState)
+	{
+	case EQuestStates::CurrentQuest:
+		UI_QuestCategory_Current->VBOX_QuestBox->AddChild(questListEntry);
+		break;
+	case EQuestStates::CompletedQuest:
+		UI_QuestCategory_Completed->VBOX_QuestBox->AddChild(questListEntry);
+		break;
+	case EQuestStates::FailedQuest:
+		UI_QuestCategory_Failed->VBOX_QuestBox->AddChild(questListEntry);
+		break;
 	}
 }
 #undef LOCTEXT_NAMESPACE

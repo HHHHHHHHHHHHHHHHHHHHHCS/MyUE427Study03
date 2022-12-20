@@ -79,6 +79,10 @@ public:
 
 	class ACharacterBase* playerChar;
 
+	TArray<class UUI_QuestList_Entry*> allQuestListEntries;
+
+	UUI_QuestList_Entry* currQuestListEntry;
+
 public:
 	void UpdateSuggestedLevelColor();
 
@@ -87,4 +91,6 @@ public:
 	void GenerateSubGoals();
 
 	void UpdateDetailWindow();
+
+	void AddQuestEntry(class AQuestBase* questBase);
 };
