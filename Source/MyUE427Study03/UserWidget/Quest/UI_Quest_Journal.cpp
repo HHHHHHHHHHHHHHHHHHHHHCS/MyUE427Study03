@@ -11,6 +11,12 @@
 
 #define LOCTEXT_NAMESPACE "UUI_Quest_Journal"
 
+void UUI_Quest_Journal::Initialize(AQuestManager* _questManager)
+{
+	questManager = _questManager;
+	playerChar = questManager->playerCharacter;
+}
+
 void UUI_Quest_Journal::UpdateSuggestedLevelColor()
 {
 	int playerLevel = playerChar->GetCurrentLevel();
@@ -165,5 +171,18 @@ void UUI_Quest_Journal::AddQuestEntry(AQuestBase* questBase)
 		UI_QuestCategory_Failed->VBOX_QuestBox->AddChild(questListEntry);
 		break;
 	}
+}
+
+void UUI_Quest_Journal::OnQuestClicked(UUI_QuestList_Entry* clickQuestListEntry)
+{
+	if(currQuestListEntry)
+	{
+		currQuestListEntry->SetIsEnabled(true);
+	}
+
+	currQuestListEntry = clickQuestListEntry;
+	selectedQuest = currQuestListEntry->assignedQuest;
+	UpdateDetailWindow();
+	currQuestListEntry->SetIsEnabled(false);
 }
 #undef LOCTEXT_NAMESPACE

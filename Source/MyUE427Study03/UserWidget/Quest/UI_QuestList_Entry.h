@@ -31,7 +31,7 @@ public:
 	UButton* Button_Quest;
 
 	class UUI_Quest_Journal* questJournal;
-	
+
 	AQuestBase* assignedQuest;
 
 public:
@@ -48,4 +48,7 @@ public:
 	void UpdateQuestInfo();
 
 	FString GetRegionEnumString(ERegions region);
+
+	UFUNCTION()
+	void OnQuestButtonClicked();
 };

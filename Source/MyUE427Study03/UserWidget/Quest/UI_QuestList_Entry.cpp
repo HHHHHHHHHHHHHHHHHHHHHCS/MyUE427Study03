@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "UI_QuestList_Entry.h"
-
 #include "UI_Quest_Journal.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
@@ -11,6 +9,7 @@ void UUI_QuestList_Entry::NativeConstruct()
 {
 	Super::NativeConstruct();
 	UpdateQuestInfo();
+	Button_Quest->OnClicked.AddDynamic(this, &UUI_QuestList_Entry::OnQuestButtonClicked);
 }
 
 void UUI_QuestList_Entry::SetQuestName(FText questNameText)
@@ -76,4 +75,9 @@ FString UUI_QuestList_Entry::GetRegionEnumString(ERegions region)
 	FString str = enumPtr->GetNameStringByValue((int64)region);
 	str.RemoveFromStart("ERegions::");
 	return str;
+}
+
+void UUI_QuestList_Entry::OnQuestButtonClicked()
+{
+	questJournal->OnQuestClicked(this);
 }

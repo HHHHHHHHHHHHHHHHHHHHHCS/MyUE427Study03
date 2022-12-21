@@ -83,7 +83,11 @@ public:
 
 	UUI_QuestList_Entry* currQuestListEntry;
 
+	class AQuestManager* questManager;
+
 public:
+	void Initialize(class AQuestManager* _questManager);
+
 	void UpdateSuggestedLevelColor();
 
 	void UpdateDesc();
@@ -93,4 +97,6 @@ public:
 	void UpdateDetailWindow();
 
 	void AddQuestEntry(class AQuestBase* questBase);
+
+	void OnQuestClicked(class UUI_QuestList_Entry* clickQuestListEntry);
 };
