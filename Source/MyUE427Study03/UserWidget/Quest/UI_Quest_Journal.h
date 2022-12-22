@@ -86,6 +86,9 @@ public:
 	class AQuestManager* questManager;
 
 public:
+
+	virtual void NativeConstruct() override;
+	
 	void Initialize(class AQuestManager* _questManager);
 
 	void UpdateSuggestedLevelColor();
@@ -99,4 +102,7 @@ public:
 	void AddQuestEntry(class AQuestBase* questBase);
 
 	void OnQuestClicked(class UUI_QuestList_Entry* clickQuestListEntry);
+
+	UFUNCTION()
+	void OnSelectButtonClicked();
 };

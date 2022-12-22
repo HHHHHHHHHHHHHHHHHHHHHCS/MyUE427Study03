@@ -5,11 +5,18 @@
 
 #include "UI_QuestList_Entry.h"
 #include "UI_Quest_GoalEntry.h"
+#include "UI_Quest_Quest.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/Quest/QuestBase.h"
 
 #define LOCTEXT_NAMESPACE "UUI_Quest_Journal"
+
+void UUI_Quest_Journal::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_Select->OnClicked.AddDynamic(this, &UUI_Quest_Journal::OnSelectButtonClicked);
+}
 
 void UUI_Quest_Journal::Initialize(AQuestManager* _questManager)
 {
@@ -175,7 +182,7 @@ void UUI_Quest_Journal::AddQuestEntry(AQuestBase* questBase)
 
 void UUI_Quest_Journal::OnQuestClicked(UUI_QuestList_Entry* clickQuestListEntry)
 {
-	if(currQuestListEntry)
+	if (currQuestListEntry)
 	{
 		currQuestListEntry->SetIsEnabled(true);
 	}
@@ -184,5 +191,13 @@ void UUI_Quest_Journal::OnQuestClicked(UUI_QuestList_Entry* clickQuestListEntry)
 	selectedQuest = currQuestListEntry->assignedQuest;
 	UpdateDetailWindow();
 	currQuestListEntry->SetIsEnabled(false);
+}
+
+void UUI_Quest_Journal::OnSelectButtonClicked()
+{
+	if (questManager->currentQuest != selectedQuest)
+	{
+		questManager->SelectNewQuest(selectedQuest, selectedQuest->questUI->subGoalWidgets[0]);
+	}
 }
 #undef LOCTEXT_NAMESPACE

@@ -18,6 +18,8 @@
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/Skill/SkillBuff.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -129,6 +131,7 @@ void ACharacterBase::BeginPlay()
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
 	questManager->OnInit(this, mainUI);
+	mainUI->questJournal->Initialize(questManager);
 }
 
 
@@ -373,6 +376,15 @@ void ACharacterBase::SetLevel(int val)
 	currentLevel = val;
 	currentMaxExp = FMath::FloorToInt((FMath::Pow(currentLevel - 1, 3) + 60) / 5 * ((currentLevel - 1) * 2 + 60) + 60);
 	mainUI->SetLevelText(FText::AsNumber(currentLevel));
+	for (UUI_QuestList_Entry* questListEntry : mainUI->questJournal->allQuestListEntries)
+	{
+		questListEntry->UpdateLevelColor();
+	}
+
+	if (mainUI->questJournal->currQuestListEntry)
+	{
+		mainUI->questJournal->UpdateSuggestedLevelColor();
+	}
 }
 
 void ACharacterBase::InCreaseLevel(int val)
