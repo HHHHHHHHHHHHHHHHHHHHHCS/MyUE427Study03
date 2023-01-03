@@ -40,6 +40,8 @@ public:
 
 	class UUI_Quest_Quest* questUI;
 
+	class AQuestManager* questManager;
+
 public:
 	// Sets default values for this actor's properties
 	AQuestBase();
@@ -56,6 +58,8 @@ protected:
 
 	bool GoToNextSubGoal();
 
+	bool IsSelectedInJournal();
+	
 public:
 
 	// Called every frame

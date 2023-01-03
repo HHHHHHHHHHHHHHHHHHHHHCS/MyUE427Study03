@@ -7,6 +7,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
 
 AQuestManager* AQuestManager::instance = nullptr;
@@ -44,9 +45,13 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 		AQuestBase* tempQuest = GetWorld()->SpawnActor<AQuestBase>(questCls, FVector::ZeroVector, FRotator::ZeroRotator);
 		currentQuestActors.Add(tempQuest);
 		tempQuest->SetupStartingGoals();
+		tempQuest->questManager = this;
 		tempQuest->questUI = mainUI->AddQuestToList(tempQuest);
 		tempQuest->questUI->questManager = this;
 		tempQuest->questUI->UpdateQuest();
+
+		mainUI->questJournal->AddQuestEntry(tempQuest);
+		
 		// 如果是第一个就默认选择
 		if (currentQuestActors.Num() <= 1)
 		{

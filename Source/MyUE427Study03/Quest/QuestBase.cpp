@@ -3,6 +3,9 @@
 
 #include "QuestBase.h"
 
+#include "QuestManager.h"
+#include "MyUE427Study03/UserWidget/UserWidget_Main.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_SubGoal.h"
 
@@ -44,6 +47,15 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 		completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, true});
 		currentGoals.Remove(completedGoal);
 
+		if (completedGoal.bUpdateQuestDesc)
+		{
+			currentDescription = FText::FromString(currentDescription.ToString() + completedGoal.updateDesc.ToString());
+			if(IsSelectedInJournal())
+			{
+				questManager->mainUI->questJournal->UpdateDesc();
+			}
+		}
+
 		int widgetIndex = currentGoalIndices.Find(subGoalIndex);
 		questUI->subGoalWidgets[widgetIndex]->RemoveFromParent();
 		questUI->subGoalWidgets.RemoveAt(widgetIndex);
@@ -61,6 +73,11 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 
 			questUI->subGoalWidgets.Add(subGoalUI);
 			questUI->VBOX_SubGoal->AddChild(subGoalUI);
+		}
+
+		if(IsSelectedInJournal())
+		{
+			questManager->mainUI->questJournal->GenerateSubGoals();
 		}
 
 		if (subGoalIndex == selectedSubGoalIndex)
@@ -90,6 +107,12 @@ bool AQuestBase::GoToNextSubGoal()
 	{
 		return false;
 	}
+}
+
+bool AQuestBase::IsSelectedInJournal()
+{
+	auto selectQuest = questManager->mainUI->questJournal->selectedQuest;
+	return selectQuest && selectQuest == this;
 }
 
 // Called every frame
