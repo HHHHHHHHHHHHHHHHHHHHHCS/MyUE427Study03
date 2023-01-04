@@ -34,7 +34,8 @@ public:
 	FGoalInfo goalInfo;
 
 	AQuestBase* assignedQuest;
-	class UUI_Quest_Quest* questWidget;
+
+	UUI_Quest_Quest* questWidget;
 
 	int goalIndex;
 

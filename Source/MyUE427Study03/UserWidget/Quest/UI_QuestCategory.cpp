@@ -34,5 +34,5 @@ void UUI_QuestCategory::OnExpandButtonClicked()
 {
 	bIsExpand = !bIsExpand;
 	Button_Expand->SetRenderTransformAngle(bIsExpand ? 0 : -90);
-	VBOX_QuestBox->SetVisibility(bIsExpand ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	VBOX_QuestBox->SetVisibility(bIsExpand ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 }

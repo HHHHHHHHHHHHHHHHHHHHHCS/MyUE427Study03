@@ -50,7 +50,7 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 		if (completedGoal.bUpdateQuestDesc)
 		{
 			currentDescription = FText::FromString(currentDescription.ToString() + completedGoal.updateDesc.ToString());
-			if(IsSelectedInJournal())
+			if (IsSelectedInJournal())
 			{
 				questManager->mainUI->questJournal->UpdateDesc();
 			}
@@ -70,17 +70,19 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 			UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);
 			subGoalUI->goalInfo = questInfo.subGoals[i];
 			subGoalUI->assignedQuest = this;
+			subGoalUI->questWidget = questUI;
+
 
 			questUI->subGoalWidgets.Add(subGoalUI);
 			questUI->VBOX_SubGoal->AddChild(subGoalUI);
 		}
 
-		if(IsSelectedInJournal())
+		if (IsSelectedInJournal())
 		{
 			questManager->mainUI->questJournal->GenerateSubGoals();
 		}
 
-		if (subGoalIndex == selectedSubGoalIndex)
+		if (subGoalIndex == selectedSubGoalIndex && questUI->subGoalWidgets.Num() > 0)
 		{
 			questUI->SelectSubGoal(questUI->subGoalWidgets[0]);
 		}

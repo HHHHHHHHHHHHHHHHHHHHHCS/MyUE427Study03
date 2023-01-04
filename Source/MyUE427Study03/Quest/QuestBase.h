@@ -8,8 +8,7 @@
 #include "QuestBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API
-	AQuestBase : public AActor
+class MYUE427STUDY03_API AQuestBase : public AActor
 {
 	GENERATED_BODY()
 

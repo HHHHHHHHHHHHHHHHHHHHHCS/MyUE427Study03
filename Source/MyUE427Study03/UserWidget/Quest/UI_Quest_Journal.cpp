@@ -48,11 +48,13 @@ void UUI_Quest_Journal::UpdateSuggestedLevelColor()
 
 void UUI_Quest_Journal::UpdateDesc()
 {
-	Text_Description->SetText(FText::FromString(selectedQuest->currentDescription.ToString().Replace(TEXT("\n"),TEXT(" "))));
+	Text_Description->SetText(FText::FromString(selectedQuest->currentDescription.ToString().Replace(TEXT("\\n"),TEXT("\n"))));
 }
 
 void UUI_Quest_Journal::GenerateSubGoals()
 {
+	VBox_QuestGoals->ClearChildren();
+
 	for (FCompletedGoal& completedGoal : selectedQuest->completedSubGoals)
 	{
 		UClass* cls = LoadClass<UUI_Quest_GoalEntry>(GetWorld(),TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest_GoalEntry.UI_Quest_GoalEntry_C'"));

@@ -7,7 +7,6 @@
 
 #define LOCTEXT_NAMESPACE "UI_Quest_SubGoal"
 
-
 void UUI_Quest_SubGoal::NativeConstruct()
 {
 	Super::NativeConstruct();
