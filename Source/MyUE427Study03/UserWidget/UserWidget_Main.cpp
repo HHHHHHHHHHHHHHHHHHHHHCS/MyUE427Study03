@@ -46,6 +46,9 @@ bool UUserWidget_Main::Initialize()
 
 	questJournal = Cast<UUI_Quest_Journal>(GetWidgetFromName("QuestJournal"));
 
+	questButton = Cast<UButton>(GetWidgetFromName("Button_Quest"));
+	questButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnQuestButtonClicked);
+
 	return true;
 }
 
@@ -169,4 +172,17 @@ UUI_Quest_Quest* UUserWidget_Main::AddQuestToList(AQuestBase* quest)
 	{
 		return nullptr;
 	}
+}
+
+void UUserWidget_Main::OnQuestButtonClicked()
+{
+	if (bQuestUIVisibility)
+	{
+		questJournal->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		questJournal->SetVisibility(ESlateVisibility::Visible);
+	}
+	bQuestUIVisibility = !bQuestUIVisibility;
 }

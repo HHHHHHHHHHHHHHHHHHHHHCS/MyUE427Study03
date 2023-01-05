@@ -158,6 +158,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("ZoomOut", EInputEvent::IE_Pressed, this, &ACharacterBase::CameraZoomOut);
 	PlayerInputComponent->BindAction("AnyKey", EInputEvent::IE_Pressed, this, &ACharacterBase::OnAnyKeyPressed);
 	PlayerInputComponent->BindAction("ToggleShowSkillTree", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowSkillTree);
+	PlayerInputComponent->BindAction("ToggleShowQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowQuest);
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 	PlayerInputComponent->BindAction("PlaySlideOutAnim", EInputEvent::IE_Pressed, this, &ACharacterBase::PlaySlideOutAnim);
 	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
@@ -329,6 +330,11 @@ void ACharacterBase::OnAnyKeyPressed(FKey key)
 void ACharacterBase::ToggleShowSkillTree()
 {
 	skillTreeComp->HandleShowCommand();
+}
+
+void ACharacterBase::ToggleShowQuest()
+{
+	mainUI->OnQuestButtonClicked();
 }
 
 void ACharacterBase::TestCompleteQuest()
@@ -556,7 +562,8 @@ void ACharacterBase::RemoveBuff(ASkillBuff* skillBuff)
 	skillBuff->buffWidgetRef->RemoveFromParent();
 }
 
-void ACharacterBase::OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+void ACharacterBase::OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+                                                   bool bFromSweep,
                                                    const FHitResult& SweepResult)
 {
 	IInteractionInterface* actor = Cast<IInteractionInterface>(OtherActor);

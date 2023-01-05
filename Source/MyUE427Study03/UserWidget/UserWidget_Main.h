@@ -67,8 +67,13 @@ public:
 	bool bOutSide = true;
 
 	class UUI_Quest_Journal* questJournal;
+
+	UButton* questButton;
 	
 private:
+
+	bool bQuestUIVisibility = false;
+
 public:
 	virtual bool Initialize() override;
 
@@ -95,4 +100,7 @@ public:
 	void SetExpPanel(float currExp, float maxExp);
 
 	class UUI_Quest_Quest* AddQuestToList(class AQuestBase* quest);
+
+	UFUNCTION()
+	void OnQuestButtonClicked();
 };

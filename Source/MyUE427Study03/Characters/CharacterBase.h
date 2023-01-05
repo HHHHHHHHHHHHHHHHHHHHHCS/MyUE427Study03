@@ -129,6 +129,7 @@ protected:
 
 	AActor* selectedActor;
 
+
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
@@ -160,6 +161,8 @@ protected:
 	void OnAnyKeyPressed(FKey key);
 
 	void ToggleShowSkillTree();
+
+	void ToggleShowQuest();
 
 	void TestCompleteQuest();
 
