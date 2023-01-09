@@ -49,6 +49,9 @@ bool UUserWidget_Main::Initialize()
 	questButton = Cast<UButton>(GetWidgetFromName("Button_Quest"));
 	questButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnQuestButtonClicked);
 
+	skillButton = Cast<UButton>(GetWidgetFromName("Button_Skill"));
+	skillButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnSkillButtonClicked);
+
 	return true;
 }
 
@@ -185,4 +188,18 @@ void UUserWidget_Main::OnQuestButtonClicked()
 		questJournal->SetVisibility(ESlateVisibility::Visible);
 	}
 	bQuestUIVisibility = !bQuestUIVisibility;
+}
+
+void UUserWidget_Main::OnSkillButtonClicked()
+{
+	if (bSkillTreeShow)
+	{
+		skillTree_MainTree->SetVisibility(ESlateVisibility::Hidden);
+		bSkillTreeShow = false;
+	}
+	else
+	{
+		skillTree_MainTree->SetVisibility(ESlateVisibility::Visible);
+		bSkillTreeShow = true;
+	}
 }

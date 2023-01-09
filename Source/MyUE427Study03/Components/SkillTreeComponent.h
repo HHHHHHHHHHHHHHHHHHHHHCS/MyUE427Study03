@@ -33,9 +33,6 @@ protected:
 	
 	// 技能树里面的内容是否已经设置好了
 	bool bTreeSetup;
-
-	// 技能树是否已经显示
-	bool bTreeShow;
 	
 public:
 	// Sets default values for this component's properties

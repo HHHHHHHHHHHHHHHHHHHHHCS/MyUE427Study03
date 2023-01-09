@@ -129,17 +129,17 @@ void USkillTreeComponent::HandleShowCommand()
 {
 	if (bTreeSetup)
 	{
-		if (bTreeShow)
+		if (playerCharacter->mainUI->bSkillTreeShow)
 		{
 			mainTreeRef->SetVisibility(ESlateVisibility::Hidden);
-			bTreeShow = false;
+			playerCharacter->mainUI->bSkillTreeShow = false;
 		}
 		else
 		{
 			mainTreeRef->SetVisibility(ESlateVisibility::Visible);
 			FInputModeGameAndUI inputMode;
 			playerCharacter->playerController->SetInputMode(inputMode);
-			bTreeShow = true;
+			playerCharacter->mainUI->bSkillTreeShow = true;
 		}
 	}
 }

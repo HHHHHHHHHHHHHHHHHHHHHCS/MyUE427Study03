@@ -69,10 +69,12 @@ public:
 	class UUI_Quest_Journal* questJournal;
 
 	UButton* questButton;
-	
-private:
 
+	UButton* skillButton;
+
+public:
 	bool bQuestUIVisibility = false;
+	bool bSkillTreeShow = false;
 
 public:
 	virtual bool Initialize() override;
@@ -103,4 +105,7 @@ public:
 
 	UFUNCTION()
 	void OnQuestButtonClicked();
+
+	UFUNCTION()
+	void OnSkillButtonClicked();
 };
