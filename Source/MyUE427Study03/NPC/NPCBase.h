@@ -21,8 +21,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UPaperSpriteComponent* questIcon;
-	
-	
+
 	UPROPERTY(EditAnywhere, Category="Quest")
 	FText name;
 

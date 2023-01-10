@@ -37,6 +37,7 @@ void AQuestBase::SetupStartingGoals()
 	currentGoalIndices = startingSubGoalIndices;
 	UpdateSubGoals();
 	currentDescription = questInfo.desc;
+	currentHuntedAmounts.SetNum(currentGoalIndices.Num());
 }
 
 bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
@@ -58,6 +59,7 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 
 		int widgetIndex = currentGoalIndices.Find(subGoalIndex);
 		questUI->subGoalWidgets[widgetIndex]->RemoveFromParent();
+		currentHuntedAmounts.RemoveAt(widgetIndex);
 		questUI->subGoalWidgets.RemoveAt(widgetIndex);
 		currentGoalIndices.Remove(subGoalIndex);
 
@@ -65,6 +67,11 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 		{
 			currentGoalIndices.Add(i);
 			currentGoals.Add(questInfo.subGoals[i]);
+
+			if (i > currentHuntedAmounts.Num())
+			{
+				currentHuntedAmounts.Add(0);
+			}
 
 			auto cls = LoadClass<UUI_Quest_SubGoal>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_SubGoal.UI_SubGoal_C'"));
 			UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);

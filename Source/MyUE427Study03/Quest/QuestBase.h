@@ -31,6 +31,8 @@ public:
 
 	int currentHuntedAmount; //当前杀死的怪物数量
 
+	TArray<int> currentHuntedAmounts; //当前杀死的怪物数量
+
 	EQuestStates currentState;
 
 	FText currentDescription;
@@ -58,10 +60,8 @@ protected:
 	bool GoToNextSubGoal();
 
 	bool IsSelectedInJournal();
-	
-public:
 
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };
