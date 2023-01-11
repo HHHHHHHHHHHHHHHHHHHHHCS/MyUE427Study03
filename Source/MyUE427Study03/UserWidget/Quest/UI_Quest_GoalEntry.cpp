@@ -30,6 +30,7 @@ void UUI_Quest_GoalEntry::Update()
 	{
 		FText tempText;
 		FText bs;
+		int tempHuntedAmount = 0;
 		switch (goalInfo.type)
 		{
 		case EGoalTypes::Custom:
@@ -44,9 +45,21 @@ void UUI_Quest_GoalEntry::Update()
 			{
 				bs = FText::FromString("");
 			}
+			if(goalStates == EGoalStates::Failed)
+			{
+				tempHuntedAmount = 0;
+			}
+			else if(goalStates == EGoalStates::Current)
+			{
+				tempHuntedAmount = goalInfo.amountToHunt;
+			}
+			else
+			{
+				tempHuntedAmount = journalUI->selectedQuest->currentHuntedAmounts[huntIndex];
+			}
 			tempText = FText::Format(LOCTEXT("UI_Quest_Journal", "Hunt {0} {1}: {2}/ {3}"),
 			                         goalInfo.additionalName, bs,
-			                         FText::AsNumber(journalUI->selectedQuest->currentHuntedAmount),
+			                         FText::AsNumber(tempHuntedAmount),
 			                         FText::AsNumber(goalInfo.amountToHunt));
 			break;
 		case EGoalTypes::Find:

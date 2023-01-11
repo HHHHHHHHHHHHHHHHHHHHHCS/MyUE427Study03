@@ -16,6 +16,19 @@ void UUI_Quest_SubGoal::NativeConstruct()
 
 void UUI_Quest_SubGoal::Update()
 {
+	//需要重载 == 符号, 因为结构体自带的无法很好的判断相等
+	// huntIndex = assignedQuest->currentGoals.Find(goalInfo);
+
+	huntIndex = -1;
+	for (int i = 0; i < assignedQuest->currentGoals.Num(); i++)
+	{
+		if (goalInfo == assignedQuest->currentGoals[i])
+		{
+			huntIndex = i;
+			break;
+		}
+	}
+
 	if (goalInfo.bCustomGoal)
 	{
 		Text_Goal->SetText(goalInfo.goalText);
@@ -35,7 +48,7 @@ void UUI_Quest_SubGoal::Update()
 				tempText = FText::Format(LOCTEXT("UI_Quest_SubGoal", "Hunt {0}{1}:{2}/{3}"),
 				                         goalInfo.additionalName,
 				                         FText::FromString(goalInfo.amountToHunt > 1 ? "s" : ""),
-				                         FText::AsNumber(assignedQuest->currentHuntedAmount),
+				                         FText::AsNumber(assignedQuest->currentHuntedAmounts[huntIndex]),
 				                         FText::AsNumber(goalInfo.amountToHunt));
 				break;
 			}

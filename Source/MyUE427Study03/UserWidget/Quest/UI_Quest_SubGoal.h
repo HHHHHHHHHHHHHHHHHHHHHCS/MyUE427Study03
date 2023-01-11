@@ -39,6 +39,8 @@ public:
 
 	int goalIndex;
 
+	int huntIndex;
+
 public:
 	virtual void NativeConstruct() override;
 

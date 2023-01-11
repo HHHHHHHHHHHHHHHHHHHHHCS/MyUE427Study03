@@ -39,6 +39,9 @@ public:
 	UTexture2D* failedTex2D;
 
 public:
+	int huntIndex;
+
+public:
 	virtual void NativeConstruct() override;
 
 	void SetGoalText(FText text);

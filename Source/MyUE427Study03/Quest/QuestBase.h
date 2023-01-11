@@ -29,8 +29,6 @@ public:
 
 	int selectedSubGoalIndex; //当前选择的要完成的任务索引
 
-	int currentHuntedAmount; //当前杀死的怪物数量
-
 	TArray<int> currentHuntedAmounts; //当前杀死的怪物数量
 
 	EQuestStates currentState;
