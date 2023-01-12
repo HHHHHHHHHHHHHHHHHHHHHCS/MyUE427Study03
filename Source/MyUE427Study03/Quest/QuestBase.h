@@ -49,6 +49,8 @@ public:
 
 	bool OnSubGoalCompleted(int subGoalIndex);
 
+	bool IsSelectedInJournal();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -56,8 +58,6 @@ protected:
 	void UpdateSubGoals();
 
 	bool GoToNextSubGoal();
-
-	bool IsSelectedInJournal();
 
 public:
 	// Called every frame

@@ -64,14 +64,15 @@ void UUI_Quest_Journal::GenerateSubGoals()
 		goalEntryUI->goalStates = completedGoal.bSuccessful ? EGoalStates::Success : EGoalStates::Failed;
 		VBox_QuestGoals->AddChildToVerticalBox(goalEntryUI);
 	}
-
-	for (FGoalInfo& item : selectedQuest->currentGoals)
+	
+	for(int i = 0;i<selectedQuest->currentGoals.Num();i++)
 	{
 		UClass* cls = LoadClass<UUI_Quest_GoalEntry>(GetWorld(),TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest_GoalEntry.UI_Quest_GoalEntry_C'"));
 		UUI_Quest_GoalEntry* goalEntryUI = CreateWidget<UUI_Quest_GoalEntry>(GetWorld(), cls);
-		goalEntryUI->goalInfo = item;
+		goalEntryUI->goalInfo = selectedQuest->currentGoals[i];
 		goalEntryUI->journalUI = this;
 		goalEntryUI->goalStates = EGoalStates::Current;
+		goalEntryUI->huntIndex = i;
 		VBox_QuestGoals->AddChildToVerticalBox(goalEntryUI);
 	}
 }

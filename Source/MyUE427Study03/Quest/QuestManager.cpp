@@ -6,9 +6,11 @@
 #include "QuestBase.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/Enemies/EnemyNormal.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_SubGoal.h"
 
 AQuestManager* AQuestManager::instance = nullptr;
 
@@ -51,7 +53,7 @@ bool AQuestManager::AddNewQuest(TSubclassOf<AQuestBase> questCls)
 		tempQuest->questUI->UpdateQuest();
 
 		mainUI->questJournal->AddQuestEntry(tempQuest);
-		
+
 		// 如果是第一个就默认选择
 		if (currentQuestActors.Num() <= 1)
 		{
@@ -139,6 +141,32 @@ void AQuestManager::OnPlayMove()
 		else
 		{
 			mainUI->minimapWidget->SetGoalHitVisible(false);
+		}
+	}
+}
+
+void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
+{
+	for (AQuestBase* currQuest : currentQuestActors)
+	{
+		for (int i = 0; i < currQuest->currentGoals.Num(); i++)
+		{
+			auto* goal = &currQuest->currentGoals[i];
+			if (goal->type == EGoalTypes::Hunt && enemy->GetClass() == goal->goalClass->StaticClass())
+			{
+				currQuest->currentHuntedAmounts[i] += 1;
+				if (currQuest->currentHuntedAmounts[i] >= goal->amountToHunt)
+				{
+					currQuest->OnSubGoalCompleted(currQuest->currentGoalIndices[i]);
+				}
+
+				currQuest->questUI->subGoalWidgets[i]->Update();
+
+				if(currQuest->IsSelectedInJournal())
+				{
+					mainUI->questJournal->GenerateSubGoals();
+				}
+			}
 		}
 	}
 }

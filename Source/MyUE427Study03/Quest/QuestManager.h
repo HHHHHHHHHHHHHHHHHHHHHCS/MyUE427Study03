@@ -68,4 +68,6 @@ public:
 	void OnSwitchSubQuest();
 
 	void OnPlayMove();
+
+	void OnEnemyKilled(TSubclassOf<class AEnemyNormal> enemy);
 };
