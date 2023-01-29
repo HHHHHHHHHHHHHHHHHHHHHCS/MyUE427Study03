@@ -28,7 +28,7 @@ public:
 	float attackRange = 300.0f;
 
 	//最大跟随目标的距离
-	float maxDistanceToFollow = 600.0f;
+	float maxDistanceToFollow = 1000.0f;
 
 	//狂暴状态
 	bool bWasAggroed = false;

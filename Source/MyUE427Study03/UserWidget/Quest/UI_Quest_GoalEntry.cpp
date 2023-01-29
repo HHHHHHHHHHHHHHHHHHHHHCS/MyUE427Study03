@@ -51,11 +51,11 @@ void UUI_Quest_GoalEntry::Update()
 			}
 			else if(goalStates == EGoalStates::Current)
 			{
-				tempHuntedAmount = goalInfo.amountToHunt;
+				tempHuntedAmount = journalUI->selectedQuest->currentHuntedAmounts[huntIndex];
 			}
 			else
 			{
-				tempHuntedAmount = journalUI->selectedQuest->currentHuntedAmounts[huntIndex];
+				tempHuntedAmount = goalInfo.amountToHunt;
 			}
 			tempText = FText::Format(LOCTEXT("UI_Quest_Journal", "Hunt {0} {1}: {2}/ {3}"),
 			                         goalInfo.additionalName, bs,

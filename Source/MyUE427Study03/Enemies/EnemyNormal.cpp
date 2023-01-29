@@ -245,6 +245,7 @@ void AEnemyNormal::OnDeath(AActor* killer)
 			mainPlayer->selectEnemy = nullptr;
 			mainPlayer = nullptr;
 		}
+		player->questManager->OnEnemyKilled(this->GetClass());
 	}
 
 	GetWorldTimerManager().SetTimer(timerHandle_DelayDestroy, this, &AEnemyNormal::OnDelayDeath, 2.0f, false);

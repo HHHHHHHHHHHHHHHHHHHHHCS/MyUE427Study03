@@ -152,7 +152,7 @@ void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 		for (int i = 0; i < currQuest->currentGoals.Num(); i++)
 		{
 			auto* goal = &currQuest->currentGoals[i];
-			if (goal->type == EGoalTypes::Hunt && enemy->GetClass() == goal->goalClass->StaticClass())
+			if (goal->type == EGoalTypes::Hunt && goal->goalClass && enemy->GetClass() == goal->goalClass->GetClass())
 			{
 				currQuest->currentHuntedAmounts[i] += 1;
 				if (currQuest->currentHuntedAmounts[i] >= goal->amountToHunt)
@@ -162,7 +162,7 @@ void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 
 				currQuest->questUI->subGoalWidgets[i]->Update();
 
-				if(currQuest->IsSelectedInJournal())
+				if (currQuest->IsSelectedInJournal())
 				{
 					mainUI->questJournal->GenerateSubGoals();
 				}
