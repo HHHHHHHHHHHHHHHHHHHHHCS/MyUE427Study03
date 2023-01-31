@@ -19,6 +19,9 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	UTextBlock* Text_Name;
 
+	UPROPERTY(Meta=(BindWidget))
+	UTextBlock* Text_Interaction;
+
 public :
 	void SetNameText(FText name);
 };

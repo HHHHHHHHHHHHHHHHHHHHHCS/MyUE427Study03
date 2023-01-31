@@ -12,6 +12,11 @@ AQuestPropBase::AQuestPropBase()
 	SetRootComponent(staticMesh);
 	interactionWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionWidget"));
 	interactionWidget->SetupAttachment(RootComponent);
+	interactionWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	interactionWidget->SetWorldScale3D(FVector(0.1f, 0.1f, 0.1f));
+	interactionWidget->SetCollisionProfileName(TEXT("NoCollision"));
+	interactionWidget->SetGenerateOverlapEvents(false);
+	interactionWidget->SetVisibility(false);
 }
 
 // Called when the game starts or when spawned

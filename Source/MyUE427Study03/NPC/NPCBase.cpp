@@ -18,6 +18,7 @@ ANPCBase::ANPCBase()
 	interactionWidget->SetVisibility(false);
 	interactionWidget->SetCollisionProfileName(TEXT("NoCollision"));
 	interactionWidget->SetGenerateOverlapEvents(false);
+	interactionWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
 	questIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestIcon"));
 	questIcon->SetupAttachment(RootComponent);
