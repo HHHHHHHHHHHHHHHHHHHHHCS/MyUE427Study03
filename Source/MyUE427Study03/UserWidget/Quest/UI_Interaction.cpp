@@ -7,3 +7,8 @@ void UUI_Interaction::SetNameText(FText name)
 {
 	Text_Name->SetText(name);
 }
+
+void UUI_Interaction::SetInteractionText(FText name)
+{
+	Text_Interaction->SetText(name);
+}

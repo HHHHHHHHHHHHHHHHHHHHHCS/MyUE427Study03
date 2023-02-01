@@ -23,6 +23,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* interactionWidget;
 
+	UPROPERTY(EditAnywhere, Category="Quest")
+	FText name;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

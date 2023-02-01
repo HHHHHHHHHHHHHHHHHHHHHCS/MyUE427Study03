@@ -24,4 +24,6 @@ public:
 
 public :
 	void SetNameText(FText name);
+
+	void SetInteractionText(FText name);
 };

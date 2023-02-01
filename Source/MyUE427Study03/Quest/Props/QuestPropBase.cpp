@@ -3,6 +3,8 @@
 
 #include "QuestPropBase.h"
 
+#include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
+
 // Sets default values
 AQuestPropBase::AQuestPropBase()
 {
@@ -17,12 +19,19 @@ AQuestPropBase::AQuestPropBase()
 	interactionWidget->SetCollisionProfileName(TEXT("NoCollision"));
 	interactionWidget->SetGenerateOverlapEvents(false);
 	interactionWidget->SetVisibility(false);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> US(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Interaction.UI_Interaction_C'"));
+	interactionWidget->SetWidgetClass(US.Class);
 }
 
 // Called when the game starts or when spawned
 void AQuestPropBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UUI_Interaction* ui = Cast<UUI_Interaction>(interactionWidget->GetUserWidgetObject());
+	ui->SetNameText(name);
+	ui->SetInteractionText(FText::FromString("Press [F] to pick up"));
 }
 
 // Called every frame
