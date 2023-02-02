@@ -170,3 +170,7 @@ void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 		}
 	}
 }
+
+void AQuestManager::OnObjectFound(TSubclassOf<AQuestPropBase> prop)
+{
+}

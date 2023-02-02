@@ -70,4 +70,6 @@ public:
 	void OnPlayMove();
 
 	void OnEnemyKilled(TSubclassOf<class AEnemyNormal> enemy);
+
+	void OnObjectFound(TSubclassOf<class AQuestPropBase> prop);
 };

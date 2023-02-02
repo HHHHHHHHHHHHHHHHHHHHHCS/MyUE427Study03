@@ -115,6 +115,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	class AQuestManager* questManager;
 
+	TArray<TSubclassOf<class AQuestPropBase>> obtainedProps;
+
 protected:
 	bool bMouseRightHold;
 
@@ -246,7 +248,8 @@ public:
 	void RemoveBuff(ASkillBuff* skillBuff);
 
 	UFUNCTION()
-	void OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnInteractionCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                                   const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void OnInteractionCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);

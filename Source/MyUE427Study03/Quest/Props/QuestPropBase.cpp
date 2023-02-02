@@ -3,6 +3,7 @@
 
 #include "QuestPropBase.h"
 
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
 
 // Sets default values
@@ -38,4 +39,21 @@ void AQuestPropBase::BeginPlay()
 void AQuestPropBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AQuestPropBase::OnEnterPlayerRadius(ACharacterBase* character)
+{
+	interactionWidget->SetVisibility(true);
+}
+
+void AQuestPropBase::OnLeavePlayerRadius(ACharacterBase* character)
+{
+	interactionWidget->SetVisibility(false);
+}
+
+void AQuestPropBase::OnInteractWith(ACharacterBase* character)
+{
+	character->obtainedProps.Add(this->GetClass());
+	character->questManager->OnObjectFound(this->GetClass());
+	Destroy();
 }

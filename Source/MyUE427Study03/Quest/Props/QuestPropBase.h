@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
+#include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "QuestPropBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API AQuestPropBase : public AActor
+class MYUE427STUDY03_API AQuestPropBase : public AActor, public IInteractionInterface
 {
+private:
 	GENERATED_BODY()
 
 public:
@@ -33,4 +35,9 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	virtual void OnEnterPlayerRadius(ACharacterBase* character) override;
+	virtual void OnLeavePlayerRadius(ACharacterBase* character) override;
+	virtual void OnInteractWith(ACharacterBase* character) override;
 };
