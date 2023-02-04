@@ -25,6 +25,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* interactionWidget;
 
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* tipsParticle;
+
 	UPROPERTY(EditAnywhere, Category="Quest")
 	FText name;
 

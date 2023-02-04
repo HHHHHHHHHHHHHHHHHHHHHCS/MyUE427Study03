@@ -5,6 +5,8 @@
 
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AQuestPropBase::AQuestPropBase()
@@ -23,6 +25,9 @@ AQuestPropBase::AQuestPropBase()
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> US(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Interaction.UI_Interaction_C'"));
 	interactionWidget->SetWidgetClass(US.Class);
+
+	tipsParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystemComp"));
+	tipsParticle->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

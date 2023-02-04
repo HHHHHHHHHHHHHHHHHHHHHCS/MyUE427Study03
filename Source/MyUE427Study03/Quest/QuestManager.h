@@ -72,4 +72,6 @@ public:
 	void OnEnemyKilled(TSubclassOf<class AEnemyNormal> enemy);
 
 	void OnObjectFound(TSubclassOf<class AQuestPropBase> prop);
+
+	void OnTalkToNPC(TSubclassOf<class ANPCBase> npc, int npcID);
 };

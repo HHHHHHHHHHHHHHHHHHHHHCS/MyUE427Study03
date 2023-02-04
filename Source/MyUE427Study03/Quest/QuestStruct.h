@@ -75,7 +75,10 @@ public:
 	FLinearColor circleColor;
 
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
-	TSubclassOf<AActor> goalClass;
+	TSubclassOf<class AActor> goalClass;
+
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	int goalID;
 
 	bool operator ==(const FGoalInfo& goalInfo) const
 	{
@@ -92,7 +95,8 @@ public:
 			&& (goalInfo.useRadius == useRadius)
 			&& (goalInfo.radius == radius)
 			&& (goalInfo.circleColor == circleColor)
-			&& (goalInfo.goalClass == goalClass);
+			&& (goalInfo.goalClass == goalClass)
+			&& (goalInfo.goalID == goalID);
 	}
 };
 

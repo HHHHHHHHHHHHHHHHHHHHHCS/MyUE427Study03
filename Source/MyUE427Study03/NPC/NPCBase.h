@@ -30,6 +30,18 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Quest")
 	bool bHasQuest;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	int npcID;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	class UUI_Quest_Message* messageUI;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	bool canTalkTo;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	FText talkMessage;
 public:
 	// Sets default values for this character's properties
 	ANPCBase();

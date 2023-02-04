@@ -7,6 +7,7 @@
 #include "PaperSprite.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_Quest_Message.h"
 
 // Sets default values
 ANPCBase::ANPCBase()
@@ -20,6 +21,13 @@ ANPCBase::ANPCBase()
 	interactionWidget->SetGenerateOverlapEvents(false);
 	interactionWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
+	messageUI = CreateDefaultSubobject<UUI_Quest_Message>(TEXT("MessageWidget"));
+	messageUI->SetupAttachment(RootComponent);
+	messageUI->SetVisibility(false);
+	messageUI->SetCollisionProfileName(TEXT("NoCollision"));
+	messageUI->SetGenerateOverlapEvents(false);
+	messageUI->SetWidgetSpace(EWidgetSpace::Screen);
+	
 	questIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestIcon"));
 	questIcon->SetupAttachment(RootComponent);
 	questIcon->SetRelativeLocation(FVector(0, 0, 150));

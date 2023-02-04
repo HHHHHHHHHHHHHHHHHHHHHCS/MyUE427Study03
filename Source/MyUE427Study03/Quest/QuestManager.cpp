@@ -7,10 +7,12 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Enemies/EnemyNormal.h"
+#include "MyUE427Study03/NPC/NPCBase.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_SubGoal.h"
+#include "Props/QuestPropBase.h"
 
 AQuestManager* AQuestManager::instance = nullptr;
 
@@ -173,4 +175,32 @@ void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 
 void AQuestManager::OnObjectFound(TSubclassOf<AQuestPropBase> prop)
 {
+	for (AQuestBase* quest : currentQuestActors)
+	{
+		for (int j = 0; j < quest->currentGoals.Num(); j++)
+		{
+			FGoalInfo* goal = &quest->currentGoals[j];
+			if (goal->type == EGoalTypes::Find && goal->goalClass == prop)
+			{
+				quest->OnSubGoalCompleted(quest->currentGoalIndices[j]);
+			}
+		}
+	}
+}
+
+void AQuestManager::OnTalkToNPC(TSubclassOf<ANPCBase> npc, int npcID)
+{
+	for (AQuestBase* quest : currentQuestActors)
+	{
+		for (int i = 0; i < quest->currentGoals.Num(); i++)
+		{
+			FGoalInfo* goal = &quest->currentGoals[i];
+			if (goal->type == EGoalTypes::Talk
+				&& goal->goalClass == npc
+				&& goal->goalID == npcID)
+			{
+				quest->OnSubGoalCompleted(quest->currentGoalIndices[i]);
+			}
+		}
+	}
 }
