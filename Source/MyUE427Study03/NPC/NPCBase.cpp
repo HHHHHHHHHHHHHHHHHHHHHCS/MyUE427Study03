@@ -21,13 +21,19 @@ ANPCBase::ANPCBase()
 	interactionWidget->SetGenerateOverlapEvents(false);
 	interactionWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
-	messageUI = CreateDefaultSubobject<UUI_Quest_Message>(TEXT("MessageWidget"));
-	messageUI->SetupAttachment(RootComponent);
-	messageUI->SetVisibility(false);
-	messageUI->SetCollisionProfileName(TEXT("NoCollision"));
-	messageUI->SetGenerateOverlapEvents(false);
-	messageUI->SetWidgetSpace(EWidgetSpace::Screen);
-	
+	static ConstructorHelpers::FClassFinder<UUserWidget> interactionWidgetCls(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Interaction.UI_Interaction_C'"));
+	interactionWidget->SetWidgetClass(interactionWidgetCls.Class);
+
+	messageComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("MessageWidget"));
+	messageComp->SetupAttachment(RootComponent);
+	messageComp->SetVisibility(false);
+	messageComp->SetCollisionProfileName(TEXT("NoCollision"));
+	messageComp->SetGenerateOverlapEvents(false);
+	messageComp->SetWidgetSpace(EWidgetSpace::Screen);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> messageWidgetCls(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Quest_Message.UI_Quest_Message_C'"));
+	messageComp->SetWidgetClass(messageWidgetCls.Class);
+
 	questIcon = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("QuestIcon"));
 	questIcon->SetupAttachment(RootComponent);
 	questIcon->SetRelativeLocation(FVector(0, 0, 150));
@@ -42,6 +48,9 @@ ANPCBase::ANPCBase()
 	{
 		questIcon->SetSprite(questIconSprite.Object);
 	}
+
+	GetMesh()->SetRelativeLocation(FVector(0, 0, -88));
+	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +62,7 @@ void ANPCBase::BeginPlay()
 	questIcon->SetVisibility(bHasQuest);
 	SetOwner(UGameplayStatics::GetPlayerCharacter(this, 0));
 	questIcon->SetOwnerNoSee(true);
+	messageUI = Cast<UUI_Quest_Message>(messageComp->GetUserWidgetObject());
 }
 
 // Called every frame
@@ -70,18 +80,43 @@ void ANPCBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ANPCBase::OnEnterPlayerRadius(ACharacterBase* character)
 {
 	interactionWidget->SetVisibility(true);
+	bInPlayerRadius = true;
+	if (canTalkTo)
+	{
+	}
 }
 
 void ANPCBase::OnLeavePlayerRadius(ACharacterBase* character)
 {
 	interactionWidget->SetVisibility(false);
+	bInPlayerRadius = false;
 }
 
 void ANPCBase::OnInteractWith(ACharacterBase* character)
 {
-	if (!character->questManager->allQuestClasses.Contains(myQuest))
+	if (myQuest)
 	{
-		character->questManager->AddNewQuest(myQuest);
-		questIcon->SetVisibility(false);
+		if (!character->questManager->allQuestClasses.Contains(myQuest))
+		{
+			character->questManager->AddNewQuest(myQuest);
+			questIcon->SetVisibility(false);
+		}
+		else
+		{
+			OnTalkWith(character);
+		}
 	}
+	else
+	{
+		OnTalkWith(character);
+	}
+}
+
+void ANPCBase::OnTalkWith(ACharacterBase* character)
+{
+	ShowMessage(talkMessage, defaultTalkDuration, character);
+}
+
+void ANPCBase::ShowMessage(FText message, float duration, ACharacterBase* character)
+{
 }

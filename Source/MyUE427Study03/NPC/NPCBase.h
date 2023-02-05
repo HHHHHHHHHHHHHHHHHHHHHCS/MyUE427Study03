@@ -19,6 +19,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* interactionWidget;
 
+	UPROPERTY(VisibleAnywhere, Category="Quest")
+	UWidgetComponent* messageComp;
+
 	UPROPERTY(VisibleAnywhere)
 	UPaperSpriteComponent* questIcon;
 
@@ -35,13 +38,19 @@ public:
 	int npcID;
 
 	UPROPERTY(EditAnywhere, Category="Quest")
-	class UUI_Quest_Message* messageUI;
-
-	UPROPERTY(EditAnywhere, Category="Quest")
 	bool canTalkTo;
 
 	UPROPERTY(EditAnywhere, Category="Quest")
 	FText talkMessage;
+
+	UPROPERTY(EditAnywhere, Category="Quest")
+	float defaultTalkDuration = 5.0f;
+
+private:
+	class UUI_Quest_Message* messageUI;
+
+	bool bInPlayerRadius;
+
 public:
 	// Sets default values for this character's properties
 	ANPCBase();
@@ -62,4 +71,8 @@ public:
 	virtual void OnLeavePlayerRadius(class ACharacterBase* character) override;
 
 	virtual void OnInteractWith(class ACharacterBase* character) override;
+
+	virtual void OnTalkWith(class ACharacterBase* character);
+
+	virtual void ShowMessage(FText message, float duration, ACharacterBase* character);
 };

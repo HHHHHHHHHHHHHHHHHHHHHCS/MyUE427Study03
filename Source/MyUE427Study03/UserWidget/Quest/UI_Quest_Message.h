@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
-#include "Components/WidgetComponent.h"
 #include "UI_Quest_Message.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYUE427STUDY03_API UUI_Quest_Message : public UWidgetComponent
+class MYUE427STUDY03_API UUI_Quest_Message : public UUserWidget
 {
 	GENERATED_BODY()
 
