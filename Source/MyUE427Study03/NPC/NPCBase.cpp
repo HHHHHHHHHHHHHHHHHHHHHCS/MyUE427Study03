@@ -119,4 +119,21 @@ void ANPCBase::OnTalkWith(ACharacterBase* character)
 
 void ANPCBase::ShowMessage(FText message, float duration, ACharacterBase* character)
 {
+	if (canTalkTo)
+	{
+		interactionWidget->SetVisibility(false);
+		messageUI->SetMessage(message);
+		messageComp->SetVisibility(true);
+		canTalkTo = false;
+		character->questManager->OnTalkToNPC(this->GetClass(), npcID);
+		GetWorldTimerManager().SetTimer(timerHandle_resetMessage, this, &ANPCBase::ResetMessage, duration, false);
+	}
+}
+
+void ANPCBase::ResetMessage()
+{
+	messageComp->SetVisibility(false);
+	interactionWidget->SetVisibility(bInPlayerRadius);
+	canTalkTo = true;
+	GetWorldTimerManager().ClearTimer(timerHandle_resetMessage);
 }

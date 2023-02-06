@@ -51,6 +51,8 @@ private:
 
 	bool bInPlayerRadius;
 
+	FTimerHandle timerHandle_resetMessage;
+
 public:
 	// Sets default values for this character's properties
 	ANPCBase();
@@ -75,4 +77,6 @@ public:
 	virtual void OnTalkWith(class ACharacterBase* character);
 
 	virtual void ShowMessage(FText message, float duration, ACharacterBase* character);
+
+	virtual void ResetMessage();
 };
