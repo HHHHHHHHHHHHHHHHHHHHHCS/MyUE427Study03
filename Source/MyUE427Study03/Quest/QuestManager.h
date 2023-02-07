@@ -22,7 +22,7 @@ public:
 	TArray<TSubclassOf<AQuestBase>> allQuestClasses;
 	TArray<AQuestBase*> currentQuestActors;
 	TArray<AQuestBase*> completedQuestActors;
-	TArray<AQuestBase*> FailQuestActors;
+	TArray<AQuestBase*> failQuestActors;
 
 	FGoalInfo currentSubGoal;
 	AGoalActor* currentGoal;
@@ -74,4 +74,6 @@ public:
 	void OnObjectFound(TSubclassOf<class AQuestPropBase> prop);
 
 	void OnTalkToNPC(TSubclassOf<class ANPCBase> npc, int npcID);
+
+	void OnQuestEnd(class AQuestBase* quest);
 };

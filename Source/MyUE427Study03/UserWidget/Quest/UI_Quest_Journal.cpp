@@ -185,15 +185,22 @@ void UUI_Quest_Journal::AddQuestEntry(AQuestBase* questBase)
 
 void UUI_Quest_Journal::OnQuestClicked(UUI_QuestList_Entry* clickQuestListEntry)
 {
-	if (currQuestListEntry)
+	if(clickQuestListEntry)
 	{
-		currQuestListEntry->SetIsEnabled(true);
-	}
+		if (currQuestListEntry)
+		{
+			currQuestListEntry->SetIsEnabled(true);
+		}
 
-	currQuestListEntry = clickQuestListEntry;
-	selectedQuest = currQuestListEntry->assignedQuest;
-	UpdateDetailWindow();
-	currQuestListEntry->SetIsEnabled(false);
+		currQuestListEntry = clickQuestListEntry;
+		selectedQuest = currQuestListEntry->assignedQuest;
+		UpdateDetailWindow();
+		currQuestListEntry->SetIsEnabled(false);
+	}
+	else
+	{
+		UpdateDetailWindow();
+	}
 }
 
 void UUI_Quest_Journal::OnSelectButtonClicked()

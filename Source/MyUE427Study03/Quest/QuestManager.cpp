@@ -204,3 +204,50 @@ void AQuestManager::OnTalkToNPC(TSubclassOf<ANPCBase> npc, int npcID)
 		}
 	}
 }
+
+void AQuestManager::OnQuestEnd(AQuestBase* quest)
+{
+	currentQuestActors.Remove(quest);
+	switch (quest->currentState)
+	{
+	case EQuestStates::CurrentQuest:
+		break;
+	case EQuestStates::CompletedQuest:
+		completedQuestActors.Add(quest);
+		break;
+	case EQuestStates::FailedQuest:
+		failQuestActors.Add(quest);
+		break;
+	default:
+		break;
+	}
+	mainUI->questJournal->AddQuestEntry(quest);
+
+	if (currentQuest == quest)
+	{
+		currentQuest = nullptr;
+
+		if (currentGoal)
+		{
+			currentGoal->Destroy();
+		}
+
+		mainUI->minimapWidget->HBox_Distance->SetVisibility(ESlateVisibility::Hidden);
+		mainUI->minimapWidget->Minimap_Arrow->SetVisibility(ESlateVisibility::Hidden);
+
+		if (currentQuestActors.Num() >= 1 && currentQuestActors[0])
+		{
+			SelectNewQuest(currentQuestActors[0], currentQuestActors[0]->questUI->subGoalWidgets[0]);
+		}
+	}
+
+	if (quest->IsSelectedInJournal())
+	{
+		mainUI->questJournal->OnQuestClicked(nullptr);
+	}
+
+	if(quest->currentState == EQuestStates::CompletedQuest)
+	{
+		playerCharacter->IncreaseCurrentExp(quest->questInfo.completionReward.experience);
+	}
+}
