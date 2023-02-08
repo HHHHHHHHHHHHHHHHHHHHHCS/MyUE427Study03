@@ -40,15 +40,13 @@ void AQuestBase::SetupStartingGoals()
 	currentHuntedAmounts.SetNum(currentGoalIndices.Num());
 }
 
-bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
+bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 {
 	if (currentGoalIndices.Contains(subGoalIndex))
 	{
 		FGoalInfo completedGoal = questInfo.subGoals[subGoalIndex];
-		completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, true});
-		currentGoals.Remove(completedGoal);
 
-		if (completedGoal.bUpdateQuestDesc)
+		if (completedGoal.bUpdateQuestDesc && isSuccess)
 		{
 			currentDescription = FText::FromString(currentDescription.ToString() + completedGoal.updateDesc.ToString());
 			if (IsSelectedInJournal())
@@ -57,31 +55,83 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex)
 			}
 		}
 
+		currentGoals.Remove(completedGoal);
+
 		int widgetIndex = currentGoalIndices.Find(subGoalIndex);
 		questUI->subGoalWidgets[widgetIndex]->RemoveFromParent();
 		currentHuntedAmounts.RemoveAt(widgetIndex);
 		questUI->subGoalWidgets.RemoveAt(widgetIndex);
 		currentGoalIndices.Remove(subGoalIndex);
 
-		for (int i : completedGoal.followingSubGoalIndices)
+		if (isSuccess)
 		{
-			currentGoalIndices.Add(i);
-			currentGoals.Add(questInfo.subGoals[i]);
+			//子任务成功了
 
-			if (i > currentHuntedAmounts.Num())
+			completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, true});
+
+			for (int i : completedGoal.followingSubGoalIndices)
 			{
-				currentHuntedAmounts.Add(0);
+				currentGoalIndices.Add(i);
+				currentGoals.Add(questInfo.subGoals[i]);
+
+				if (i > currentHuntedAmounts.Num())
+				{
+					currentHuntedAmounts.Add(0);
+				}
+
+				auto cls = LoadClass<UUI_Quest_SubGoal>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_SubGoal.UI_SubGoal_C'"));
+				UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);
+				subGoalUI->goalInfo = questInfo.subGoals[i];
+				subGoalUI->assignedQuest = this;
+				subGoalUI->questWidget = questUI;
+
+
+				questUI->subGoalWidgets.Add(subGoalUI);
+				questUI->VBOX_SubGoal->AddChild(subGoalUI);
 			}
+		}
+		else
+		{
+			if (completedGoal.failMeansQuest)
+			{
+				//子任务失败 意味着整条任务线失败
+				currentState = EQuestStates::FailedQuest;
+			}
+			else
+			{
+				//任务失败 不影响整体任务线
+				completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, false});
 
-			auto cls = LoadClass<UUI_Quest_SubGoal>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_SubGoal.UI_SubGoal_C'"));
-			UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);
-			subGoalUI->goalInfo = questInfo.subGoals[i];
-			subGoalUI->assignedQuest = this;
-			subGoalUI->questWidget = questUI;
+				for (int i : completedGoal.followingSubGoalIndices)
+				{
+					currentGoalIndices.Add(i);
+					currentGoals.Add(questInfo.subGoals[i]);
+
+					if (i > currentHuntedAmounts.Num())
+					{
+						currentHuntedAmounts.Add(0);
+					}
+
+					auto cls = LoadClass<UUI_Quest_SubGoal>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_SubGoal.UI_SubGoal_C'"));
+					UUI_Quest_SubGoal* subGoalUI = CreateWidget<UUI_Quest_SubGoal>(GetWorld(), cls);
+					subGoalUI->goalInfo = questInfo.subGoals[i];
+					subGoalUI->assignedQuest = this;
+					subGoalUI->questWidget = questUI;
 
 
-			questUI->subGoalWidgets.Add(subGoalUI);
-			questUI->VBOX_SubGoal->AddChild(subGoalUI);
+					questUI->subGoalWidgets.Add(subGoalUI);
+					questUI->VBOX_SubGoal->AddChild(subGoalUI);
+				}
+
+				if (completedGoal.bUpdateQuestDesc)
+				{
+					currentDescription = FText::FromString(currentDescription.ToString() + completedGoal.updateDesc.ToString());
+					if (IsSelectedInJournal())
+					{
+						questManager->mainUI->questJournal->UpdateDesc();
+					}
+				}
+			}
 		}
 
 		if (IsSelectedInJournal())

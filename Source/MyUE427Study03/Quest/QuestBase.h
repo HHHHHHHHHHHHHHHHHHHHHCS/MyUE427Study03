@@ -47,7 +47,7 @@ public:
 
 	void SetupStartingGoals();
 
-	bool OnSubGoalCompleted(int subGoalIndex);
+	bool OnSubGoalCompleted(int subGoalIndex, bool isSuccess);
 
 	bool IsSelectedInJournal();
 

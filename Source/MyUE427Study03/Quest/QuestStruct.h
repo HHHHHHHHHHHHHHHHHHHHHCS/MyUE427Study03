@@ -80,6 +80,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="QuestInfo")
 	int goalID;
 
+	UPROPERTY(EditAnywhere, Category="QuestInfo")
+	bool failMeansQuest;
+
 	bool operator ==(const FGoalInfo& goalInfo) const
 	{
 		return (goalInfo.type == type)
@@ -96,7 +99,8 @@ public:
 			&& (goalInfo.radius == radius)
 			&& (goalInfo.circleColor == circleColor)
 			&& (goalInfo.goalClass == goalClass)
-			&& (goalInfo.goalID == goalID);
+			&& (goalInfo.goalID == goalID)
+			&& (goalInfo.failMeansQuest == failMeansQuest);
 	}
 };
 
