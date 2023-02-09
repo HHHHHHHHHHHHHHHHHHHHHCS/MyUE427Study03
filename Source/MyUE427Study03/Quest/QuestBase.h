@@ -50,6 +50,8 @@ public:
 	bool OnSubGoalCompleted(int subGoalIndex, bool isSuccess);
 
 	bool IsSelectedInJournal();
+	
+	FGoalInfo GoalAtIndex(int index);
 
 protected:
 	// Called when the game starts or when spawned

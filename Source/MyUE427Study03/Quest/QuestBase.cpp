@@ -5,6 +5,7 @@
 
 #include "QuestManager.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
+#include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Quest.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_SubGoal.h"
@@ -96,6 +97,19 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 			{
 				//子任务失败 意味着整条任务线失败
 				currentState = EQuestStates::FailedQuest;
+
+				for (int i : currentGoalIndices)
+				{
+					completedSubGoals.Add(FCompletedGoal{i, GoalAtIndex(i), false});
+				}
+
+				currentGoalIndices.Empty();
+				currentHuntedAmounts.Empty();
+				currentGoals.Empty();
+				listEntryUI->RemoveFromParent();
+				questUI->RemoveFromParent();
+				questManager->OnQuestEnd(this);
+				return true;
 			}
 			else
 			{
@@ -172,6 +186,11 @@ bool AQuestBase::IsSelectedInJournal()
 {
 	auto selectQuest = questManager->mainUI->questJournal->selectedQuest;
 	return selectQuest && selectQuest == this;
+}
+
+FGoalInfo AQuestBase::GoalAtIndex(int index)
+{
+	return questInfo.subGoals[index];
 }
 
 // Called every frame
