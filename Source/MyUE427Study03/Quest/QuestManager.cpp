@@ -149,22 +149,29 @@ void AQuestManager::OnPlayMove()
 
 void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 {
-	for (AQuestBase* currQuest : currentQuestActors)
+	for (int j = 0; j < currentQuestActors.Num(); j++)
 	{
-		for (int i = 0; i < currQuest->currentGoals.Num(); i++)
+		AQuestBase* quest = currentQuestActors[j];
+		for (int i = 0; i < quest->currentGoals.Num(); i++)
 		{
-			auto* goal = &currQuest->currentGoals[i];
+			auto* goal = &quest->currentGoals[i];
 			if (goal->type == EGoalTypes::Hunt && goal->goalClass && enemy->GetClass() == goal->goalClass->GetClass())
 			{
-				currQuest->currentHuntedAmounts[i] += 1;
-				if (currQuest->currentHuntedAmounts[i] >= goal->amountToHunt)
+				quest->currentHuntedAmounts[i] += 1;
+				if (quest->currentHuntedAmounts[i] >= goal->amountToHunt)
 				{
-					currQuest->OnSubGoalCompleted(currQuest->currentGoalIndices[i]);
+					quest->OnSubGoalCompleted(quest->currentGoalIndices[i], true);
 				}
 
-				currQuest->questUI->subGoalWidgets[i]->Update();
+				if (currentQuestFinished)
+				{
+					currentQuestFinished = false;
+					break;
+				}
 
-				if (currQuest->IsSelectedInJournal())
+				quest->questUI->subGoalWidgets[i]->Update();
+
+				if (quest->IsSelectedInJournal())
 				{
 					mainUI->questJournal->GenerateSubGoals();
 				}
@@ -175,14 +182,20 @@ void AQuestManager::OnEnemyKilled(TSubclassOf<AEnemyNormal> enemy)
 
 void AQuestManager::OnObjectFound(TSubclassOf<AQuestPropBase> prop)
 {
-	for (AQuestBase* quest : currentQuestActors)
+	for (int j = 0; j < currentQuestActors.Num(); j++)
 	{
-		for (int j = 0; j < quest->currentGoals.Num(); j++)
+		AQuestBase* quest = currentQuestActors[j];
+		for (int i = 0; i < quest->currentGoals.Num(); i++)
 		{
-			FGoalInfo* goal = &quest->currentGoals[j];
+			FGoalInfo* goal = &quest->currentGoals[i];
 			if (goal->type == EGoalTypes::Find && goal->goalClass == prop)
 			{
-				quest->OnSubGoalCompleted(quest->currentGoalIndices[j]);
+				quest->OnSubGoalCompleted(quest->currentGoalIndices[i], true);
+				if (currentQuestFinished)
+				{
+					currentQuestFinished = false;
+					break;
+				}
 			}
 		}
 	}
@@ -190,8 +203,9 @@ void AQuestManager::OnObjectFound(TSubclassOf<AQuestPropBase> prop)
 
 void AQuestManager::OnTalkToNPC(TSubclassOf<ANPCBase> npc, int npcID)
 {
-	for (AQuestBase* quest : currentQuestActors)
+	for (int j = 0; j < currentQuestActors.Num(); j++)
 	{
+		AQuestBase* quest = currentQuestActors[j];
 		for (int i = 0; i < quest->currentGoals.Num(); i++)
 		{
 			FGoalInfo* goal = &quest->currentGoals[i];
@@ -199,7 +213,12 @@ void AQuestManager::OnTalkToNPC(TSubclassOf<ANPCBase> npc, int npcID)
 				&& goal->goalClass == npc
 				&& goal->goalID == npcID)
 			{
-				quest->OnSubGoalCompleted(quest->currentGoalIndices[i]);
+				quest->OnSubGoalCompleted(quest->currentGoalIndices[i], true);
+				if (currentQuestFinished)
+				{
+					currentQuestFinished = false;
+					break;
+				}
 			}
 		}
 	}
@@ -235,7 +254,7 @@ void AQuestManager::OnQuestEnd(AQuestBase* quest)
 		mainUI->minimapWidget->HBox_Distance->SetVisibility(ESlateVisibility::Hidden);
 		mainUI->minimapWidget->Minimap_Arrow->SetVisibility(ESlateVisibility::Hidden);
 
-		if (currentQuestActors.Num() >= 1 && currentQuestActors[0])
+		if (currentQuestActors.Num() > 0 && currentQuestActors[0])
 		{
 			SelectNewQuest(currentQuestActors[0], currentQuestActors[0]->questUI->subGoalWidgets[0]);
 		}
@@ -243,10 +262,11 @@ void AQuestManager::OnQuestEnd(AQuestBase* quest)
 
 	if (quest->IsSelectedInJournal())
 	{
+		mainUI->questJournal->selectedQuest = nullptr;
 		mainUI->questJournal->OnQuestClicked(nullptr);
 	}
 
-	if(quest->currentState == EQuestStates::CompletedQuest)
+	if (quest->currentState == EQuestStates::CompletedQuest)
 	{
 		playerCharacter->IncreaseCurrentExp(quest->questInfo.completionReward.experience);
 	}

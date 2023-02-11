@@ -41,6 +41,14 @@ public:
 
 	class AQuestManager* questManager;
 
+	int totalGoalAmount;
+
+	int currentGoalCount;
+
+	int totalMustSucceedAmount;
+
+	int currentMustSucceedCount;
+
 public:
 	// Sets default values for this actor's properties
 	AQuestBase();
@@ -52,6 +60,8 @@ public:
 	bool IsSelectedInJournal();
 	
 	FGoalInfo GoalAtIndex(int index);
+
+	void CalcGoalAmount();
 
 protected:
 	// Called when the game starts or when spawned

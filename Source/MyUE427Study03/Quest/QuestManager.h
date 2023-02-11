@@ -33,8 +33,11 @@ public:
 	UPROPERTY(EditAnywhere, Category="Quest")
 	float ShowHintDistance;
 
+	bool currentQuestFinished;
+
 private:
 	static AQuestManager* instance;
+
 
 public:
 	// Sets default values for this actor's properties

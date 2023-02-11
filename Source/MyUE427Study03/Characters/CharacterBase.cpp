@@ -341,7 +341,7 @@ void ACharacterBase::TestCompleteQuest()
 {
 	if (questManager->currentQuestActors.Num() > 0)
 	{
-		questManager->currentQuestActors[0]->OnSubGoalCompleted(0);
+		questManager->currentQuestActors[0]->OnSubGoalCompleted(0, true);
 	}
 }
 

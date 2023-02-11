@@ -21,6 +21,7 @@ AQuestBase::AQuestBase()
 void AQuestBase::BeginPlay()
 {
 	Super::BeginPlay();
+	CalcGoalAmount();
 }
 
 void AQuestBase::UpdateSubGoals()
@@ -45,6 +46,8 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 {
 	if (currentGoalIndices.Contains(subGoalIndex))
 	{
+		currentGoalCount++;
+
 		FGoalInfo completedGoal = questInfo.subGoals[subGoalIndex];
 
 		if (completedGoal.bUpdateQuestDesc && isSuccess)
@@ -70,6 +73,11 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 
 			completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, true});
 
+			if (completedGoal.failMeansQuest)
+			{
+				currentMustSucceedCount++;
+			}
+
 			for (int i : completedGoal.followingSubGoalIndices)
 			{
 				currentGoalIndices.Add(i);
@@ -93,10 +101,14 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 		}
 		else
 		{
+			completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, false});
+			
 			if (completedGoal.failMeansQuest)
 			{
 				//子任务失败 意味着整条任务线失败
 				currentState = EQuestStates::FailedQuest;
+
+				questManager->currentQuestFinished = true;
 
 				for (int i : currentGoalIndices)
 				{
@@ -114,8 +126,6 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 			else
 			{
 				//任务失败 不影响整体任务线
-				completedSubGoals.Add(FCompletedGoal{subGoalIndex, completedGoal, false});
-
 				for (int i : completedGoal.followingSubGoalIndices)
 				{
 					currentGoalIndices.Add(i);
@@ -147,6 +157,30 @@ bool AQuestBase::OnSubGoalCompleted(int subGoalIndex, bool isSuccess)
 				}
 			}
 		}
+
+		// 总任务是否完成
+		if (currentGoalCount >= totalGoalAmount)
+		{
+			questManager->currentQuestFinished = true;
+			//所有的子任务都已经完成了
+			if (currentMustSucceedCount >= totalMustSucceedAmount)
+			{
+				//所有必须要完成的任务都完成了
+				currentState = EQuestStates::CompletedQuest;
+			}
+			else
+			{
+				currentState = EQuestStates::FailedQuest;
+			}
+			currentGoalIndices.Empty();
+			currentHuntedAmounts.Empty();
+			currentGoals.Empty();
+			listEntryUI->RemoveFromParent();
+			questUI->RemoveFromParent();
+			questManager->OnQuestEnd(this);
+			return true;
+		}
+
 
 		if (IsSelectedInJournal())
 		{
@@ -191,6 +225,18 @@ bool AQuestBase::IsSelectedInJournal()
 FGoalInfo AQuestBase::GoalAtIndex(int index)
 {
 	return questInfo.subGoals[index];
+}
+
+void AQuestBase::CalcGoalAmount()
+{
+	for (FGoalInfo info : questInfo.subGoals)
+	{
+		totalGoalAmount++;
+		if (info.failMeansQuest)
+		{
+			totalMustSucceedAmount++;
+		}
+	}
 }
 
 // Called every frame
