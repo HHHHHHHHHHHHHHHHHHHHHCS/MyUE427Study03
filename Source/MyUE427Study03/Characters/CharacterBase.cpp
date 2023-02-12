@@ -10,6 +10,7 @@
 #include "Engine/DataTable.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/NPC/InteractionInterface.h"
@@ -162,6 +163,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 	PlayerInputComponent->BindAction("PlaySlideOutAnim", EInputEvent::IE_Pressed, this, &ACharacterBase::PlaySlideOutAnim);
 	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
+	PlayerInputComponent->BindAction("TestFailQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestFailQuest);
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -345,6 +347,14 @@ void ACharacterBase::TestCompleteQuest()
 	}
 }
 
+void ACharacterBase::TestFailQuest()
+{
+	if (questManager->currentQuestActors.Num() > 0)
+	{
+		questManager->currentQuestActors[0]->OnSubGoalCompleted(1, false);
+	}
+}
+
 
 void ACharacterBase::ChangeCurrentHP(float deltaHP)
 {
@@ -391,6 +401,8 @@ void ACharacterBase::SetLevel(int val)
 	{
 		mainUI->questJournal->UpdateSuggestedLevelColor();
 	}
+
+	UGameplayStatics::SpawnEmitterAttached(levelupParticle, GetMesh());
 }
 
 void ACharacterBase::InCreaseLevel(int val)

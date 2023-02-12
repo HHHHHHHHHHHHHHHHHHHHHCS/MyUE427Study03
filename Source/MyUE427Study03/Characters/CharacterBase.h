@@ -99,6 +99,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Skill")
 	USkillTreeComponent* skillTreeComp;
 
+	UPROPERTY(EditAnywhere, Category="Effect")
+	UParticleSystem* levelupParticle;
+
 	bool bCanFindKey;
 
 	UPROPERTY(BlueprintReadOnly)
@@ -167,6 +170,8 @@ protected:
 	void ToggleShowQuest();
 
 	void TestCompleteQuest();
+
+	void TestFailQuest();
 
 public:
 	FORCEINLINE void SetCharacterName(FString name)

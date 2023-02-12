@@ -90,7 +90,12 @@ void AQuestManager::Tick(float DeltaTime)
 
 float AQuestManager::GetDistanceToGoal()
 {
-	return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation()) / 100.0f);
+	if (playerCharacter && currentGoal)
+	{
+		return FMath::FloorToInt(FVector::Dist2D(playerCharacter->GetActorLocation(), currentGoal->GetActorLocation()) / 100.0f);
+	}
+
+	return 0;
 }
 
 void AQuestManager::UpdateDirectionArrow()
