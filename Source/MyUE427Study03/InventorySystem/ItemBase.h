@@ -22,10 +22,10 @@ public:
 	USphereComponent* sphereCollisionComp;
 
 	UPROPERTY(VisibleAnywhere)
-	UWidgetComponent* interactionUI;
+	UStaticMeshComponent* staticMeshComp;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* staticMeshComp;
+	UWidgetComponent* interactionUI;
 
 protected:
 	// Called when the game starts or when spawned
