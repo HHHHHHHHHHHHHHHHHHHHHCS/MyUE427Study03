@@ -3,14 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InventoryStruct.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
+#include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "ItemBase.generated.h"
 
 UCLASS()
-class MYUE427STUDY03_API AItemBase : public AActor
+class MYUE427STUDY03_API AItemBase : public AActor, public IInteractionInterface
 {
+private:
 	GENERATED_BODY()
 
 public:
@@ -27,6 +30,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UWidgetComponent* interactionUI;
 
+	UPROPERTY(EditAnywhere, Category="Item")
+	FItemInfo itemInfo;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,4 +40,9 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	virtual void OnEnterPlayerRadius(ACharacterBase* character) override;
+	virtual void OnLeavePlayerRadius(ACharacterBase* character) override;
+	virtual void OnInteractWith(ACharacterBase* character) override;
 };

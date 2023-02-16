@@ -603,6 +603,9 @@ void ACharacterBase::OnInteractionCompEndOverlap(UPrimitiveComponent* Overlapped
 void ACharacterBase::InteractToNPC()
 {
 	TArray<AActor*> overlapActors;
+	//TSubclassOf<ANPCBase>() 其实判断不严谨 会拿到包括所有的actor
+	//如果是ANPCBase::StaticClass(), 就只有npc了
+	//其实我们只用拿到class 筛选接口就好了
 	interactionComp->GetOverlappingActors(overlapActors, TSubclassOf<ANPCBase>());
 	for (auto item : overlapActors)
 	{

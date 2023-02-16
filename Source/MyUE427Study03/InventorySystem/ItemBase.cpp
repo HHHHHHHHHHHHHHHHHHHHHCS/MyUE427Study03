@@ -3,6 +3,8 @@
 
 #include "ItemBase.h"
 
+#include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
+
 // Sets default values
 AItemBase::AItemBase()
 {
@@ -17,7 +19,7 @@ AItemBase::AItemBase()
 	interactionUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionUI"));
 	interactionUI->SetupAttachment(RootComponent);
 	interactionUI->SetWidgetSpace(EWidgetSpace::Screen);
-	interactionUI->SetRelativeScale3D(FVector(0.7f,0.7f,0.7f));
+	interactionUI->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
 	interactionUI->SetCollisionProfileName(TEXT("NoCollision"));
 	interactionUI->SetGenerateOverlapEvents(false);
 	interactionUI->SetVisibility(false);
@@ -30,10 +32,28 @@ AItemBase::AItemBase()
 void AItemBase::BeginPlay()
 {
 	Super::BeginPlay();
+	auto widget = Cast<UUI_Interaction>(interactionUI->GetUserWidgetObject());
+	widget->SetNameText(itemInfo.name);
+	widget->SetInteractionText(FText::FromString("Press [F] to pick up!"));
 }
 
 // Called every frame
 void AItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AItemBase::OnEnterPlayerRadius(ACharacterBase* character)
+{
+	interactionUI->SetVisibility(true);
+}
+
+void AItemBase::OnLeavePlayerRadius(ACharacterBase* character)
+{
+	interactionUI->SetVisibility(false);
+}
+
+void AItemBase::OnInteractWith(ACharacterBase* character)
+{
+	Destroy();
 }
