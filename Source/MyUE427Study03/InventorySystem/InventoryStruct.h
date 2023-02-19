@@ -34,6 +34,15 @@ public:
 	EItemCategories category = EItemCategories::Consume;
 };
 
+USTRUCT()
+struct FInventorySlot
+{
+	GENERATED_BODY()
+public:
+	TSubclassOf<class AItemBase> itemClass;
+	int amount;
+};
+
 /**
  * 
  */
