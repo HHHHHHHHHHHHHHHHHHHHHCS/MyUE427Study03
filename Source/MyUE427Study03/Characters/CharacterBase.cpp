@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "MyUE427Study03/NPC/NPCBase.h"
@@ -133,6 +134,7 @@ void ACharacterBase::BeginPlay()
 	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
 	questManager->OnInit(this, mainUI);
 	mainUI->questJournal->Initialize(questManager);
+	inventoryRef = GetWorld()->SpawnActor<AInventory>(inventoryClass, params);
 }
 
 

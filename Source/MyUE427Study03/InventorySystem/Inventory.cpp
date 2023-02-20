@@ -52,7 +52,7 @@ int AInventory::SearchFreeStack(TSubclassOf<AItemBase> item)
 	return -1;
 }
 
-bool AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
+int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 {
 	AItemBase* temp = Cast<AItemBase>(item);
 
@@ -75,7 +75,7 @@ bool AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 				}
 				else
 				{
-					return false;
+					return remainder;
 				}
 			}
 			else
@@ -86,7 +86,7 @@ bool AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 				remainder -= diff;
 			}
 		}
-		return true;
+		return 0;
 	}
 	else
 	{
@@ -96,12 +96,12 @@ bool AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			int idx = SearchEmptySlot();
 			if (SearchEmptySlot() < 0)
 			{
-				return false;
+				return amount - i;
 			}
 			//找到了空的插槽
 			slots[idx] = FInventorySlot{item, 1};
 		}
-		return true;
+		return 0;
 	}
 }
 

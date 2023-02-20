@@ -57,31 +57,6 @@ public:
 	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<class AQuestManager> questManagerCls;
 
-protected:
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	FString currentName;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float totalHp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float currentHp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float totalMp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float currentMp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float currentExp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	float currentMaxExp;
-
-	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
-	int currentLevel;
-
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
@@ -119,6 +94,39 @@ public:
 	class AQuestManager* questManager;
 
 	TArray<TSubclassOf<class AQuestPropBase>> obtainedProps;
+
+public:
+	UPROPERTY(EditAnywhere, Category="Inventory")
+	TSubclassOf<class AInventory> inventoryClass;
+
+	class AInventory* inventoryRef;
+
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	FString currentName;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float totalHp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentHp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float totalMp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentMp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentExp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentMaxExp;
+
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	int currentLevel;
+
 
 protected:
 	bool bMouseRightHold;

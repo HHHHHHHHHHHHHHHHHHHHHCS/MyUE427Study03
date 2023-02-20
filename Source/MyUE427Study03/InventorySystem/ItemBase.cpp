@@ -3,6 +3,8 @@
 
 #include "ItemBase.h"
 
+#include "Inventory.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
 
 // Sets default values
@@ -55,5 +57,9 @@ void AItemBase::OnLeavePlayerRadius(ACharacterBase* character)
 
 void AItemBase::OnInteractWith(ACharacterBase* character)
 {
-	Destroy();
+	amount = character->inventoryRef->AddItem(GetClass(), amount);
+	if (amount <= 0)
+	{
+		Destroy();
+	}
 }

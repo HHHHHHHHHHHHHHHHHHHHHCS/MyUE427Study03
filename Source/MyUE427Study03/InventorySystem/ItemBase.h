@@ -33,6 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="Item")
 	FItemInfo itemInfo;
 
+	int amount;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

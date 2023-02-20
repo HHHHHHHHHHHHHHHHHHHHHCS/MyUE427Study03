@@ -21,6 +21,8 @@ public:
 
 	TArray<FInventorySlot> slots;
 
+	
+
 
 public:
 	// Sets default values for this actor's properties
@@ -35,7 +37,8 @@ public:
 
 	int SearchFreeStack(TSubclassOf<class AItemBase> item);
 
-	bool AddItem(TSubclassOf<class AItemBase> item, int amount);
+	//返回的是剩下的数量
+	int AddItem(TSubclassOf<class AItemBase> item, int amount);
 
 protected:
 	// Called when the game starts or when spawned
