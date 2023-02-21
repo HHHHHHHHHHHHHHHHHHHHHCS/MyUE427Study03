@@ -28,6 +28,8 @@ AItemBase::AItemBase()
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> uiCls(TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Quest/UI_Interaction.UI_Interaction_C'"));
 	interactionUI->SetWidgetClass(uiCls.Class);
+
+	amount = 1;
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +39,7 @@ void AItemBase::BeginPlay()
 	auto widget = Cast<UUI_Interaction>(interactionUI->GetUserWidgetObject());
 	widget->SetNameText(itemInfo.name);
 	widget->SetInteractionText(FText::FromString("Press [F] to pick up!"));
+	remainder = amount;
 }
 
 // Called every frame
@@ -57,8 +60,8 @@ void AItemBase::OnLeavePlayerRadius(ACharacterBase* character)
 
 void AItemBase::OnInteractWith(ACharacterBase* character)
 {
-	amount = character->inventoryRef->AddItem(GetClass(), amount);
-	if (amount <= 0)
+	remainder = character->inventoryRef->AddItem(GetClass(), remainder);
+	if (remainder <= 0)
 	{
 		Destroy();
 	}

@@ -56,6 +56,11 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 {
 	AItemBase* temp = Cast<AItemBase>(item);
 
+	if (temp == nullptr)
+	{
+		return 0;
+	}
+
 	if (temp->itemInfo.canStacked)
 	{
 		int remainder = amount;

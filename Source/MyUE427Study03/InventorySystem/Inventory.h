@@ -21,8 +21,6 @@ public:
 
 	TArray<FInventorySlot> slots;
 
-	
-
 
 public:
 	// Sets default values for this actor's properties
