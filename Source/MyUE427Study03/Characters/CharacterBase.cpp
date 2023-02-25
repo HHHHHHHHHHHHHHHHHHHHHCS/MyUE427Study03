@@ -112,8 +112,14 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	FActorSpawnParameters params;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	params.Owner = this;
+
 	playerController = Cast<APlayerController>(GetController());
 	playerController->bShowMouseCursor = true;
+
+	inventoryRef = GetWorld()->SpawnActor<AInventory>(inventoryClass, params);
 
 	//查找UserWidget这种 需要在路径地址末尾加_C
 	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
@@ -129,12 +135,13 @@ void ACharacterBase::BeginPlay()
 	IncreaseCurrentExp(0);
 	skillTreeComp->SetupTree();
 
-	FActorSpawnParameters params;
-	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
 	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
 	questManager->OnInit(this, mainUI);
 	mainUI->questJournal->Initialize(questManager);
-	inventoryRef = GetWorld()->SpawnActor<AInventory>(inventoryClass, params);
+
+	mainUI->inventoryUI->inventoryRef = inventoryRef;
+	mainUI->inventoryUI->GenerateSlotWidget();
 }
 
 

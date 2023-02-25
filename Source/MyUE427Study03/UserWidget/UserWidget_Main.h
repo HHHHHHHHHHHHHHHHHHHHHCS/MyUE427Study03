@@ -13,6 +13,7 @@
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "Inventory/UI_Inventory.h"
 #include "UserWidget_Main.generated.h"
 
 /**
@@ -57,6 +58,8 @@ public:
 	USizeBox* questListSizeBox;
 
 	UScrollBox* questList;
+
+	UUI_Inventory* inventoryUI;
 
 	class AQuestManager* questManager;
 

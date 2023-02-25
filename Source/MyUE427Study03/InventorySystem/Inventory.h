@@ -17,7 +17,7 @@ public:
 
 	int maxStackSize; //一个插槽最多的数量
 
-	class ACharacterBase* playChar;
+	class ACharacterBase* playerChar;
 
 	TArray<FInventorySlot> slots;
 
@@ -37,6 +37,8 @@ public:
 
 	//返回的是剩下的数量
 	int AddItem(TSubclassOf<class AItemBase> item, int amount);
+
+	void UpdateSlotByIndex(int index);
 
 protected:
 	// Called when the game starts or when spawned

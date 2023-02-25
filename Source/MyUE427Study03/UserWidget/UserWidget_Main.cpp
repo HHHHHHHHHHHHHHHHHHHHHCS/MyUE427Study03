@@ -52,6 +52,8 @@ bool UUserWidget_Main::Initialize()
 	skillButton = Cast<UButton>(GetWidgetFromName("Button_Skill"));
 	skillButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnSkillButtonClicked);
 
+	inventoryUI = Cast<UUI_Inventory>(GetWidgetFromName("UI_Inventory"));
+
 	return true;
 }
 

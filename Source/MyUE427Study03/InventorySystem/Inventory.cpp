@@ -4,17 +4,33 @@
 #include "Inventory.h"
 
 #include "ItemBase.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 
 // Sets default values
 AInventory::AInventory()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	amountOfSlots = 40;
+}
+
+// Called when the game starts or when spawned
+void AInventory::BeginPlay()
+{
+	Super::BeginPlay();
+	playerChar = Cast<ACharacterBase>(GetOwner());
+	slots.SetNum(amountOfSlots);
+}
+
+// Called every frame
+void AInventory::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 bool AInventory::IsSlotEmpty(int index) const
 {
-	return !slots.IsValidIndex(index);
+	return slots[index].itemClass == nullptr;
 }
 
 AItemBase* AInventory::GetItemByIndex(int index)
@@ -73,9 +89,10 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			if (idx < 0)
 			{
 				idx = SearchEmptySlot();
-				if (idx < 0)
+				if (idx >= 0)
 				{
 					slots[idx] = FInventorySlot{item, FMath::Min(remainder, maxStackSize)};
+					UpdateSlotByIndex(idx);
 					remainder -= maxStackSize;
 				}
 				else
@@ -88,6 +105,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 				int old = slots[idx].amount;
 				int diff = maxStackSize - old;
 				slots[idx] = FInventorySlot{item, old + FMath::Min(remainder, diff)};
+				UpdateSlotByIndex(idx);
 				remainder -= diff;
 			}
 		}
@@ -105,20 +123,13 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			}
 			//找到了空的插槽
 			slots[idx] = FInventorySlot{item, 1};
+			UpdateSlotByIndex(idx);
 		}
 		return 0;
 	}
 }
 
-// Called when the game starts or when spawned
-void AInventory::BeginPlay()
+void AInventory::UpdateSlotByIndex(int index)
 {
-	Super::BeginPlay();
-	slots.SetNum(amountOfSlots);
-}
-
-// Called every frame
-void AInventory::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+	playerChar->mainUI->inventoryUI->inventorySlots[index]->UpdateSlot();
 }

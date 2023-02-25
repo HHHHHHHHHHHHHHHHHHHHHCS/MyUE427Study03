@@ -28,7 +28,7 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	UImage* Image_Icon;
 
-protected:
+public:
 	int slotIndex;
 	int amount;
 	class AInventory* inventoryRef;
