@@ -1,8 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Inventory.h"
-
 #include "ItemBase.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 
@@ -12,6 +9,7 @@ AInventory::AInventory()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	amountOfSlots = 40;
+	maxStackSize = 99;
 }
 
 // Called when the game starts or when spawned
@@ -37,7 +35,7 @@ AItemBase* AInventory::GetItemByIndex(int index)
 {
 	if (!IsSlotEmpty(index))
 	{
-		return Cast<AItemBase>(slots[index].itemClass);
+		return Cast<AItemBase>(slots[index].itemClass.GetDefaultObject());
 	}
 	return nullptr;
 }
@@ -70,9 +68,9 @@ int AInventory::SearchFreeStack(TSubclassOf<AItemBase> item)
 
 int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 {
-	AItemBase* temp = Cast<AItemBase>(item);
+	AItemBase* temp = Cast<AItemBase>(item->GetDefaultObject());
 
-	if (temp == nullptr)
+	if (item == nullptr)
 	{
 		return 0;
 	}

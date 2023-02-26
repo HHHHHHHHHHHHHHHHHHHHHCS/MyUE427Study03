@@ -36,7 +36,7 @@ public:
 	int SearchFreeStack(TSubclassOf<class AItemBase> item);
 
 	//返回的是剩下的数量
-	int AddItem(TSubclassOf<class AItemBase> item, int amount);
+	int AddItem(TSubclassOf<AItemBase>, int amount);
 
 	void UpdateSlotByIndex(int index);
 
