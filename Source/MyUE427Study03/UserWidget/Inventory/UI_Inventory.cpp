@@ -3,8 +3,15 @@
 
 #include "UI_Inventory.h"
 
+#include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
+
+void UUI_Inventory::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_Close->OnClicked.AddDynamic(this, &UUI_Inventory::OnCloseButtonClick);
+}
 
 void UUI_Inventory::GenerateSlotWidget()
 {
@@ -20,4 +27,9 @@ void UUI_Inventory::GenerateSlotWidget()
 		WBOX_Inventory->AddChild(slotUI);
 		inventorySlots.Add(slotUI);
 	}
+}
+
+void UUI_Inventory::OnCloseButtonClick()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
 }

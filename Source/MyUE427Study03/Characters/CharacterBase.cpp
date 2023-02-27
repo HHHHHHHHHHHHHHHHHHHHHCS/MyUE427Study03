@@ -140,8 +140,8 @@ void ACharacterBase::BeginPlay()
 	questManager->OnInit(this, mainUI);
 	mainUI->questJournal->Initialize(questManager);
 
-	mainUI->inventoryUI->inventoryRef = inventoryRef;
-	mainUI->inventoryUI->GenerateSlotWidget();
+	mainUI->inventoryWidget->inventoryRef = inventoryRef;
+	mainUI->inventoryWidget->GenerateSlotWidget();
 }
 
 

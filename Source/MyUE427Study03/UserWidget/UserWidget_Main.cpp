@@ -52,7 +52,9 @@ bool UUserWidget_Main::Initialize()
 	skillButton = Cast<UButton>(GetWidgetFromName("Button_Skill"));
 	skillButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnSkillButtonClicked);
 
-	inventoryUI = Cast<UUI_Inventory>(GetWidgetFromName("UI_Inventory"));
+	inventoryWidget = Cast<UUI_Inventory>(GetWidgetFromName("UI_Inventory"));
+
+	inventoryButton =Cast<UButton>(GetWidgetFromName("Button_Inventory"));
 
 	return true;
 }
@@ -203,5 +205,19 @@ void UUserWidget_Main::OnSkillButtonClicked()
 	{
 		skillTree_MainTree->SetVisibility(ESlateVisibility::Visible);
 		bSkillTreeShow = true;
+	}
+}
+
+void UUserWidget_Main::OnInventoryButtonClicked()
+{
+	if (bInventoryShow)
+	{
+		inventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		bInventoryShow = false;
+	}
+	else
+	{
+		inventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		bInventoryShow = true;
 	}
 }

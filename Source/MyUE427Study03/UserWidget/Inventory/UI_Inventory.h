@@ -27,5 +27,9 @@ public:
 	class AInventory* inventoryRef;
 	
 public:
+	virtual void NativeConstruct() override;
+	
 	void GenerateSlotWidget();
+
+	void OnCloseButtonClick();
 };

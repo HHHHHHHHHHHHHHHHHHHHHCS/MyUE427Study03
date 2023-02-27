@@ -59,7 +59,7 @@ public:
 
 	UScrollBox* questList;
 
-	UUI_Inventory* inventoryUI;
+	UUI_Inventory* inventoryWidget;
 
 	class AQuestManager* questManager;
 
@@ -75,9 +75,13 @@ public:
 
 	UButton* skillButton;
 
+	UButton* inventoryButton;
+
+	
 public:
 	bool bQuestUIVisibility = false;
 	bool bSkillTreeShow = false;
+	bool bInventoryShow = false;
 
 public:
 	virtual bool Initialize() override;
@@ -111,4 +115,8 @@ public:
 
 	UFUNCTION()
 	void OnSkillButtonClicked();
+
+	
+	UFUNCTION()
+	void OnInventoryButtonClicked();
 };

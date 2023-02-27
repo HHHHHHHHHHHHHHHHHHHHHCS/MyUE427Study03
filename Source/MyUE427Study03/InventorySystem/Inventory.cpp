@@ -129,5 +129,6 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 
 void AInventory::UpdateSlotByIndex(int index)
 {
-	playerChar->mainUI->inventoryUI->inventorySlots[index]->UpdateSlot();
+	playerChar->mainUI->inventoryWidget->inventorySlots[index]->UpdateSlot();
 }
+
