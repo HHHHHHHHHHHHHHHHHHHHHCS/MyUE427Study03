@@ -31,5 +31,23 @@ void UUI_Inventory::GenerateSlotWidget()
 
 void UUI_Inventory::OnCloseButtonClick()
 {
-	this->SetVisibility(ESlateVisibility::Hidden);
+	if (bInventoryShow)
+	{
+		SetVisibility(ESlateVisibility::Hidden);
+		bInventoryShow = false;
+	}
+}
+
+void UUI_Inventory::ToggleVisibility()
+{
+	if (bInventoryShow)
+	{
+		SetVisibility(ESlateVisibility::Hidden);
+		bInventoryShow = false;
+	}
+	else
+	{
+		SetVisibility(ESlateVisibility::Visible);
+		bInventoryShow = true;
+	}
 }

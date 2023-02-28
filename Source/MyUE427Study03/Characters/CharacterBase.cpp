@@ -171,8 +171,10 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("ToggleShowQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleShowQuest);
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACharacterBase::InteractToNPC);
 	PlayerInputComponent->BindAction("PlaySlideOutAnim", EInputEvent::IE_Pressed, this, &ACharacterBase::PlaySlideOutAnim);
+	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleInventory);
 	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
 	PlayerInputComponent->BindAction("TestFailQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestFailQuest);
+
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -347,6 +349,12 @@ void ACharacterBase::ToggleShowQuest()
 {
 	mainUI->OnQuestButtonClicked();
 }
+
+void ACharacterBase::ToggleInventory()
+{
+	mainUI->OnInventoryButtonClicked();
+}
+
 
 void ACharacterBase::TestCompleteQuest()
 {

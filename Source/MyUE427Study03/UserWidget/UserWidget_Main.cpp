@@ -54,7 +54,8 @@ bool UUserWidget_Main::Initialize()
 
 	inventoryWidget = Cast<UUI_Inventory>(GetWidgetFromName("UI_Inventory"));
 
-	inventoryButton =Cast<UButton>(GetWidgetFromName("Button_Inventory"));
+	inventoryButton = Cast<UButton>(GetWidgetFromName("Button_Inventory"));
+	inventoryButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnInventoryButtonClicked);
 
 	return true;
 }
@@ -210,14 +211,5 @@ void UUserWidget_Main::OnSkillButtonClicked()
 
 void UUserWidget_Main::OnInventoryButtonClicked()
 {
-	if (bInventoryShow)
-	{
-		inventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-		bInventoryShow = false;
-	}
-	else
-	{
-		inventoryWidget->SetVisibility(ESlateVisibility::Visible);
-		bInventoryShow = true;
-	}
+	inventoryWidget->ToggleVisibility();
 }

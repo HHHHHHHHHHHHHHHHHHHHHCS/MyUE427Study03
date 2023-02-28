@@ -177,6 +177,8 @@ protected:
 
 	void ToggleShowQuest();
 
+	void ToggleInventory();
+
 	void TestCompleteQuest();
 
 	void TestFailQuest();

@@ -81,7 +81,6 @@ public:
 public:
 	bool bQuestUIVisibility = false;
 	bool bSkillTreeShow = false;
-	bool bInventoryShow = false;
 
 public:
 	virtual bool Initialize() override;

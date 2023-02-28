@@ -26,10 +26,15 @@ public:
 	
 	class AInventory* inventoryRef;
 	
+	bool bInventoryShow = false;
+	
 public:
 	virtual void NativeConstruct() override;
 	
 	void GenerateSlotWidget();
 
+	UFUNCTION()
 	void OnCloseButtonClick();
+
+	void ToggleVisibility();
 };
