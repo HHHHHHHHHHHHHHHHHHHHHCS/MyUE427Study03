@@ -3,6 +3,7 @@
 
 #include "UI_Inventory.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
@@ -50,4 +51,16 @@ void UUI_Inventory::ToggleVisibility()
 		SetVisibility(ESlateVisibility::Visible);
 		bInventoryShow = true;
 	}
+}
+
+FReply UUI_Inventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+	{
+		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
+	}
+
+	return FReply::Handled();
 }

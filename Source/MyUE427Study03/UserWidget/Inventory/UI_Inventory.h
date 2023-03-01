@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InventoryDragDropOperation.h"
 #include "UI_InventorySlot.h"
 #include "Blueprint/UserWidget.h"
 #include "UI_Inventory.generated.h"
@@ -21,13 +22,17 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	class UButton* Button_Close;
 
+
 public:
 	TArray<UUI_InventorySlot*> inventorySlots;
 	
 	class AInventory* inventoryRef;
 	
 	bool bInventoryShow = false;
-	
+
+protected:
+	TSubclassOf<UInventoryDragDropOperation> inventoryDragDropOperationCls;
+
 public:
 	virtual void NativeConstruct() override;
 	
@@ -37,4 +42,7 @@ public:
 	void OnCloseButtonClick();
 
 	void ToggleVisibility();
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	
 };
