@@ -16,4 +16,6 @@ class MYUE427STUDY03_API UInventoryDragDropOperation : public UDragDropOperation
 
 public:
 	UUserWidget* dragWidget;
+
+	FVector2D mouseOffset;
 };

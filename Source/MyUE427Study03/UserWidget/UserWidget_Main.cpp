@@ -150,6 +150,23 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 		}
 		return true;
 	}
+	else
+	{
+		UInventoryDragDropOperation* invDragOp = Cast<UInventoryDragDropOperation>(InOperation);
+		if (invDragOp)
+		{
+			UUserWidget* dragWidget = invDragOp->dragWidget;
+			dragWidget->AddToViewport();
+			//SetDesiredSizeInViewport 如果不设置这个窗口大小    默认会全屏
+			dragWidget->SetDesiredSizeInViewport(FVector2D(800, 600));
+			//InGeometry.AbsoluteToLocal 转换局部空间
+			//要减去mouseOffset 是因为坐标零点发生了改变
+			dragWidget->SetPositionInViewport(
+				InGeometry.AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition())
+				- invDragOp->mouseOffset, false);
+			return true;
+		}
+	}
 
 	return bl;
 }

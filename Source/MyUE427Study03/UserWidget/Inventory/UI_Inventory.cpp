@@ -59,8 +59,27 @@ FReply UUI_Inventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
 	{
+		dragOffset = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
 		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
 	}
 
 	return FReply::Handled();
+}
+
+void UUI_Inventory::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+
+	UDragDropOperation* dragOp = UWidgetBlueprintLibrary::CreateDragDropOperation(inventoryDragDropOperationCls);
+	dragOp->Pivot = EDragPivot::MouseDown;
+
+	dragOp->DefaultDragVisual = this;
+	OutOperation = dragOp;
+	UInventoryDragDropOperation* obj = Cast<UInventoryDragDropOperation>(dragOp);
+	if (obj)
+	{
+		obj->dragWidget = this;
+		obj->mouseOffset = dragOffset;
+	}
+	this->RemoveFromParent();
 }

@@ -25,17 +25,20 @@ public:
 
 public:
 	TArray<UUI_InventorySlot*> inventorySlots;
-	
+
 	class AInventory* inventoryRef;
-	
+
 	bool bInventoryShow = false;
 
+	FVector2D dragOffset;
+
 protected:
+	UPROPERTY(EditAnywhere, Category="DragDrop")
 	TSubclassOf<UInventoryDragDropOperation> inventoryDragDropOperationCls;
 
 public:
 	virtual void NativeConstruct() override;
-	
+
 	void GenerateSlotWidget();
 
 	UFUNCTION()
@@ -44,5 +47,6 @@ public:
 	void ToggleVisibility();
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
-	
+
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 };
