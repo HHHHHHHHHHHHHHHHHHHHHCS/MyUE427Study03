@@ -132,3 +132,72 @@ void AInventory::UpdateSlotByIndex(int index)
 	playerChar->mainUI->inventoryWidget->inventorySlots[index]->UpdateSlot();
 }
 
+
+int AInventory::GetAmountAtIndex(int index)
+{
+	return slots[index].amount;
+}
+
+bool AInventory::RemoveItemAtIndex(int index, int amount)
+{
+	if (amount > 0 && !IsSlotEmpty(index))
+	{
+		int oldAmount = GetAmountAtIndex(index);
+		if (amount >= oldAmount)
+		{
+			slots[index] = FInventorySlot{nullptr, 0};
+		}
+		else
+		{
+			slots[index] = FInventorySlot{slots[index].itemClass, oldAmount - amount};
+		}
+		UpdateSlotByIndex(index);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool AInventory::SwapSlot(int index1, int index2)
+{
+	if (index1 >= slots.Num() || index2 >= slots.Num())
+	{
+		return false;
+	}
+
+	FInventorySlot tempSlot = slots[index1];
+	slots[index1] = slots[index2];
+	slots[index2] = tempSlot;
+	UpdateSlotByIndex(index1);
+	UpdateSlotByIndex(index2);
+	return true;
+}
+
+bool AInventory::SplitStack(int index, int amount)
+{
+	if (IsSlotEmpty(index))
+	{
+		return false;
+	}
+
+	int oldAmount = GetAmountAtIndex(index);
+	if (oldAmount <= amount || !GetItemByIndex(index)->itemInfo.canStacked)
+	{
+		return false;
+	}
+
+	int emptyIndex = SearchEmptySlot();
+	if (emptyIndex < 0)
+	{
+		return false;
+	}
+
+	FInventorySlot tempSlot = slots[index];
+	slots[index] = FInventorySlot{tempSlot.itemClass, oldAmount - amount};
+	slots[emptyIndex] = FInventorySlot{tempSlot.itemClass, amount};
+	UpdateSlotByIndex(index);
+	UpdateSlotByIndex(emptyIndex);
+	return true;
+}

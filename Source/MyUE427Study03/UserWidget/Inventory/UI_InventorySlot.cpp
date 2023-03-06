@@ -20,7 +20,7 @@ void UUI_InventorySlot::UpdateSlot()
 		Button_Slot->SetIsEnabled(true);
 		AItemBase* item = inventoryRef->GetItemByIndex(slotIndex);
 		itemInfo = item->itemInfo;
-		amount = inventoryRef->slots[slotIndex].amount;
+		amount = inventoryRef->GetAmountAtIndex(slotIndex);
 		Image_Icon->SetBrushFromTexture(itemInfo.icon);
 		Image_Icon->SetVisibility(ESlateVisibility::HitTestInvisible);
 		if (itemInfo.canStacked)

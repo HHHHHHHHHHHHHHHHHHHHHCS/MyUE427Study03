@@ -26,6 +26,15 @@ public:
 	// Sets default values for this actor's properties
 	AInventory();
 
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 public:
 	bool IsSlotEmpty(int index) const;
 
@@ -40,11 +49,11 @@ public:
 
 	void UpdateSlotByIndex(int index);
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	int GetAmountAtIndex(int index);
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	bool RemoveItemAtIndex(int index, int amount);
+
+	bool SwapSlot(int index1, int index2);
+
+	bool SplitStack(int index, int amount);
 };
