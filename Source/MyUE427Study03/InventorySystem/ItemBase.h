@@ -36,9 +36,13 @@ public:
 	UPROPERTY(EditAnywhere, Category="Item")
 	int amount;
 
+	int index;
+
+	class AInventory* inventoryRef;
+
 protected:
 	int remainder;
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,4 +55,5 @@ public:
 	virtual void OnEnterPlayerRadius(ACharacterBase* character) override;
 	virtual void OnLeavePlayerRadius(ACharacterBase* character) override;
 	virtual void OnInteractWith(ACharacterBase* character) override;
+	virtual void OnUsed();
 };

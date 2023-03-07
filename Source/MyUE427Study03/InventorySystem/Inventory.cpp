@@ -201,3 +201,15 @@ bool AInventory::SplitStack(int index, int amount)
 	UpdateSlotByIndex(emptyIndex);
 	return true;
 }
+
+void AInventory::UseItemAtIndex(int index)
+{
+	if (slots[index].itemClass)
+	{
+		FActorSpawnParameters params;
+		params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AItemBase* item = GetWorld()->SpawnActor<AItemBase>(slots[index].itemClass, params);
+		item->inventoryRef = this;
+		item->index = index;
+	}
+}

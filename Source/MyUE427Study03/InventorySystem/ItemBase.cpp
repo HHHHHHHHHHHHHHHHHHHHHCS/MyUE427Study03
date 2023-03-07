@@ -66,3 +66,11 @@ void AItemBase::OnInteractWith(ACharacterBase* character)
 		Destroy();
 	}
 }
+
+void AItemBase::OnUsed()
+{
+	if(inventoryRef->RemoveItemAtIndex(index, 1))
+	{
+		Destroy();
+	}
+}

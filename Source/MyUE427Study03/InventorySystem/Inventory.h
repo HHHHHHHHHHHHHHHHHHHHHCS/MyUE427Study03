@@ -56,4 +56,6 @@ public:
 	bool SwapSlot(int index1, int index2);
 
 	bool SplitStack(int index, int amount);
+
+	void UseItemAtIndex(int index);
 };
