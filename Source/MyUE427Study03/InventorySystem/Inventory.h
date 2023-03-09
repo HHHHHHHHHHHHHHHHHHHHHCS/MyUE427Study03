@@ -51,11 +51,15 @@ public:
 
 	int GetAmountAtIndex(int index);
 
+	UFUNCTION(BlueprintCallable)
 	bool RemoveItemAtIndex(int index, int amount);
 
+	UFUNCTION(BlueprintCallable)
 	bool SwapSlot(int index1, int index2);
 
+	UFUNCTION(BlueprintCallable)
 	bool SplitStack(int index, int amount);
 
+	UFUNCTION(BlueprintCallable)
 	void UseItemAtIndex(int index);
 };

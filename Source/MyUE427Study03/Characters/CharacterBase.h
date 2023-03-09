@@ -99,6 +99,7 @@ public:
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	TSubclassOf<class AInventory> inventoryClass;
 
+	UPROPERTY(BlueprintReadOnly)
 	class AInventory* inventoryRef;
 
 
