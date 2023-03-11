@@ -2,6 +2,7 @@
 #include "Inventory.h"
 #include "ItemBase.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 
 // Sets default values
 AInventory::AInventory()
@@ -213,4 +214,14 @@ void AInventory::UseItemAtIndex(int index)
 		item->index = index;
 		item->OnUsed();
 	}
+}
+
+void AInventory::UpdateActionMenuPosition(UUI_InventorySlot* slot)
+{
+	int x = slot->slotIndex % ROW_NUM;
+	int y = slot->slotIndex / ROW_NUM;
+	auto actionMenu = playerChar->mainUI->inventoryWidget->actionMenu;
+	actionMenu->UpdateInfo(slot->slotIndex);
+	actionMenu->SetRenderTranslation(FVector2D(x * 93, y * 93));
+	actionMenu->SetVisibility(ESlateVisibility::Visible);
 }

@@ -20,6 +20,7 @@
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/Skill/SkillBuff.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 
@@ -142,6 +143,9 @@ void ACharacterBase::BeginPlay()
 
 	mainUI->inventoryWidget->inventoryRef = inventoryRef;
 	mainUI->inventoryWidget->GenerateSlotWidget();
+
+	mainUI->inventoryWidget->actionMenu->inventoryRef = inventoryRef;
+
 }
 
 

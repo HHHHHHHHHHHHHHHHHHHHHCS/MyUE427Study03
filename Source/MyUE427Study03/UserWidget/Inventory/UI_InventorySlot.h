@@ -35,5 +35,10 @@ public:
 	FItemInfo itemInfo;
 
 public:
+	virtual void NativeConstruct() override;
+
 	void UpdateSlot();
+
+	UFUNCTION()
+	void OnButtonSlotClicked();
 };

@@ -3,6 +3,7 @@
 
 #include "UI_Inventory.h"
 
+#include "UI_InventoryActionMenu.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
@@ -12,6 +13,7 @@ void UUI_Inventory::NativeConstruct()
 {
 	Super::NativeConstruct();
 	Button_Close->OnClicked.AddDynamic(this, &UUI_Inventory::OnCloseButtonClick);
+	actionMenu = Cast<UUI_InventoryActionMenu>(GetWidgetFromName(TEXT("UI_InventoryActionMenu")));
 }
 
 void UUI_Inventory::GenerateSlotWidget()

@@ -13,6 +13,9 @@ class MYUE427STUDY03_API AInventory : public AActor
 	GENERATED_BODY()
 
 public:
+	constexpr static int ROW_NUM = 7;
+	
+public:
 	int amountOfSlots; //插槽的数量
 
 	int maxStackSize; //一个插槽最多的数量
@@ -62,4 +65,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UseItemAtIndex(int index);
+
+	void UpdateActionMenuPosition(class UUI_InventorySlot* slot);
 };

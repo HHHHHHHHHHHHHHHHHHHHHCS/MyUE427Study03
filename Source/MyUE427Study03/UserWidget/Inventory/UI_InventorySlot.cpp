@@ -7,6 +7,12 @@
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
+void UUI_InventorySlot::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Button_Slot->OnClicked.AddDynamic(this, &UUI_InventorySlot::OnButtonSlotClicked);
+}
+
 void UUI_InventorySlot::UpdateSlot()
 {
 	if (inventoryRef->IsSlotEmpty(slotIndex))
@@ -33,4 +39,9 @@ void UUI_InventorySlot::UpdateSlot()
 			Text_Amount->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+}
+
+void UUI_InventorySlot::OnButtonSlotClicked()
+{
+	inventoryRef->UpdateActionMenuPosition(this);
 }

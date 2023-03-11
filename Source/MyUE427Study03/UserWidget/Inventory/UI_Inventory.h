@@ -32,6 +32,8 @@ public:
 
 	FVector2D dragOffset;
 
+	class UUI_InventoryActionMenu* actionMenu;
+
 protected:
 	UPROPERTY(EditAnywhere, Category="DragDrop")
 	TSubclassOf<UInventoryDragDropOperation> inventoryDragDropOperationCls;
