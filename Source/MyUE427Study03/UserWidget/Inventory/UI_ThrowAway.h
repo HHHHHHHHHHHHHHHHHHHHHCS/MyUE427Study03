@@ -50,5 +50,21 @@ public:
 	FItemInfo itemInfo;
 
 public:
+	UFUNCTION()
+	virtual void NativeConstruct() override;
+	
 	void UpdateInfo(int index);
+	
+	void IncreaseCount();
+
+	void DecreaseCount();
+	
+	void ETextCountChange(const FText& Text);
+
+	UFUNCTION()
+	void OnButtonMinusClicked();
+
+	UFUNCTION()
+	void OnButtonPlusClicked();
+
 };
