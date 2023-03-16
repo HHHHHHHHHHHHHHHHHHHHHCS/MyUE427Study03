@@ -56,12 +56,44 @@ void UUI_ThrowAway::ETextCountChange(const FText& Text)
 
 void UUI_ThrowAway::OnButtonMinusClicked()
 {
-	this->DecreaseCount();
+	clickCount++;
+	GetWorld()->GetTimerManager().SetTimer(
+		timerHandle_CounToZero, this,
+		&UUI_ThrowAway::SetClickCountToZero, 0.3f, false);
+	if (clickCount > 1)
+	{
+		clickCount = 0;
+		throwCount = 1;
+		EText_Count->SetText(FText::AsNumber(throwCount));
+	}
+	else
+	{
+		this->DecreaseCount();
+	}
 }
 
 void UUI_ThrowAway::OnButtonPlusClicked()
 {
-	this->IncreaseCount();
+	clickCount++;
+	GetWorld()->GetTimerManager().SetTimer(
+		timerHandle_CounToZero, this,
+		&UUI_ThrowAway::SetClickCountToZero, 0.3f, false);
+	if (clickCount > 1)
+	{
+		clickCount = 0;
+		throwCount = maxAmount;
+		EText_Count->SetText(FText::AsNumber(throwCount));
+	}
+	else
+	{
+		this->IncreaseCount();
+	}
+}
+
+void UUI_ThrowAway::SetClickCountToZero()
+{
+	clickCount = 0;
+	GetWorld()->GetTimerManager().ClearTimer(timerHandle_CounToZero);
 }
 
 #undef LOCTEXT_NAMESPACE

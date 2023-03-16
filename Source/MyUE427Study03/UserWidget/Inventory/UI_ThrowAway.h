@@ -48,6 +48,9 @@ public:
 	int currentIndex;
 	class AInventory* inventoryRef;
 	FItemInfo itemInfo;
+	int clickCount;
+
+	FTimerHandle timerHandle_CounToZero;
 
 public:
 	UFUNCTION()
@@ -66,5 +69,7 @@ public:
 
 	UFUNCTION()
 	void OnButtonPlusClicked();
+
+	void SetClickCountToZero();
 
 };
