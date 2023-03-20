@@ -42,7 +42,6 @@ public:
 	UButton* Button_Cancel;
 
 public:
-
 	int throwCount; //当前要丢弃的数量
 	int maxAmount; //插槽的数量
 	int currentIndex;
@@ -50,18 +49,20 @@ public:
 	FItemInfo itemInfo;
 	int clickCount;
 
-	FTimerHandle timerHandle_CounToZero;
+private:
+	FTimerHandle timerHandle_CountToZero;
+	FTimerHandle timerHandle_Increase;
+	FTimerHandle timerHandle_Decrease;
 
 public:
-	UFUNCTION()
 	virtual void NativeConstruct() override;
-	
+
 	void UpdateInfo(int index);
-	
+
 	void IncreaseCount();
 
 	void DecreaseCount();
-	
+
 	void ETextCountChange(const FText& Text);
 
 	UFUNCTION()
@@ -70,6 +71,17 @@ public:
 	UFUNCTION()
 	void OnButtonPlusClicked();
 
-	void SetClickCountToZero();
+	UFUNCTION()
+	void OnMinusButtonPressed();
 
+	UFUNCTION()
+	void OnPlusButtonPressed();
+
+	UFUNCTION()
+	void OnMinusButtonReleased();
+
+	UFUNCTION()
+	void OnPlusButtonReleased();
+
+	void SetClickCountToZero();
 };
