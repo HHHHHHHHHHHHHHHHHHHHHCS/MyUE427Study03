@@ -3,7 +3,9 @@
 
 #include "UI_ThrowAway.h"
 
+#include "Components/WrapBox.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
@@ -22,6 +24,9 @@ void UUI_ThrowAway::NativeConstruct()
 	Button_Plus->OnClicked.AddDynamic(this, &UUI_ThrowAway::OnButtonPlusClicked);
 	Button_Plus->OnPressed.AddDynamic(this, &UUI_ThrowAway::OnButtonPlusClicked);
 	Button_Plus->OnReleased.AddDynamic(this, &UUI_ThrowAway::OnButtonPlusClicked);
+
+	Button_Confirm->OnClicked.AddDynamic(this, &UUI_ThrowAway::OnConfirmButtonClicked);
+	Button_Cancel->OnClicked.AddDynamic(this, &UUI_ThrowAway::OnCancelButtonClicked);
 }
 
 void UUI_ThrowAway::UpdateInfo(int index)
@@ -118,6 +123,21 @@ void UUI_ThrowAway::OnMinusButtonReleased()
 void UUI_ThrowAway::OnPlusButtonReleased()
 {
 	GetWorld()->GetTimerManager().ClearTimer(timerHandle_Increase);
+}
+
+void UUI_ThrowAway::OnConfirmButtonClicked()
+{
+	if(inventoryRef->RemoveItemAtIndex(currentIndex, throwCount))
+	{
+		this->SetVisibility(ESlateVisibility::Hidden);
+		inventoryRef->playerChar->mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(true);
+	}
+}
+
+void UUI_ThrowAway::OnCancelButtonClicked()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
+	inventoryRef->playerChar->mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(true);
 }
 
 void UUI_ThrowAway::SetClickCountToZero()

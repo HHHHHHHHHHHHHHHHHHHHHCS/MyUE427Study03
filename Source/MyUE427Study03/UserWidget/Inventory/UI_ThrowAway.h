@@ -83,5 +83,11 @@ public:
 	UFUNCTION()
 	void OnPlusButtonReleased();
 
+	UFUNCTION()
+	void OnConfirmButtonClicked();
+
+	UFUNCTION()
+	void OnCancelButtonClicked();
+	
 	void SetClickCountToZero();
 };
