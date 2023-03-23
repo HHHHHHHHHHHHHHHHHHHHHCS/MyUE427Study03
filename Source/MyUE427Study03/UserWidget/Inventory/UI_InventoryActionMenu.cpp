@@ -3,6 +3,8 @@
 
 #include "UI_InventoryActionMenu.h"
 
+#include "Components/WrapBox.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
@@ -49,13 +51,23 @@ void UUI_InventoryActionMenu::OnButtonUseItemClick()
 
 void UUI_InventoryActionMenu::OnButtonThrowAwayClick()
 {
-	inventoryRef->RemoveItemAtIndex(currentIndex, amount / 2);
+	if (!itemInfo.canStacked && amount > 0)
+	{
+		inventoryRef->RemoveItemAtIndex(currentIndex, 1);
+	}
+	else
+	{
+		auto mainUI = inventoryRef->playerChar->mainUI;
+		mainUI->throwAwayWidget->UpdateInfo(currentIndex);
+		mainUI->throwAwayWidget->SetVisibility(ESlateVisibility::Visible);
+		mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(false);
+	}
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UUI_InventoryActionMenu::OnButtonSplitStackClick()
 {
-	inventoryRef->SplitStack(currentIndex, amount/2);
+	inventoryRef->SplitStack(currentIndex, amount / 2);
 	SetVisibility(ESlateVisibility::Hidden);
 }
 

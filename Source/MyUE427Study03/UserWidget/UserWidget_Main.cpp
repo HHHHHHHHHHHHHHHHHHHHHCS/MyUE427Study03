@@ -57,6 +57,8 @@ bool UUserWidget_Main::Initialize()
 	inventoryButton = Cast<UButton>(GetWidgetFromName("Button_Inventory"));
 	inventoryButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnInventoryButtonClicked);
 
+	throwAwayWidget= Cast<UUI_ThrowAway>(GetWidgetFromName("UI_ThrowAway"));
+
 	return true;
 }
 

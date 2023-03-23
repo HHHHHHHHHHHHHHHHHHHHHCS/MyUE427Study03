@@ -145,7 +145,7 @@ void ACharacterBase::BeginPlay()
 	mainUI->inventoryWidget->GenerateSlotWidget();
 
 	mainUI->inventoryWidget->actionMenu->inventoryRef = inventoryRef;
-
+	mainUI->throwAwayWidget->inventoryRef = inventoryRef;
 }
 
 

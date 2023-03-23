@@ -14,6 +14,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Inventory/UI_Inventory.h"
+#include "Inventory/UI_ThrowAway.h"
 #include "UserWidget_Main.generated.h"
 
 /**
@@ -61,6 +62,8 @@ public:
 
 	UUI_Inventory* inventoryWidget;
 
+	UUI_ThrowAway* throwAwayWidget;
+
 	class AQuestManager* questManager;
 
 	UPROPERTY(BlueprintReadOnly)
@@ -77,7 +80,6 @@ public:
 
 	UButton* inventoryButton;
 
-	
 public:
 	bool bQuestUIVisibility = false;
 	bool bSkillTreeShow = false;
@@ -115,7 +117,7 @@ public:
 	UFUNCTION()
 	void OnSkillButtonClicked();
 
-	
+
 	UFUNCTION()
 	void OnInventoryButtonClicked();
 };

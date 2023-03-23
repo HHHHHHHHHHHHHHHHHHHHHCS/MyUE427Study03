@@ -72,7 +72,7 @@ void UUI_ThrowAway::OnButtonMinusClicked()
 	clickCount++;
 	GetWorld()->GetTimerManager().SetTimer(
 		timerHandle_CountToZero, this,
-		&UUI_ThrowAway::SetClickCountToZero, 0.3f, false);
+		&UUI_ThrowAway::SetClickCountToZero, 0.15f, false);
 	if (clickCount > 1)
 	{
 		clickCount = 0;
@@ -90,7 +90,7 @@ void UUI_ThrowAway::OnButtonPlusClicked()
 	clickCount++;
 	GetWorld()->GetTimerManager().SetTimer(
 		timerHandle_CountToZero, this,
-		&UUI_ThrowAway::SetClickCountToZero, 0.3f, false);
+		&UUI_ThrowAway::SetClickCountToZero, 0.15f, false);
 	if (clickCount > 1)
 	{
 		clickCount = 0;
@@ -106,13 +106,13 @@ void UUI_ThrowAway::OnButtonPlusClicked()
 void UUI_ThrowAway::OnMinusButtonPressed()
 {
 	GetWorld()->GetTimerManager().SetTimer(timerHandle_Decrease, this, &UUI_ThrowAway::DecreaseCount,
-	                                       1, true, 0.0f);
+	                                       0.1f, true, 0.5f);
 }
 
 void UUI_ThrowAway::OnPlusButtonPressed()
 {
 	GetWorld()->GetTimerManager().SetTimer(timerHandle_Increase, this, &UUI_ThrowAway::IncreaseCount,
-	                                       1, true, 0.0f);
+	                                       0.1f, true, 0.5f);
 }
 
 void UUI_ThrowAway::OnMinusButtonReleased()
