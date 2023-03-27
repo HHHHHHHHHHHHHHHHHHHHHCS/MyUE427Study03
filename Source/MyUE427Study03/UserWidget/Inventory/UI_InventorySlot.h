@@ -41,4 +41,6 @@ public:
 
 	UFUNCTION()
 	void OnButtonSlotClicked();
+
+	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 };

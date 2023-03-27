@@ -45,3 +45,19 @@ void UUI_InventorySlot::OnButtonSlotClicked()
 {
 	inventoryRef->UpdateActionMenuPosition(this);
 }
+
+FReply UUI_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	//UE Button下面有Image 可能双击会触发不动
+	//需要把Image 放到border下就好了
+	Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) && itemInfo.canUsed)
+	{
+		inventoryRef->UseItemAtIndex(slotIndex);
+		return FReply::Handled();
+	}
+	else
+	{
+		return FReply::Handled();
+	}
+}
