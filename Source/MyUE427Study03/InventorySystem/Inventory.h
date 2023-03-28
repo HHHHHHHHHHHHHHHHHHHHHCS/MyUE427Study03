@@ -67,4 +67,6 @@ public:
 	void UseItemAtIndex(int index);
 
 	void UpdateActionMenuPosition(class UUI_InventorySlot* slot);
+
+	bool AddToIndex(int fromIndex, int toIndex);
 };

@@ -225,3 +225,31 @@ void AInventory::UpdateActionMenuPosition(UUI_InventorySlot* slot)
 	actionMenu->SetRenderTranslation(FVector2D(x * 93, y * 93));
 	actionMenu->SetVisibility(ESlateVisibility::Visible);
 }
+
+bool AInventory::AddToIndex(int fromIndex, int toIndex)
+{
+	if (slots[fromIndex].itemClass == slots[toIndex].itemClass
+		&& GetItemByIndex(fromIndex)->itemInfo.canStacked
+		&& GetAmountAtIndex(toIndex) < maxStackSize)
+	{
+		int fromAmount = GetAmountAtIndex(fromIndex);
+		int toAmount = GetAmountAtIndex(toIndex);
+		int sumCount = fromAmount + toAmount;
+
+		if (sumCount <= maxStackSize)
+		{
+			slots[toIndex] = FInventorySlot{slots[fromIndex].itemClass, (fromAmount + toAmount)};
+			slots[fromIndex] = FInventorySlot{nullptr, 0};
+		}
+		else
+		{
+			slots[toIndex] = FInventorySlot{slots[fromIndex].itemClass, maxStackSize};
+			slots[fromIndex] = FInventorySlot{slots[toIndex].itemClass, sumCount - maxStackSize};
+		}
+		UpdateSlotByIndex(fromIndex);
+		UpdateSlotByIndex(toIndex);
+		return true;
+	}
+
+	return false;
+}
