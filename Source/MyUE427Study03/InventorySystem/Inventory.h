@@ -69,4 +69,6 @@ public:
 	void UpdateActionMenuPosition(class UUI_InventorySlot* slot);
 
 	bool AddToIndex(int fromIndex, int toIndex);
+	
+	bool SplitStackToIndex(int fromIndex, int toIndex, int amount);
 };

@@ -253,3 +253,19 @@ bool AInventory::AddToIndex(int fromIndex, int toIndex)
 
 	return false;
 }
+
+bool AInventory::SplitStackToIndex(int fromIndex, int toIndex, int amount)
+{
+	if (!IsSlotEmpty(fromIndex) && IsSlotEmpty(toIndex)
+		&& GetItemByIndex(fromIndex)->itemInfo.canStacked
+		&& GetAmountAtIndex(fromIndex) > amount
+		&& amount > 0)
+	{
+		slots[fromIndex] = FInventorySlot{slots[fromIndex].itemClass, GetAmountAtIndex(fromIndex) - amount};
+		slots[toIndex] = FInventorySlot{slots[fromIndex].itemClass, amount};
+		UpdateSlotByIndex(fromIndex);
+		UpdateSlotByIndex(toIndex);
+		return true;
+	}
+	return false;
+}
