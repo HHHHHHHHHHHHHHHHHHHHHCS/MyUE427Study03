@@ -178,6 +178,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACharacterBase::ToggleInventory);
 	PlayerInputComponent->BindAction("TestCompleteQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestCompleteQuest);
 	PlayerInputComponent->BindAction("TestFailQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestFailQuest);
+	PlayerInputComponent->BindAction("LeftShift", EInputEvent::IE_Pressed, this, &ACharacterBase::OnShiftPressed);
+	PlayerInputComponent->BindAction("LeftShift", EInputEvent::IE_Released, this, &ACharacterBase::OnShiftReleased);
 
 }
 
@@ -637,4 +639,14 @@ void ACharacterBase::InteractToNPC()
 			break;
 		}
 	}
+}
+
+void ACharacterBase::OnShiftPressed()
+{
+	isShiftDown = true;
+}
+
+void ACharacterBase::OnShiftReleased()
+{
+	isShiftDown = false;
 }

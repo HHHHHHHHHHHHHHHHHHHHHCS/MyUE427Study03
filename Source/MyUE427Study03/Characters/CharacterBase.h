@@ -102,6 +102,7 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	class AInventory* inventoryRef;
 
+	bool isShiftDown;
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
@@ -142,7 +143,6 @@ protected:
 	ASkillBase* currentSkill; //释放的当前技能
 
 	AActor* selectedActor;
-
 
 public:
 	// Sets default values for this character's properties
@@ -277,4 +277,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayAddNewAnim();
+
+	void OnShiftPressed();
+
+	void OnShiftReleased();
 };
