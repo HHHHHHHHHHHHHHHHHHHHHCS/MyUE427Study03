@@ -28,6 +28,8 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	UImage* Image_Icon;
 
+	UPROPERTY(EditAnywhere, Category="Drag")
+	TSubclassOf<class UDragDropOperation> itemDragDropOp;
 public:
 	int slotIndex;
 	int amount;
@@ -43,4 +45,8 @@ public:
 	void OnButtonSlotClicked();
 
 	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 };

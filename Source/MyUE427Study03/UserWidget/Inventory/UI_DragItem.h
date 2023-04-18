@@ -14,15 +14,14 @@ UCLASS()
 class MYUE427STUDY03_API UUI_DragItem : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
 
+public:
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_Icon;
 
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* Text_Amount;
 
-	FItemInfo itemInfo;
-	int amount;
+public:
+	void OnInit(int amount, UTexture2D* icon);
 };

@@ -3,7 +3,11 @@
 
 #include "UI_InventorySlot.h"
 
+#include "UI_DragItem.h"
+#include "UI_ItemDragDropOperation.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
+#include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
@@ -59,5 +63,37 @@ FReply UUI_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeom
 	else
 	{
 		return FReply::Handled();
+	}
+}
+
+FReply UUI_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+	{
+		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
+	}
+	else
+	{
+		return FReply::Handled();
+	}
+}
+
+void UUI_InventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+	auto cls = LoadClass<UUI_DragItem>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_DragItem.UI_DragItem_C'"));
+	UUI_DragItem* itemDrag = CreateWidget<UUI_DragItem>(GetWorld(), cls);
+	itemDrag->OnInit(amount, inventoryRef->GetItemByIndex(slotIndex)->itemInfo.icon);
+
+	UDragDropOperation* tempOp = UWidgetBlueprintLibrary::CreateDragDropOperation(itemDragDropOp);
+	tempOp->DefaultDragVisual = itemDrag;
+	OutOperation = tempOp;
+
+	UUI_ItemDragDropOperation* dragDropOp = Cast<UUI_ItemDragDropOperation>(OutOperation);
+
+	if (dragDropOp)
+	{
+		dragDropOp->isShiftDown = inventoryRef->playerChar->isShiftDown;
 	}
 }
