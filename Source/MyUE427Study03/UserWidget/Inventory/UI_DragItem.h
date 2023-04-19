@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MyUE427Study03/InventorySystem/InventoryStruct.h"
 #include "UI_DragItem.generated.h"
 
 /**

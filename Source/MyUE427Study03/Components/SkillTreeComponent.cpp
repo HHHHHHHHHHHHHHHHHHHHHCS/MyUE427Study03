@@ -146,7 +146,7 @@ void USkillTreeComponent::HandleShowCommand()
 
 void USkillTreeComponent::SetupTree()
 {
-	mainTreeRef = playerCharacter->mainUI->skillTree_MainTree;
+	mainTreeRef = playerCharacter->mainUI->mainTreeRef;
 	if (mainTreeRef)
 	{
 		mainTreeRef->MyInitialize(this);

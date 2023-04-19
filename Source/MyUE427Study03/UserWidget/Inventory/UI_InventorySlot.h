@@ -4,12 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "MyUE427Study03/InventorySystem/InventoryStruct.h"
 #include "UI_InventorySlot.generated.h"
 
-class UButton;
 /**
  * 
  */
@@ -19,22 +16,27 @@ class MYUE427STUDY03_API UUI_InventorySlot : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(Meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	UButton* Button_Slot;
 
-	UPROPERTY(Meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Amount;
 
-	UPROPERTY(Meta=(BindWidget))
+	UPROPERTY(meta=(BindWidget))
 	UImage* Image_Icon;
+
+	UPROPERTY(meta=(BindWidget))
+	UBorder* Border_Base;
 
 	UPROPERTY(EditAnywhere, Category="Drag")
 	TSubclassOf<class UDragDropOperation> itemDragDropOp;
+
 public:
 	int slotIndex;
 	int amount;
 	class AInventory* inventoryRef;
 	FItemInfo itemInfo;
+	bool bDraggedOver;
 
 public:
 	virtual void NativeConstruct() override;
@@ -49,4 +51,6 @@ public:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+
+	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };

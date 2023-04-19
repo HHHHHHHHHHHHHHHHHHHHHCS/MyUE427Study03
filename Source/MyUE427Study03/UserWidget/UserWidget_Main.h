@@ -54,7 +54,7 @@ public:
 
 	UUI_Minimap* minimapWidget;
 
-	class UUI_SkillTree_MainTree* skillTree_MainTree;
+	class UUI_SkillTree_MainTree* mainTreeRef;
 
 	USizeBox* questListSizeBox;
 

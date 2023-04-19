@@ -36,7 +36,7 @@ bool UUserWidget_Main::Initialize()
 	expCurrText = Cast<UTextBlock>(GetWidgetFromName("Text_CurrExp"));
 	expMaxText = Cast<UTextBlock>(GetWidgetFromName("Text_MaxExp"));
 
-	skillTree_MainTree = Cast<UUI_SkillTree_MainTree>(GetWidgetFromName("SkillTree_MainTree"));
+	mainTreeRef = Cast<UUI_SkillTree_MainTree>(GetWidgetFromName("SkillTree_MainTree"));
 
 	questListSizeBox = Cast<USizeBox>(GetWidgetFromName("SizeBox_QuestList"));
 
@@ -218,12 +218,12 @@ void UUserWidget_Main::OnSkillButtonClicked()
 {
 	if (bSkillTreeShow)
 	{
-		skillTree_MainTree->SetVisibility(ESlateVisibility::Hidden);
+		mainTreeRef->SetVisibility(ESlateVisibility::Hidden);
 		bSkillTreeShow = false;
 	}
 	else
 	{
-		skillTree_MainTree->SetVisibility(ESlateVisibility::Visible);
+		mainTreeRef->SetVisibility(ESlateVisibility::Visible);
 		bSkillTreeShow = true;
 	}
 }

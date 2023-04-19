@@ -25,7 +25,7 @@ public:
 	FSubTreeContent content;
 	TArray<UUI_SkillTree_Entry*> skillEntries;
 	TArray<class UUI_SkillTree_Connection*> connections;
-	UUI_SkillTree_MainTree* mainTreeRef;
+	class UUI_SkillTree_MainTree* mainTreeRef;
 
 public:
 	virtual void NativeConstruct() override;
