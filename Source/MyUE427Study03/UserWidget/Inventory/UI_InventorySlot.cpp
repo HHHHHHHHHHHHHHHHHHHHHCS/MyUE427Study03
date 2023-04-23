@@ -100,6 +100,7 @@ void UUI_InventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const 
 		if (dragDropOp)
 		{
 			dragDropOp->isShiftDown = inventoryRef->playerChar->isShiftDown;
+			dragDropOp->uiDragSlot = this;
 		}
 	}
 }
@@ -111,18 +112,72 @@ bool UUI_InventorySlot::NativeOnDragOver(const FGeometry& InGeometry, const FDra
 	{
 		return true;
 	}
-	else
+	auto dragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+	if (dragOp)
 	{
-		if (Cast<UUI_ItemDragDropOperation>(InOperation))
+		if (dragOp->uiDragSlot != this)
 		{
-			UE_LOG(LogTemp,Log,TEXT("11111"));
 			bDraggedOver = true;
 			Border_Base->SetBrushColor(FLinearColor(1.0f, 0.82f, 0.0f, 0.5f));
-			return true;
+		}
+		return true;
+	}
+	return false;
+}
+
+void UUI_InventorySlot::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragLeave(InDragDropEvent, InOperation);
+
+	if (bDraggedOver)
+	{
+		auto dragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+		if (dragOp)
+		{
+			Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
+			bDraggedOver = false;
+		}
+	}
+}
+
+bool UUI_InventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+
+	auto dragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+
+	if (dragOp)
+	{
+		auto slot = dragOp->uiDragSlot;
+		if (slot != this)
+		{
+			bDraggedOver = false;
+			Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
+			if (inventoryRef->AddToIndex(slot->slotIndex, slotIndex))
+			{
+				return true;
+			}
+			else
+			{
+				if (dragOp->isShiftDown)
+				{
+					inventoryRef->SplitStackToIndex(slot->slotIndex, slotIndex, slot->amount / 2);
+				}
+				else
+				{
+					inventoryRef->SwapSlot(slot->slotIndex, slotIndex);
+				}
+
+				return true;
+			}
 		}
 		else
 		{
-			return false;
+			return true;
 		}
+	}
+	else
+	{
+		return false;
 	}
 }

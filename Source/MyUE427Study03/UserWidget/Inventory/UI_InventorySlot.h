@@ -17,16 +17,16 @@ class MYUE427STUDY03_API UUI_InventorySlot : public UUserWidget
 
 public:
 	UPROPERTY(meta=(BindWidget))
-	UButton* Button_Slot;
+	class UButton* Button_Slot;
 
 	UPROPERTY(meta=(BindWidget))
-	UTextBlock* Text_Amount;
+	class UTextBlock* Text_Amount;
 
 	UPROPERTY(meta=(BindWidget))
-	UImage* Image_Icon;
+	class UImage* Image_Icon;
 
 	UPROPERTY(meta=(BindWidget))
-	UBorder* Border_Base;
+	class UBorder* Border_Base;
 
 	UPROPERTY(EditAnywhere, Category="Drag")
 	TSubclassOf<class UDragDropOperation> itemDragDropOp;
@@ -53,4 +53,8 @@ public:
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 
 	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 };
