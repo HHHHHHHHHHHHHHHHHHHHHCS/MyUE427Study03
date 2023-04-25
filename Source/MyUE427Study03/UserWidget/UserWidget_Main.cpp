@@ -8,6 +8,9 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
 #include "Components/ScrollBoxSlot.h"
+#include "Components/WrapBox.h"
+#include "Inventory/UI_ItemDragDropOperation.h"
+#include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "Quest/UI_Quest_Journal.h"
 #include "Quest/UI_Quest_Quest.h"
 #include "SkillTree/UI_SkillTree_MainTree.h"
@@ -57,7 +60,7 @@ bool UUserWidget_Main::Initialize()
 	inventoryButton = Cast<UButton>(GetWidgetFromName("Button_Inventory"));
 	inventoryButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnInventoryButtonClicked);
 
-	throwAwayWidget= Cast<UUI_ThrowAway>(GetWidgetFromName("UI_ThrowAway"));
+	throwAwayWidget = Cast<UUI_ThrowAway>(GetWidgetFromName("UI_ThrowAway"));
 
 	return true;
 }
@@ -152,22 +155,38 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 		}
 		return true;
 	}
-	else
+
+	UInventoryDragDropOperation* invDragOp = Cast<UInventoryDragDropOperation>(InOperation);
+	if (invDragOp)
 	{
-		UInventoryDragDropOperation* invDragOp = Cast<UInventoryDragDropOperation>(InOperation);
-		if (invDragOp)
+		UUserWidget* dragWidget = invDragOp->dragWidget;
+		dragWidget->AddToViewport();
+		//SetDesiredSizeInViewport 如果不设置这个窗口大小    默认会全屏
+		dragWidget->SetDesiredSizeInViewport(FVector2D(800, 600));
+		//InGeometry.AbsoluteToLocal 转换局部空间
+		//要减去mouseOffset 是因为坐标零点发生了改变
+		dragWidget->SetPositionInViewport(
+			InGeometry.AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition())
+			- invDragOp->mouseOffset, false);
+		return true;
+	}
+
+	UUI_ItemDragDropOperation* dragDropOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+
+	if (dragDropOp)
+	{
+		UUI_InventorySlot* slot = dragDropOp->uiDragSlot;
+		if (!slot->itemInfo.canStacked && slot->amount > 0)
 		{
-			UUserWidget* dragWidget = invDragOp->dragWidget;
-			dragWidget->AddToViewport();
-			//SetDesiredSizeInViewport 如果不设置这个窗口大小    默认会全屏
-			dragWidget->SetDesiredSizeInViewport(FVector2D(800, 600));
-			//InGeometry.AbsoluteToLocal 转换局部空间
-			//要减去mouseOffset 是因为坐标零点发生了改变
-			dragWidget->SetPositionInViewport(
-				InGeometry.AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition())
-				- invDragOp->mouseOffset, false);
-			return true;
+			inventoryWidget->inventoryRef->RemoveItemAtIndex(slot->slotIndex, 1);
 		}
+		else
+		{
+			throwAwayWidget->UpdateInfo(slot->slotIndex);
+			throwAwayWidget->SetVisibility(ESlateVisibility::Visible);
+			inventoryWidget->WBOX_Inventory->SetIsEnabled(false);
+		}
+		return true;
 	}
 
 	return bl;
