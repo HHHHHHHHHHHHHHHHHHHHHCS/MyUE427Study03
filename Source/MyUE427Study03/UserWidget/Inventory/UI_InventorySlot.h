@@ -37,18 +37,25 @@ public:
 	class AInventory* inventoryRef;
 	FItemInfo itemInfo;
 	bool bDraggedOver;
+	class UUI_ItemDetail* itemDetail;
+	int clickCount;
+	FTimerHandle timerHandle_CountToZero;
 
 public:
 	virtual void NativeConstruct() override;
 
 	void UpdateSlot();
 
+	void SetClickCountZero();
+
 	UFUNCTION()
 	void OnButtonSlotClicked();
 
-	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	// virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	// virtual FReply NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 

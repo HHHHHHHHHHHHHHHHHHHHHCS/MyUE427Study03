@@ -4,6 +4,8 @@
 #include "UI_InventorySlot.h"
 
 #include "UI_DragItem.h"
+#include "UI_InventoryActionMenu.h"
+#include "UI_ItemDetail.h"
 #include "UI_ItemDragDropOperation.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
@@ -27,6 +29,7 @@ void UUI_InventorySlot::UpdateSlot()
 		Button_Slot->SetIsEnabled(false);
 		Image_Icon->SetVisibility(ESlateVisibility::Hidden);
 		Text_Amount->SetVisibility(ESlateVisibility::Hidden);
+		Button_Slot->SetToolTip(nullptr);
 	}
 	else
 	{
@@ -45,42 +48,85 @@ void UUI_InventorySlot::UpdateSlot()
 		{
 			Text_Amount->SetVisibility(ESlateVisibility::Hidden);
 		}
+
+		if (!itemDetail)
+		{
+			auto cls = LoadClass<UUI_ItemDetail>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemDetail.UI_ItemDetail_C'"));
+			itemDetail = CreateWidget<UUI_ItemDetail>(GetWorld(), cls);
+		}
+		itemDetail->itemInfo = itemInfo;
+		itemDetail->amount = amount;
+		Button_Slot->SetToolTip(itemDetail);
+		itemDetail->UpdateInfo();
 	}
+}
+
+void UUI_InventorySlot::SetClickCountZero()
+{
+	clickCount = 0;
+	inventoryRef->UpdateActionMenuPosition(this);
+	GetWorld()->GetTimerManager().ClearTimer(timerHandle_CountToZero);
 }
 
 void UUI_InventorySlot::OnButtonSlotClicked()
 {
-	inventoryRef->UpdateActionMenuPosition(this);
-}
-
-FReply UUI_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-{
-	//UE Button下面有Image 可能双击会触发不动
-	//需要把Image 放到border下就好了
-	Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
-	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) && itemInfo.canUsed)
+	clickCount++;
+	GetWorld()->GetTimerManager().SetTimer(timerHandle_CountToZero, this, &UUI_InventorySlot::SetClickCountZero, 0.3f, false);
+	if (clickCount >= 2)
 	{
 		inventoryRef->UseItemAtIndex(slotIndex);
-		return FReply::Handled();
+		clickCount = 0;
+		inventoryRef->playerChar->mainUI->inventoryWidget->actionMenu->SetVisibility(ESlateVisibility::Hidden);
+		GetWorld()->GetTimerManager().ClearTimer(timerHandle_CountToZero);
 	}
-	else
-	{
-		return FReply::Handled();
-	}
+
 }
+
+// FReply UUI_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+// {
+// 	//UE Button下面有Image 可能双击会触发不动
+// 	//需要把Image 放到border下就好了
+// 	Super::NativeOnMouseButtonDoubleClick(InGeometry, InMouseEvent);
+// 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) && itemInfo.canUsed)
+// 	{
+// 		inventoryRef->playerChar->mainUI->inventoryWidget->actionMenu->SetVisibility(ESlateVisibility::Hidden);
+// 		inventoryRef->UseItemAtIndex(slotIndex);
+// 		return FReply::Handled();
+// 	}
+// 	else
+// 	{
+// 		return FReply::Handled();
+// 	}
+// }
 
 FReply UUI_InventorySlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
 	{
 		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
 	}
-	else
-	{
-		return FReply::Handled();
-	}
+	return FReply::Handled();
 }
+
+// FReply UUI_InventorySlot::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+// {
+// 	Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
+//
+// 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+// 	{
+// 		if (!inventoryRef->IsSlotEmpty(slotIndex))
+// 		{
+// 			inventoryRef->UpdateActionMenuPosition(this);
+// 		}
+// 	}
+// 	else if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+// 	{
+// 		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::RightMouseButton).NativeReply;
+// 	}
+// 	return FReply::Handled();
+// }
 
 void UUI_InventorySlot::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
