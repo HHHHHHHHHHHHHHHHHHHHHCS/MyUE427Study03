@@ -22,7 +22,7 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Obtain;
-	
+
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Amount;
 
@@ -33,5 +33,9 @@ public:
 	UImage* Image_Icon;
 
 public:
-	void OnInit(TSubclassOf<class AItemBase> itemCls);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float visibleDuration = 2.0f;
+
+public:
+	void OnInit(TSubclassOf<class AItemBase> itemCls,int amount);
 };

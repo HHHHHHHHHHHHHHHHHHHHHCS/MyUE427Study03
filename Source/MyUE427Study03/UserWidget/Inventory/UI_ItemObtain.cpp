@@ -5,11 +5,11 @@
 
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
-void UUI_ItemObtain::OnInit(TSubclassOf<AItemBase> itemCls)
+void UUI_ItemObtain::OnInit(TSubclassOf<AItemBase> itemCls, int amount)
 {
 	AItemBase* item = itemCls.GetDefaultObject();
 	Text_Name->SetText(item->itemInfo.name);
-	Text_Amount->SetText(FText::AsNumber(item->amount));
+	Text_Amount->SetText(FText::AsNumber(amount));
 	Image_Icon->SetBrushFromTexture(item->itemInfo.icon);
 	FLinearColor tempColor;
 	switch (item->itemInfo.category)

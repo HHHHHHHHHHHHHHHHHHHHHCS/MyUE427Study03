@@ -72,6 +72,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool bOutSide = true;
 
+	class UBorder* obtainContainer;
+
 	class UUI_Quest_Journal* questJournal;
 
 	UButton* questButton;

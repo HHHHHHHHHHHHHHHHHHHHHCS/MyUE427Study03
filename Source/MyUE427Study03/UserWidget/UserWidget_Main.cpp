@@ -62,6 +62,8 @@ bool UUserWidget_Main::Initialize()
 
 	throwAwayWidget = Cast<UUI_ThrowAway>(GetWidgetFromName("UI_ThrowAway"));
 
+	obtainContainer = Cast<UBorder>(GetWidgetFromName("ObtainContainer"));
+
 	return true;
 }
 
