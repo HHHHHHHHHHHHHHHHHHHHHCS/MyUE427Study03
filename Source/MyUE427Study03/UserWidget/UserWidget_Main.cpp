@@ -10,6 +10,7 @@
 #include "Components/ScrollBoxSlot.h"
 #include "Components/WrapBox.h"
 #include "Inventory/UI_ItemDragDropOperation.h"
+#include "Inventory/UI_ItemObtain.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "Quest/UI_Quest_Journal.h"
 #include "Quest/UI_Quest_Quest.h"
@@ -252,4 +253,20 @@ void UUserWidget_Main::OnSkillButtonClicked()
 void UUserWidget_Main::OnInventoryButtonClicked()
 {
 	inventoryWidget->ToggleVisibility();
+}
+
+void UUserWidget_Main::AddItemToObtainedQueue(TSubclassOf<AItemBase> itemCls, int amount)
+{
+	if (!obtainedItemQueue.IsEmpty())
+	{
+		obtainedItemQueue.Enqueue(itemCls);
+	}
+	else
+	{
+		auto cls = LoadClass<UUI_ItemObtain>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemObtain.UI_ItemObtain_C'"));
+		UUI_ItemObtain* itemObtain = CreateWidget<UUI_ItemObtain>(GetWorld(), cls);
+		itemObtain->OnInit(itemCls, amount);
+		obtainContainer->AddChild(itemObtain);
+		obtainedItemQueue.Enqueue(itemCls);
+	}
 }

@@ -6,7 +6,7 @@
 #include "UI_Minimap.h"
 #include "UI_SkillHotkey.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Border.h" 
+#include "Components/Border.h"
 #include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
 #include "Components/ScrollBox.h"
@@ -87,6 +87,9 @@ public:
 	bool bSkillTreeShow = false;
 
 public:
+	TQueue<TSubclassOf<class AItemBase>> obtainedItemQueue;
+
+public:
 	virtual bool Initialize() override;
 
 	void SetLevelText(FText text);
@@ -119,7 +122,8 @@ public:
 	UFUNCTION()
 	void OnSkillButtonClicked();
 
-
 	UFUNCTION()
 	void OnInventoryButtonClicked();
+
+	void AddItemToObtainedQueue(TSubclassOf<class AItemBase> itemCls, int amount);
 };
