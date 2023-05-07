@@ -60,7 +60,13 @@ void AItemBase::OnLeavePlayerRadius(ACharacterBase* character)
 
 void AItemBase::OnInteractWith(ACharacterBase* character)
 {
+	int oldRemainder = remainder;
 	remainder = character->inventoryRef->AddItem(GetClass(), remainder);
+
+	if (oldRemainder != remainder)
+	{
+		character->mainUI->AddItemToObtainedQueue(this->GetClass(), oldRemainder - remainder);
+	}
 	if (remainder <= 0)
 	{
 		Destroy();
@@ -69,7 +75,7 @@ void AItemBase::OnInteractWith(ACharacterBase* character)
 
 void AItemBase::OnUsed()
 {
-	if(inventoryRef->RemoveItemAtIndex(index, 1))
+	if (inventoryRef->RemoveItemAtIndex(index, 1))
 	{
 		Destroy();
 	}

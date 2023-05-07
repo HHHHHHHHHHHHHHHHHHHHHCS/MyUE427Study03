@@ -87,7 +87,7 @@ public:
 	bool bSkillTreeShow = false;
 
 public:
-	TQueue<TSubclassOf<class AItemBase>> obtainedItemQueue;
+	TQueue<FInventorySlot> obtainedItemQueue;
 
 public:
 	virtual bool Initialize() override;
@@ -126,4 +126,7 @@ public:
 	void OnInventoryButtonClicked();
 
 	void AddItemToObtainedQueue(TSubclassOf<class AItemBase> itemCls, int amount);
+
+	UFUNCTION(BlueprintCallable)
+	void OnObtainMessageEnd();
 };

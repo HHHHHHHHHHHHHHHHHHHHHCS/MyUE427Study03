@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "UI_ItemObtain.generated.h"
 
+class UUserWidget_Main;
 /**
  * 
  */
@@ -36,6 +37,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float visibleDuration = 2.0f;
 
+	UPROPERTY(BlueprintReadOnly)
+	UUserWidget_Main* mainUI;
 public:
-	void OnInit(TSubclassOf<class AItemBase> itemCls,int amount);
+	void OnInit(TSubclassOf<class AItemBase> itemCls,int amount, UUserWidget_Main* mainUIWidget);
 };

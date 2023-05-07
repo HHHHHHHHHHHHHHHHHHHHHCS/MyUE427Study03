@@ -2,11 +2,12 @@
 
 
 #include "UI_ItemObtain.h"
-
+#include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
-void UUI_ItemObtain::OnInit(TSubclassOf<AItemBase> itemCls, int amount)
+void UUI_ItemObtain::OnInit(TSubclassOf<AItemBase> itemCls, int amount, UUserWidget_Main* mainUIWidget)
 {
+	mainUI = mainUIWidget;
 	AItemBase* item = itemCls.GetDefaultObject();
 	Text_Name->SetText(item->itemInfo.name);
 	Text_Amount->SetText(FText::AsNumber(amount));

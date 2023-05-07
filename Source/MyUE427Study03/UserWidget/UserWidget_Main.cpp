@@ -259,14 +259,29 @@ void UUserWidget_Main::AddItemToObtainedQueue(TSubclassOf<AItemBase> itemCls, in
 {
 	if (!obtainedItemQueue.IsEmpty())
 	{
-		obtainedItemQueue.Enqueue(itemCls);
+		obtainedItemQueue.Enqueue(FInventorySlot{itemCls, amount});
 	}
 	else
 	{
-		auto cls = LoadClass<UUI_ItemObtain>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemObtain.UI_ItemObtain_C'"));
-		UUI_ItemObtain* itemObtain = CreateWidget<UUI_ItemObtain>(GetWorld(), cls);
-		itemObtain->OnInit(itemCls, amount);
+		auto obtainCls = LoadClass<UUI_ItemObtain>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemObtain.UI_ItemObtain_C'"));
+		UUI_ItemObtain* itemObtain = CreateWidget<UUI_ItemObtain>(GetWorld(), obtainCls);
+		itemObtain->OnInit(itemCls, amount, this);
 		obtainContainer->AddChild(itemObtain);
-		obtainedItemQueue.Enqueue(itemCls);
+		obtainedItemQueue.Enqueue(FInventorySlot{itemCls, amount});
+	}
+}
+
+void UUserWidget_Main::OnObtainMessageEnd()
+{
+	obtainedItemQueue.Pop();
+	obtainContainer->ClearChildren();
+	if (!obtainedItemQueue.IsEmpty())
+	{
+		auto obtainCls = LoadClass<UUI_ItemObtain>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemObtain.UI_ItemObtain_C'"));
+		UUI_ItemObtain* itemObtain = CreateWidget<UUI_ItemObtain>(GetWorld(), obtainCls);
+		FInventorySlot slot;
+		obtainedItemQueue.Peek(slot);
+		itemObtain->OnInit(slot.itemClass, slot.amount, this);
+		obtainContainer->AddChild(itemObtain);
 	}
 }
