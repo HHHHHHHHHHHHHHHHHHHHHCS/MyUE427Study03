@@ -202,11 +202,21 @@ public:
 		return currentHp;
 	}
 
+	FORCEINLINE float GetTotalHP() const
+	{
+		return totalHp;
+	}
+
 	void ChangeCurrentMP(float deltaMp);
 
 	FORCEINLINE float GetCurrentMP() const
 	{
 		return currentMp;
+	}
+
+	FORCEINLINE float GetTotalMP() const
+	{
+		return totalMp;
 	}
 
 	void ChangeCurrentExp(float deltaExp);
