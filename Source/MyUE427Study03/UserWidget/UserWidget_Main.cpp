@@ -65,6 +65,8 @@ bool UUserWidget_Main::Initialize()
 
 	obtainContainer = Cast<UBorder>(GetWidgetFromName("ObtainContainer"));
 
+	readableContainer = Cast<UBorder>(GetWidgetFromName("ReadableContainer"));
+
 	return true;
 }
 

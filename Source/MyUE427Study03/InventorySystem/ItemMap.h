@@ -13,5 +13,12 @@ UCLASS()
 class MYUE427STUDY03_API AItemMap : public AItemBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	class UUI_ItemReadable* readableItemUI;
+
+public:
+	virtual void OnUsed() override;
+
+	void OnReaderEnd();
 };
