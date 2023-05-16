@@ -12,6 +12,7 @@ void AItemMap::OnUsed()
 	inventoryRef->playerChar->mainUI->inventoryWidget->SetIsEnabled(false);
 	auto cls = LoadClass<UUI_ItemReadable>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_ItemReadable.UI_ItemReadable_C'"));
 	readableItemUI = CreateWidget<UUI_ItemReadable>(GetWorld(), cls);
+	readableItemUI->itemMap = this;
 	inventoryRef->playerChar->mainUI->readableContainer->AddChild(readableItemUI);
 	FInputModeUIOnly inputMode;
 	inventoryRef->playerChar->playerController->SetInputMode(inputMode);

@@ -23,4 +23,13 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_Map;
+
+public:
+	class AItemMap* itemMap;
+
+public:
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnCloseButtonClicked();
 };

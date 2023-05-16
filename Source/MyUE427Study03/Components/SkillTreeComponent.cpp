@@ -132,12 +132,14 @@ void USkillTreeComponent::HandleShowCommand()
 		if (playerCharacter->mainUI->bSkillTreeShow)
 		{
 			mainTreeRef->SetVisibility(ESlateVisibility::Hidden);
+			FInputModeGameAndUI inputMode;
+			playerCharacter->playerController->SetInputMode(inputMode);
 			playerCharacter->mainUI->bSkillTreeShow = false;
 		}
 		else
 		{
 			mainTreeRef->SetVisibility(ESlateVisibility::Visible);
-			FInputModeGameAndUI inputMode;
+			FInputModeUIOnly inputMode;
 			playerCharacter->playerController->SetInputMode(inputMode);
 			playerCharacter->mainUI->bSkillTreeShow = true;
 		}
