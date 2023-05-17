@@ -2,7 +2,6 @@
 
 
 #include "ItemBase.h"
-
 #include "Inventory.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Interaction.h"
@@ -12,8 +11,8 @@ AItemBase::AItemBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	sphereCollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollisionComp"));
-	SetRootComponent(sphereCollisionComp);
+	boxCollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComp"));
+	SetRootComponent(boxCollisionComp);
 
 	staticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 	staticMeshComp->SetupAttachment(RootComponent);

@@ -22,7 +22,7 @@ public:
 
 public:
 	UPROPERTY(VisibleAnywhere)
-	USphereComponent* sphereCollisionComp;
+	class UBoxComponent* boxCollisionComp;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* staticMeshComp;
