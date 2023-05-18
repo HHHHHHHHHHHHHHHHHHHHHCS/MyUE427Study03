@@ -129,6 +129,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
+	class AItemStaff* staff;
 
 protected:
 	bool bMouseRightHold;
@@ -291,4 +292,6 @@ public:
 	void OnShiftPressed();
 
 	void OnShiftReleased();
+
+	bool EquipItem(class AItemStaff* _staff);
 };

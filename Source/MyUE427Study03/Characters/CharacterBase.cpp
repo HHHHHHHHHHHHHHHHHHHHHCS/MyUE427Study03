@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/MyUE427Study03.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
+#include "MyUE427Study03/InventorySystem/ItemStaff.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "MyUE427Study03/NPC/NPCBase.h"
@@ -180,7 +181,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("TestFailQuest", EInputEvent::IE_Pressed, this, &ACharacterBase::TestFailQuest);
 	PlayerInputComponent->BindAction("LeftShift", EInputEvent::IE_Pressed, this, &ACharacterBase::OnShiftPressed);
 	PlayerInputComponent->BindAction("LeftShift", EInputEvent::IE_Released, this, &ACharacterBase::OnShiftReleased);
-
 }
 
 void ACharacterBase::MoveForward(float val)
@@ -649,4 +649,25 @@ void ACharacterBase::OnShiftPressed()
 void ACharacterBase::OnShiftReleased()
 {
 	isShiftDown = false;
+}
+
+bool ACharacterBase::EquipItem(AItemStaff* _staff)
+{
+	if (!staff)
+	{
+		if (inventoryRef->RemoveItemAtIndex(_staff->index, 1))
+		{
+			staff = _staff;
+			staff->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Weapon_ISocket");
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+	}
+	return true;
 }
