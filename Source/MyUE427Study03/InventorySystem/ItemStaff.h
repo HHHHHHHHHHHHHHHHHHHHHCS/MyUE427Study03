@@ -13,5 +13,7 @@ UCLASS()
 class MYUE427STUDY03_API AItemStaff : public AItemBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void OnUsed() override;
 };

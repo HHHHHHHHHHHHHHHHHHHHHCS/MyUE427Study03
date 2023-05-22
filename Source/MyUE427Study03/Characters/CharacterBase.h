@@ -57,7 +57,6 @@ public:
 	UPROPERTY(EditAnywhere, Category="Quest")
 	TSubclassOf<class AQuestManager> questManagerCls;
 
-
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TArray<FKey> keys;
@@ -294,4 +293,7 @@ public:
 	void OnShiftReleased();
 
 	bool EquipItem(class AItemStaff* _staff);
+
+	UFUNCTION(BlueprintCallable)
+	bool UnEquipItem();
 };

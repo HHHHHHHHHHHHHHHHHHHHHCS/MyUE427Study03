@@ -668,6 +668,35 @@ bool ACharacterBase::EquipItem(AItemStaff* _staff)
 	}
 	else
 	{
+		if(UnEquipItem())
+		{
+			return EquipItem(_staff);
+		}
+		else
+		{
+			return false;
+		}
 	}
 	return true;
+}
+
+bool ACharacterBase::UnEquipItem()
+{
+	if(staff)
+	{
+		if(inventoryRef->AddItem(staff->GetClass(), 1))
+		{
+			staff->Destroy();
+			staff = nullptr;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
 }
