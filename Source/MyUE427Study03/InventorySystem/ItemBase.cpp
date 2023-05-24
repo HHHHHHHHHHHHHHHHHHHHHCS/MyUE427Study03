@@ -11,11 +11,12 @@ AItemBase::AItemBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	boxCollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComp"));
-	SetRootComponent(boxCollisionComp);
 
 	staticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
-	staticMeshComp->SetupAttachment(RootComponent);
+	SetRootComponent(staticMeshComp);
+
+	boxCollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComp"));
+	boxCollisionComp->SetupAttachment(RootComponent);
 
 	interactionUI = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractionUI"));
 	interactionUI->SetupAttachment(RootComponent);
