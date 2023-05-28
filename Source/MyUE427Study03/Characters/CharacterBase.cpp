@@ -684,7 +684,7 @@ bool ACharacterBase::UnEquipItem()
 {
 	if(staff)
 	{
-		if(inventoryRef->AddItem(staff->GetClass(), 1))
+		if(inventoryRef->AddItem(staff->GetClass(), 1) <= 0)
 		{
 			staff->Destroy();
 			staff = nullptr;

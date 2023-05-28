@@ -13,6 +13,7 @@ AItemBase::AItemBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	staticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
+	staticMeshComp->SetGenerateOverlapEvents(false);
 	SetRootComponent(staticMeshComp);
 
 	boxCollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollisionComp"));
