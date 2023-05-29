@@ -15,5 +15,12 @@ class MYUE427STUDY03_API AItemStaff : public AItemBase
 	GENERATED_BODY()
 
 public:
+	AItemStaff();
+
+public:
+	UPROPERTY(EditDefaultsOnly, category="Item")
+	FString socketName;
+
+public:
 	virtual void OnUsed() override;
 };

@@ -658,7 +658,7 @@ bool ACharacterBase::EquipItem(AItemStaff* _staff)
 		if (inventoryRef->RemoveItemAtIndex(_staff->index, 1))
 		{
 			staff = _staff;
-			staff->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Weapon_ISocket");
+			staff->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, *staff->socketName);
 			return true;
 		}
 		else
