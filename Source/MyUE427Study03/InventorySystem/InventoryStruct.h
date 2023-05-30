@@ -32,6 +32,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	EItemCategories category = EItemCategories::Consume;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	FString compareName;
 };
 
 USTRUCT()

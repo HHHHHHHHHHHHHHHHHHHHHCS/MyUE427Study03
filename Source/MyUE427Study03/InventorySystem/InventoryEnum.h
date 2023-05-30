@@ -15,6 +15,14 @@ enum class EItemCategories
 	Readable,
 };
 
+UENUM()
+enum class ESortType
+{
+	Category,
+	Amount,
+	Name,
+};
+
 /**
  * 
  */
