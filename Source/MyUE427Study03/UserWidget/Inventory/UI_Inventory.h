@@ -22,6 +22,12 @@ public:
 	UPROPERTY(Meta=(BindWidget))
 	class UButton* Button_Close;
 
+	UPROPERTY(Meta=(BindWidget))
+	class UComboBoxString* CBox_SortCategory;
+
+	UPROPERTY(Meta=(BindWidget))
+	class UButton* Button_Sort;
+	
 
 public:
 	TArray<UUI_InventorySlot*> inventorySlots;
