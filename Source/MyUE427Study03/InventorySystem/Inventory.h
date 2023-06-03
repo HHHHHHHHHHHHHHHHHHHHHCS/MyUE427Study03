@@ -71,4 +71,6 @@ public:
 	bool AddToIndex(int fromIndex, int toIndex);
 	
 	bool SplitStackToIndex(int fromIndex, int toIndex, int amount);
+
+	void SortInventory(ESortType type, bool isReversed);
 };

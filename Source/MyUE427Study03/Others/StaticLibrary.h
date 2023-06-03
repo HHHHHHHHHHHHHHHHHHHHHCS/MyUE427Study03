@@ -51,4 +51,24 @@ public:
 		tempString.RemoveFromStart(name + "::");
 		return tempString;
 	}
+
+	template <typename TEnum>
+	FORCEINLINE static TArray<TEnum>GetEnumArray(const FString& name)
+	{
+		TArray<TEnum> results;
+		const UEnum* enumPtr = FindObject<UEnum>(ANY_PACKAGE, *name, true);
+		if (enumPtr == nullptr)
+		{
+			return results;
+		}
+
+		for (int i = 0; i < enumPtr->GetMaxEnumValue(); i++)
+		{
+			if (enumPtr->IsValidEnumValue(i))
+			{
+				results.Add(static_cast<TEnum>(i));
+			}
+		}
+		return results;
+	}
 };

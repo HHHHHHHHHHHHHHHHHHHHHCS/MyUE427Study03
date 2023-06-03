@@ -212,7 +212,7 @@ void AInventory::UseItemAtIndex(int index)
 		AItemBase* item = GetWorld()->SpawnActor<AItemBase>(slots[index].itemClass, params);
 		item->inventoryRef = this;
 		item->index = index;
-		if(item->itemInfo.category == EItemCategories::Equipment)
+		if (item->itemInfo.category == EItemCategories::Equipment)
 		{
 			item->boxCollisionComp->SetGenerateOverlapEvents(false);
 		}
@@ -272,4 +272,8 @@ bool AInventory::SplitStackToIndex(int fromIndex, int toIndex, int amount)
 		return true;
 	}
 	return false;
+}
+
+void AInventory::SortInventory(ESortType type, bool isReversed)
+{
 }

@@ -6,14 +6,23 @@
 #include "UI_InventoryActionMenu.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Button.h"
+#include "Components/ComboBoxString.h"
 #include "Components/WrapBox.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
+#include "MyUE427Study03/Others/StaticLibrary.h"
 
 void UUI_Inventory::NativeConstruct()
 {
 	Super::NativeConstruct();
 	Button_Close->OnClicked.AddDynamic(this, &UUI_Inventory::OnCloseButtonClick);
+	Button_Sort->OnClicked.AddDynamic(this, &UUI_Inventory::OnSortButtonClick);
 	actionMenu = Cast<UUI_InventoryActionMenu>(GetWidgetFromName(TEXT("UI_InventoryActionMenu")));
+	auto sortArray = UStaticLibrary::GetEnumArray<ESortType>("ESortType");
+	for (auto item : sortArray)
+	{
+		CBox_SortCategory->AddOption(UStaticLibrary::GetEnumValueAsString("ESortType", item));
+	}
+	CBox_SortCategory->SetSelectedOption(CBox_SortCategory->GetOptionAtIndex(0));
 }
 
 void UUI_Inventory::GenerateSlotWidget()
@@ -53,6 +62,12 @@ void UUI_Inventory::ToggleVisibility()
 		SetVisibility(ESlateVisibility::Visible);
 		bInventoryShow = true;
 	}
+}
+
+void UUI_Inventory::OnSortButtonClick()
+{
+	int idx = CBox_SortCategory->FindOptionIndex(CBox_SortCategory->GetSelectedOption());
+	inventoryRef->SortInventory(static_cast<ESortType>(idx), true);
 }
 
 FReply UUI_Inventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
