@@ -67,7 +67,8 @@ void UUI_Inventory::ToggleVisibility()
 void UUI_Inventory::OnSortButtonClick()
 {
 	int idx = CBox_SortCategory->FindOptionIndex(CBox_SortCategory->GetSelectedOption());
-	inventoryRef->SortInventory(static_cast<ESortType>(idx), true);
+	inventoryRef->SortInventory(static_cast<ESortType>(idx), isReversed);
+	isReversed = !isReversed;
 }
 
 FReply UUI_Inventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)

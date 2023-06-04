@@ -14,7 +14,7 @@ class MYUE427STUDY03_API AInventory : public AActor
 
 public:
 	constexpr static int ROW_NUM = 7;
-	
+
 public:
 	int amountOfSlots; //插槽的数量
 
@@ -24,11 +24,9 @@ public:
 
 	TArray<FInventorySlot> slots;
 
-
 public:
 	// Sets default values for this actor's properties
 	AInventory();
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -69,8 +67,12 @@ public:
 	void UpdateActionMenuPosition(class UUI_InventorySlot* slot);
 
 	bool AddToIndex(int fromIndex, int toIndex);
-	
+
 	bool SplitStackToIndex(int fromIndex, int toIndex, int amount);
 
 	void SortInventory(ESortType type, bool isReversed);
+
+	TArray<FInventorySlot> FindExistSlots();
+
+	TArray<FInventorySlot> BubbleSortArray(TArray<FInventorySlot> inputArray, ESortType type, bool isReversed);
 };

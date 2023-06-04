@@ -9,7 +9,7 @@
 UENUM()
 enum class EItemCategories
 {
-	Consume,
+	Consume = 0,
 	Equipment,
 	QuestItem,
 	Readable,

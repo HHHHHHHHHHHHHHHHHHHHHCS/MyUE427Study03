@@ -40,6 +40,8 @@ public:
 
 	class UUI_InventoryActionMenu* actionMenu;
 
+	bool isReversed = false;
+
 protected:
 	UPROPERTY(EditAnywhere, Category="DragDrop")
 	TSubclassOf<UInventoryDragDropOperation> inventoryDragDropOperationCls;

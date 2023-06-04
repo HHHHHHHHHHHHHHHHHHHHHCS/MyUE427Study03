@@ -276,4 +276,76 @@ bool AInventory::SplitStackToIndex(int fromIndex, int toIndex, int amount)
 
 void AInventory::SortInventory(ESortType type, bool isReversed)
 {
+	slots = FindExistSlots();
+	if (slots.Num() <= 1)
+	{
+		slots.SetNum(amountOfSlots);
+		for (int i = 0; i < slots.Num(); i++)
+		{
+			UpdateSlotByIndex(i);
+		}
+		return;
+	}
+	slots = BubbleSortArray(slots, type, isReversed);
+	slots.SetNum(amountOfSlots);
+	for (int i = 0; i < slots.Num(); i++)
+	{
+		UpdateSlotByIndex(i);
+	}
+}
+
+TArray<FInventorySlot> AInventory::FindExistSlots()
+{
+	TArray<FInventorySlot> tempSlots;
+	for (auto slot : slots)
+	{
+		if (slot.itemClass)
+		{
+			tempSlots.Add(slot);
+		}
+	}
+	return tempSlots;
+}
+
+TArray<FInventorySlot> AInventory::BubbleSortArray(TArray<FInventorySlot> inputArray, ESortType type, bool isReversed)
+{
+	TArray<FInventorySlot> tempSlots = inputArray;
+
+
+	for (int end = tempSlots.Num() - 1; end > 0; end--)
+	{
+		for (int i = 0; i < end; i++)
+		{
+			if (type == ESortType::Category)
+			{
+				if ((!isReversed && tempSlots[i].itemClass.GetDefaultObject()->itemInfo.category
+						> tempSlots[i + 1].itemClass.GetDefaultObject()->itemInfo.category)
+					|| (isReversed && tempSlots[i].itemClass.GetDefaultObject()->itemInfo.category
+						< tempSlots[i + 1].itemClass.GetDefaultObject()->itemInfo.category))
+				{
+					std::swap(tempSlots[i], tempSlots[i + 1]);
+				}
+			}
+			else if (type == ESortType::Amount)
+			{
+				if ((!isReversed && tempSlots[i].amount > tempSlots[i + 1].amount)
+					|| (isReversed && tempSlots[i].amount < tempSlots[i + 1].amount))
+				{
+					std::swap(tempSlots[i], tempSlots[i + 1]);
+				}
+			}
+			else if (type == ESortType::Name)
+			{
+				if ((!isReversed && tempSlots[i].itemClass.GetDefaultObject()->itemInfo.name.CompareTo(
+						tempSlots[i + 1].itemClass.GetDefaultObject()->itemInfo.name))
+					|| (isReversed && !tempSlots[i].itemClass.GetDefaultObject()->itemInfo.name.CompareTo(
+						tempSlots[i + 1].itemClass.GetDefaultObject()->itemInfo.name)))
+				{
+					std::swap(tempSlots[i], tempSlots[i + 1]);
+				}
+			}
+		}
+	}
+
+	return tempSlots;
 }
