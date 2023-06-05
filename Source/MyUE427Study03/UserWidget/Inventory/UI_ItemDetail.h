@@ -33,6 +33,12 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Description;
 
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_TotalWeight;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* Text_SingleWeight;
+
 public:
 	FItemInfo itemInfo;
 	int amount;

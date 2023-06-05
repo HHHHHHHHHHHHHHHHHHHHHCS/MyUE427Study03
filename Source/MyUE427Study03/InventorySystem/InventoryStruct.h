@@ -35,6 +35,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	FString compareName;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	float weight;
 };
 
 USTRUCT()

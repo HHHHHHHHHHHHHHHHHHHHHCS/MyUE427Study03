@@ -12,4 +12,6 @@ void UUI_ItemDetail::UpdateInfo()
 	Text_Category->SetText(FText::FromString(UStaticLibrary::GetEnumValueAsString<EItemCategories>("EItemCategories", itemInfo.category)));
 	Text_Description->SetText(itemInfo.desc);
 	Image_Icon->SetBrushFromTexture(itemInfo.icon);
+	Text_TotalWeight->SetText(FText::AsNumber(amount * itemInfo.weight));
+	Text_SingleWeight->SetText(FText::AsNumber(itemInfo.weight));
 }
