@@ -15,6 +15,7 @@ UCLASS()
 class MYUE427STUDY03_API UUI_Inventory : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(Meta=(BindWidget))
 	class UWrapBox* WBOX_Inventory;
@@ -27,7 +28,16 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	class UButton* Button_Sort;
-	
+
+
+	UPROPERTY(Meta=(BindWidget))
+	class UTextBlock* Text_CurrentWeight;
+
+	UPROPERTY(Meta=(BindWidget))
+	class UTextBlock* Text_TotalWeight;
+
+	UPROPERTY(Meta=(BindWidget))
+	class UTextBlock* Text_Coin;
 
 public:
 	TArray<UUI_InventorySlot*> inventorySlots;
@@ -58,9 +68,10 @@ public:
 
 	UFUNCTION()
 	void OnSortButtonClick();
-	
+
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 
+	void UpdateWeight(float currWeight, float totalWeight);
 };

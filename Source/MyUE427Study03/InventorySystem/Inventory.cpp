@@ -11,6 +11,7 @@ AInventory::AInventory()
 	PrimaryActorTick.bCanEverTick = true;
 	amountOfSlots = 40;
 	maxStackSize = 99;
+	totalWeight = 250;
 }
 
 // Called when the game starts or when spawned
@@ -348,4 +349,9 @@ TArray<FInventorySlot> AInventory::BubbleSortArray(TArray<FInventorySlot> inputA
 	}
 
 	return tempSlots;
+}
+
+void AInventory::UpdateWeight()
+{
+	playerChar->mainUI->inventoryWidget->UpdateWeight(currentWeight, totalWeight);
 }

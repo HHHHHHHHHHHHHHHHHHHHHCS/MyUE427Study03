@@ -24,6 +24,11 @@ public:
 
 	TArray<FInventorySlot> slots;
 
+	float currentWeight;
+
+	UPROPERTY(EditAnywhere, Category="InventoryInfo")
+	float totalWeight;
+
 public:
 	// Sets default values for this actor's properties
 	AInventory();
@@ -75,4 +80,6 @@ public:
 	TArray<FInventorySlot> FindExistSlots();
 
 	TArray<FInventorySlot> BubbleSortArray(TArray<FInventorySlot> inputArray, ESortType type, bool isReversed);
+
+	void UpdateWeight();
 };

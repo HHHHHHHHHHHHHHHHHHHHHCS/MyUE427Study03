@@ -101,3 +101,20 @@ void UUI_Inventory::NativeOnDragDetected(const FGeometry& InGeometry, const FPoi
 	}
 	this->RemoveFromParent();
 }
+
+void UUI_Inventory::UpdateWeight(float currWeight, float totalWeight)
+{
+	Text_CurrentWeight->SetText(FText::AsNumber(currWeight));
+	Text_TotalWeight->SetText(FText::AsNumber(totalWeight));
+
+	if (currWeight > totalWeight)
+	{
+		Text_CurrentWeight->SetColorAndOpacity(FLinearColor::Red);
+		Text_TotalWeight->SetColorAndOpacity(FLinearColor::Red);
+	}
+	else
+	{
+		Text_CurrentWeight->SetColorAndOpacity(FLinearColor::White);
+		Text_TotalWeight->SetColorAndOpacity(FLinearColor::White);
+	}
+}
