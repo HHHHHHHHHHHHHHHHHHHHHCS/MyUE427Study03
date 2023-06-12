@@ -29,6 +29,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="InventoryInfo")
 	float totalWeight;
 
+	bool isOverload;
+
 public:
 	// Sets default values for this actor's properties
 	AInventory();
@@ -82,4 +84,8 @@ public:
 	TArray<FInventorySlot> BubbleSortArray(TArray<FInventorySlot> inputArray, ESortType type, bool isReversed);
 
 	void UpdateWeight();
+
+	void AddWeight(float weight);
+
+	void RemoveWeight(float weight);
 };

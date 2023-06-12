@@ -144,6 +144,8 @@ protected:
 
 	AActor* selectedActor;
 
+	float defaultSpeed;
+
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
@@ -296,4 +298,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool UnEquipItem();
+
+	void OnOverloaded();
+
+	void OnOverloadEnd();
+
 };

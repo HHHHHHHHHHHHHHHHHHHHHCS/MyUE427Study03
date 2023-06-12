@@ -355,3 +355,25 @@ void AInventory::UpdateWeight()
 {
 	playerChar->mainUI->inventoryWidget->UpdateWeight(currentWeight, totalWeight);
 }
+
+void AInventory::AddWeight(float weight)
+{
+	currentWeight += weight;
+	UpdateWeight();
+	if (!isOverload && currentWeight > totalWeight)
+	{
+		isOverload = true;
+		playerChar->OnOverloaded();
+	}
+}
+
+void AInventory::RemoveWeight(float weight)
+{
+	currentWeight -= weight;
+	UpdateWeight();
+	if (isOverload && currentWeight <= totalWeight)
+	{
+		isOverload = false;
+		playerChar->OnOverloadEnd();
+	}
+}

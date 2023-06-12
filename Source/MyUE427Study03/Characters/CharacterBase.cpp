@@ -107,6 +107,8 @@ ACharacterBase::ACharacterBase()
 	}
 
 	skillTreeComp = CreateDefaultSubobject<USkillTreeComponent>(TEXT("SkillTreeComp"));
+
+	defaultSpeed = GetCharacterMovement()->GetMaxSpeed();
 }
 
 // Called when the game starts or when spawned
@@ -147,6 +149,8 @@ void ACharacterBase::BeginPlay()
 
 	mainUI->inventoryWidget->actionMenu->inventoryRef = inventoryRef;
 	mainUI->throwAwayWidget->inventoryRef = inventoryRef;
+
+	inventoryRef->UpdateWeight();
 }
 
 
@@ -668,7 +672,7 @@ bool ACharacterBase::EquipItem(AItemStaff* _staff)
 	}
 	else
 	{
-		if(UnEquipItem())
+		if (UnEquipItem())
 		{
 			return EquipItem(_staff);
 		}
@@ -682,9 +686,9 @@ bool ACharacterBase::EquipItem(AItemStaff* _staff)
 
 bool ACharacterBase::UnEquipItem()
 {
-	if(staff)
+	if (staff)
 	{
-		if(inventoryRef->AddItem(staff->GetClass(), 1) <= 0)
+		if (inventoryRef->AddItem(staff->GetClass(), 1) <= 0)
 		{
 			staff->Destroy();
 			staff = nullptr;
@@ -699,4 +703,14 @@ bool ACharacterBase::UnEquipItem()
 	{
 		return false;
 	}
+}
+
+void ACharacterBase::OnOverloaded()
+{
+	GetCharacterMovement()->MaxWalkSpeed = defaultSpeed / 2;
+}
+
+void ACharacterBase::OnOverloadEnd()
+{
+	GetCharacterMovement()->MaxWalkSpeed = defaultSpeed / 2;
 }
