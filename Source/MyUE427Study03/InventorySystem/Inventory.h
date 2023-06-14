@@ -88,4 +88,8 @@ public:
 	void AddWeight(float weight);
 
 	void RemoveWeight(float weight);
+
+	void AddWeightForItem(TSubclassOf<AItemBase> item, int amount);
+
+	void RemoveWeightForItem(TSubclassOf<AItemBase> item, int amount);
 };

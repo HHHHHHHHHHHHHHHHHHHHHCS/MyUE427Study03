@@ -91,9 +91,11 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 				idx = SearchEmptySlot();
 				if (idx >= 0)
 				{
-					slots[idx] = FInventorySlot{item, FMath::Min(remainder, maxStackSize)};
+					int amount = FMath::Min(remainder, maxStackSize);
+					slots[idx] = FInventorySlot{item, amount};
+					AddWeightForItem(item, amount);
 					UpdateSlotByIndex(idx);
-					remainder -= maxStackSize;
+					remainder -= amount;
 				}
 				else
 				{
@@ -104,6 +106,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			{
 				int old = slots[idx].amount;
 				int diff = maxStackSize - old;
+				AddWeightForItem(item, diff);
 				slots[idx] = FInventorySlot{item, old + FMath::Min(remainder, diff)};
 				UpdateSlotByIndex(idx);
 				remainder -= diff;
@@ -123,6 +126,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			}
 			//找到了空的插槽
 			slots[idx] = FInventorySlot{item, 1};
+			AddWeightForItem(item, amount);
 			UpdateSlotByIndex(idx);
 		}
 		return 0;
@@ -147,10 +151,12 @@ bool AInventory::RemoveItemAtIndex(int index, int amount)
 		int oldAmount = GetAmountAtIndex(index);
 		if (amount >= oldAmount)
 		{
+			RemoveWeightForItem(slots[index].itemClass, GetAmountAtIndex(index));
 			slots[index] = FInventorySlot{nullptr, 0};
 		}
 		else
 		{
+			RemoveWeightForItem(slots[index].itemClass, amount);
 			slots[index] = FInventorySlot{slots[index].itemClass, oldAmount - amount};
 		}
 		UpdateSlotByIndex(index);
@@ -376,4 +382,14 @@ void AInventory::RemoveWeight(float weight)
 		isOverload = false;
 		playerChar->OnOverloadEnd();
 	}
+}
+
+void AInventory::AddWeightForItem(TSubclassOf<AItemBase> item, int amount)
+{
+	AddWeight(item->GetDefaultObject<AItemBase>()->itemInfo.weight * amount);
+}
+
+void AInventory::RemoveWeightForItem(TSubclassOf<AItemBase> item, int amount)
+{
+	RemoveWeight(item->GetDefaultObject<AItemBase>()->itemInfo.weight * amount);
 }
