@@ -24,6 +24,7 @@
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -53,6 +54,11 @@ ACharacterBase::ACharacterBase()
 	{
 		portraitComponent->TextureTarget = Cast<UTextureRenderTarget2D>(portraitRT.Object);
 	}
+
+	overloadEffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OverloadEffectComp"));
+	overloadEffectComp->SetupAttachment(GetMesh());
+	overloadEffectComp->bAutoActivate = false;
+	overloadEffectComp->Deactivate();
 
 	interactionComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractionComp"));
 	interactionComp->SetupAttachment(RootComponent);
@@ -712,5 +718,5 @@ void ACharacterBase::OnOverloaded()
 
 void ACharacterBase::OnOverloadEnd()
 {
-	GetCharacterMovement()->MaxWalkSpeed = defaultSpeed ;
+	GetCharacterMovement()->MaxWalkSpeed = defaultSpeed;
 }

@@ -76,6 +76,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="Effect")
 	UParticleSystem* levelupParticle;
 
+	UPROPERTY(EditAnywhere, Category="Effect")
+	UParticleSystemComponent* overloadEffectComp;
+
 	bool bCanFindKey;
 
 	UPROPERTY(BlueprintReadOnly)
