@@ -4,8 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "InventoryEnum.h"
-#include "UObject/NoExportTypes.h"
 #include "InventoryStruct.generated.h"
+
+USTRUCT()
+struct FInventorySlot
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	TSubclassOf<class AItemBase> itemClass;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	int amount;
+};
 
 USTRUCT()
 struct FItemInfo
@@ -38,16 +49,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	float weight;
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	TArray<FInventorySlot> recipes; //合成这个物体所需要的信息(物品和数量)
 };
 
-USTRUCT()
-struct FInventorySlot
-{
-	GENERATED_BODY()
-public:
-	TSubclassOf<class AItemBase> itemClass;
-	int amount;
-};
 
 /**
  * 

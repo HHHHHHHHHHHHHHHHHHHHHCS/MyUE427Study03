@@ -13,6 +13,7 @@ enum class EItemCategories
 	Equipment,
 	QuestItem,
 	Readable,
+	Material, //合成物品的材料
 };
 
 UENUM()
