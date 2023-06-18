@@ -92,4 +92,8 @@ public:
 	void AddWeightForItem(TSubclassOf<AItemBase> item, int amount);
 
 	void RemoveWeightForItem(TSubclassOf<AItemBase> item, int amount);
+
+	int GetTotalAmountOfItem(TSubclassOf<AItemBase> item, TArray<int>& itemSlotIdx);
+
+	bool RemoveItem(TSubclassOf<AItemBase> item, int amount);
 };

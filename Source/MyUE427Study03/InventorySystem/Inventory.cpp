@@ -393,3 +393,56 @@ void AInventory::RemoveWeightForItem(TSubclassOf<AItemBase> item, int amount)
 {
 	RemoveWeight(item->GetDefaultObject<AItemBase>()->itemInfo.weight * amount);
 }
+
+int AInventory::GetTotalAmountOfItem(TSubclassOf<AItemBase> item, TArray<int>& itemSlotIdx)
+{
+	int tempAmount = 0;
+	for (int i = 0; i < slots.Num(); i++)
+	{
+		if (slots[i].itemClass && slots[i].itemClass == item)
+		{
+			tempAmount += slots[i].amount;
+			itemSlotIdx.Add(i);
+		}
+	}
+	return tempAmount;
+}
+
+bool AInventory::RemoveItem(TSubclassOf<AItemBase> item, int amount)
+{
+	TArray<int> itemArray;
+	int totalAmount = GetTotalAmountOfItem(item, itemArray);
+
+	if (totalAmount < amount)
+	{
+		return false;
+	}
+
+	int tempAmount = amount;
+	for (int i = 0; i < itemArray.Num(); i++)
+	{
+		auto temp = slots[i];
+
+		temp.amount -= tempAmount;
+
+		if (temp.amount > 0)
+		{
+			slots[i] = temp;
+			RemoveWeightForItem(item, tempAmount);
+			tempAmount = 0;
+		}
+		else
+		{
+			slots[i] = FInventorySlot{nullptr, 0};
+			RemoveWeightForItem(item, temp.amount);
+			tempAmount = -temp.amount;
+		}
+
+		if (tempAmount <= 0)
+		{
+			break;
+		}
+	}
+
+	return true;
+}
