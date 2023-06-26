@@ -27,6 +27,9 @@ void UUI_ItemObtain::OnInit(TSubclassOf<AItemBase> itemCls, int amount, UUserWid
 	case EItemCategories::Readable:
 		tempColor = FLinearColor::Gray;
 		break;
+	case EItemCategories::Material:
+		tempColor = FLinearColor::Green;
+		break;
 	}
 	Text_Name->SetColorAndOpacity(tempColor);
 	Text_X->SetColorAndOpacity(tempColor);
