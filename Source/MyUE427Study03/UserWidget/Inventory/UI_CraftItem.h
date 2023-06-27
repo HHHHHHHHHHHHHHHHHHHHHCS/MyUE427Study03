@@ -22,4 +22,13 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Name;
+
+	UPROPERTY(EditAnywhere, Category="Item")
+	TSubclassOf<class AItemBase> item;
+
+public:
+	class UUI_CraftMenu* craftMenu;
+
+public:
+	void OnInit(TSubclassOf<class AItemBase> _item, class UUI_CraftMenu* _craftMenu);
 };

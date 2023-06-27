@@ -22,4 +22,10 @@ public:
 
 	UPROPERTY(Meta=(BindWidget))
 	UTextBlock* Text_Name;
+
+public:
+	TSubclassOf<class  AItemBase> item;
+	class UUI_CraftMenu* craftMenu;
+	int requiredAmount;
+	int currentAmount;
 };

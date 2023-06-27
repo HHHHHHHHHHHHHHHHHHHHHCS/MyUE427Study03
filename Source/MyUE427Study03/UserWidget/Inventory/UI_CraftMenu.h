@@ -35,4 +35,11 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	class UVerticalBox* VBox_RecipeEntryList;
+
+public:
+
+	class AInventory* inventory;
+	
+public:
+	void Click_OnCraft(class UUI_CraftItem* widget);
 };
