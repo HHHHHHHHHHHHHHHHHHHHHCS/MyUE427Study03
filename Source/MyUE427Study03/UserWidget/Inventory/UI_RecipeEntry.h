@@ -28,4 +28,7 @@ public:
 	class UUI_CraftMenu* craftMenu;
 	int requiredAmount;
 	int currentAmount;
+	
+public:
+	void Update();
 };
