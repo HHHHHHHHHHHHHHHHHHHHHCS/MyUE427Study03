@@ -31,6 +31,9 @@ public:
 
 	bool isOverload;
 
+	UPROPERTY(EditAnywhere, Category="Item")
+	TArray<TSubclassOf<AItemBase>> craftItems;
+
 public:
 	// Sets default values for this actor's properties
 	AInventory();
@@ -96,4 +99,6 @@ public:
 	int GetTotalAmountOfItem(TSubclassOf<AItemBase> item, TArray<int>& itemSlotIdx);
 
 	bool RemoveItem(TSubclassOf<AItemBase> item, int amount);
+
+	
 };

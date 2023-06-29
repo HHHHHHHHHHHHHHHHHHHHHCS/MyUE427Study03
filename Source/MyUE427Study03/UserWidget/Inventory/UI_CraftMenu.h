@@ -42,4 +42,6 @@ public:
 	
 public:
 	void Click_OnCraft(class UUI_CraftItem* widget);
+
+	void GenerateCraftItemList();
 };
