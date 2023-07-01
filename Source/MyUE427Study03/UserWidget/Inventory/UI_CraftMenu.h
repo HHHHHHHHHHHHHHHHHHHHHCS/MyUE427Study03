@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MyUE427Study03/InventorySystem/InventoryStruct.h"
 #include "UI_CraftMenu.generated.h"
 
 /**
@@ -36,12 +37,26 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class UVerticalBox* VBox_RecipeEntryList;
 
-public:
+	UPROPERTY(meta=(BindWidget))
+	class UBorder* Border_Detail;
 
+public:
 	class AInventory* inventory;
-	
+
+	class UUI_CraftItem* currentCraft;
+
+	TSubclassOf<AItemBase> currentItem;
+
+	FItemInfo currentItemInfo;
+
+	TArray<class UUI_RecipeEntry*> recipeEntries;
+
 public:
 	void Click_OnCraft(class UUI_CraftItem* widget);
 
 	void GenerateCraftItemList();
+
+	void GenerateRecipeEntries();
+
+	bool CanBeCrafted();
 };
