@@ -9,6 +9,7 @@
 #include "Components/OverlaySlot.h"
 #include "Components/ScrollBoxSlot.h"
 #include "Components/WrapBox.h"
+#include "Inventory/UI_CraftMenu.h"
 #include "Inventory/UI_ItemDragDropOperation.h"
 #include "Inventory/UI_ItemObtain.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
@@ -66,6 +67,8 @@ bool UUserWidget_Main::Initialize()
 	obtainContainer = Cast<UBorder>(GetWidgetFromName("Border_ObtainContainer"));
 
 	readableContainer = Cast<UBorder>(GetWidgetFromName("Border_ReadableContainer"));
+
+	craftMenuWidget = Cast<UUI_CraftMenu>(GetWidgetFromName("UI_CraftMenu"));
 
 	return true;
 }

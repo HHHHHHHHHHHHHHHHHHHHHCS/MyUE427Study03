@@ -84,6 +84,8 @@ public:
 
 	UButton* inventoryButton;
 
+	class UUI_CraftMenu* craftMenuWidget;
+
 public:
 	bool bQuestUIVisibility = false;
 	bool bSkillTreeShow = false;

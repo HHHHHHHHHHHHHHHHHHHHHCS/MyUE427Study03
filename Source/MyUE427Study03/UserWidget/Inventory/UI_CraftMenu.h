@@ -52,11 +52,23 @@ public:
 	TArray<class UUI_RecipeEntry*> recipeEntries;
 
 public:
+	virtual void NativeConstruct() override;
+	
 	void Click_OnCraft(class UUI_CraftItem* widget);
 
+	UFUNCTION()
+	void Click_OnClose();
+
+	UFUNCTION()
+	void Click_OnCraft();
+	
 	void GenerateCraftItemList();
 
 	void GenerateRecipeEntries();
 
 	bool CanBeCrafted();
+
+	void UpdateDetailWindow(TSubclassOf<class AItemBase> item);
+
+	void InitCraftMenu(class AInventory* _inventory);
 };

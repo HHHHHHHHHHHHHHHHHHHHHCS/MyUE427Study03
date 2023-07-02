@@ -21,6 +21,7 @@
 #include "MyUE427Study03/Skill/SkillEnum.h"
 #include "MyUE427Study03/UserWidget/UserWidget_Main.h"
 #include "MyUE427Study03/Skill/SkillBuff.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
@@ -148,6 +149,9 @@ void ACharacterBase::BeginPlay()
 
 	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
 	questManager->OnInit(this, mainUI);
+
+	inventoryRef->UpdateWeight();
+
 	mainUI->questJournal->Initialize(questManager);
 
 	mainUI->inventoryWidget->inventoryRef = inventoryRef;
@@ -156,7 +160,7 @@ void ACharacterBase::BeginPlay()
 	mainUI->inventoryWidget->actionMenu->inventoryRef = inventoryRef;
 	mainUI->throwAwayWidget->inventoryRef = inventoryRef;
 
-	inventoryRef->UpdateWeight();
+	mainUI->craftMenuWidget->InitCraftMenu(inventoryRef);
 }
 
 
