@@ -70,6 +70,7 @@ void UUI_CraftMenu::GenerateRecipeEntries()
 		entry->item = slot.itemClass;
 		entry->requiredAmount = slot.amount;
 		entry->craftMenu = this;
+		entry->Update();
 		recipeEntries.Add(entry);
 		VBox_RecipeEntryList->AddChild(entry);
 	}
@@ -125,6 +126,6 @@ void UUI_CraftMenu::UpdateDetailWindow(TSubclassOf<AItemBase> item)
 void UUI_CraftMenu::InitCraftMenu(AInventory* _inventory)
 {
 	inventory = _inventory;
-	GenerateRecipeEntries();
+	GenerateCraftItemList();
 	UpdateDetailWindow(nullptr);
 }

@@ -100,5 +100,5 @@ public:
 
 	bool RemoveItem(TSubclassOf<AItemBase> item, int amount);
 
-	
+	void UpdateCraftMenu();
 };

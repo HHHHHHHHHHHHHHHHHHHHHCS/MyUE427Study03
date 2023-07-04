@@ -30,5 +30,10 @@ public:
 	class UUI_CraftMenu* craftMenu;
 
 public:
+	virtual void NativeConstruct() override;
+	
 	void OnInit(TSubclassOf<class AItemBase> _item, class UUI_CraftMenu* _craftMenu);
+
+	UFUNCTION()
+	void Click_Selected();
 };

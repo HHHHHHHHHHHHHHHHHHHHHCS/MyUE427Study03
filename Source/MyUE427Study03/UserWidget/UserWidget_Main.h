@@ -84,6 +84,7 @@ public:
 
 	UButton* inventoryButton;
 
+	UPROPERTY(BlueprintReadOnly)
 	class UUI_CraftMenu* craftMenuWidget;
 
 public:

@@ -2,6 +2,7 @@
 #include "Inventory.h"
 #include "ItemBase.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 
 // Sets default values
@@ -94,6 +95,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 					int amount = FMath::Min(remainder, maxStackSize);
 					slots[idx] = FInventorySlot{item, amount};
 					AddWeightForItem(item, amount);
+					UpdateCraftMenu();
 					UpdateSlotByIndex(idx);
 					remainder -= amount;
 				}
@@ -108,6 +110,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 				int diff = maxStackSize - old;
 				AddWeightForItem(item, diff);
 				slots[idx] = FInventorySlot{item, old + FMath::Min(remainder, diff)};
+				UpdateCraftMenu();
 				UpdateSlotByIndex(idx);
 				remainder -= diff;
 			}
@@ -127,6 +130,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 			//找到了空的插槽
 			slots[idx] = FInventorySlot{item, 1};
 			AddWeightForItem(item, amount);
+			UpdateCraftMenu();
 			UpdateSlotByIndex(idx);
 		}
 		return 0;
@@ -159,6 +163,7 @@ bool AInventory::RemoveItemAtIndex(int index, int amount)
 			RemoveWeightForItem(slots[index].itemClass, amount);
 			slots[index] = FInventorySlot{slots[index].itemClass, oldAmount - amount};
 		}
+		UpdateCraftMenu();
 		UpdateSlotByIndex(index);
 		return true;
 	}
@@ -421,21 +426,20 @@ bool AInventory::RemoveItem(TSubclassOf<AItemBase> item, int amount)
 	int tempAmount = amount;
 	for (int i = 0; i < itemArray.Num(); i++)
 	{
-		auto temp = slots[i];
-
-		temp.amount -= tempAmount;
-
-		if (temp.amount > 0)
+		int idx = itemArray[i];
+		auto temp = slots[idx];
+		int oldAmount = temp.amount;
+		if (temp.amount > tempAmount)
 		{
-			slots[i] = temp;
+			RemoveItemAtIndex(idx, tempAmount);
 			RemoveWeightForItem(item, tempAmount);
 			tempAmount = 0;
 		}
 		else
 		{
-			slots[i] = FInventorySlot{nullptr, 0};
-			RemoveWeightForItem(item, temp.amount);
-			tempAmount = -temp.amount;
+			RemoveItemAtIndex(idx, oldAmount);
+			RemoveWeightForItem(item, oldAmount);
+			tempAmount -= oldAmount;
 		}
 
 		if (tempAmount <= 0)
@@ -444,5 +448,15 @@ bool AInventory::RemoveItem(TSubclassOf<AItemBase> item, int amount)
 		}
 	}
 
+	UpdateCraftMenu();
 	return true;
+}
+
+void AInventory::UpdateCraftMenu()
+{
+	auto item = playerChar->mainUI->craftMenuWidget->currentItem;
+	if(item)
+	{
+		playerChar->mainUI->craftMenuWidget->UpdateDetailWindow(item);
+	}
 }
