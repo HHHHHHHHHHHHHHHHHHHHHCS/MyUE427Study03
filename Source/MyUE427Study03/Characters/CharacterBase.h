@@ -131,6 +131,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
 	int currentLevel;
 
+	UPROPERTY(VisibleAnywhere, Category="PlayerInfo")
+	float currentCoin;
+
 	class AItemStaff* staff;
 
 protected:
@@ -242,6 +245,11 @@ public:
 		return currentLevel;
 	}
 
+	FORCEINLINE int GetCurrentCoin() const
+	{
+		return currentCoin;
+	}
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -306,4 +314,7 @@ public:
 
 	void OnOverloadEnd();
 
+	void IncreaseCoin(int amount);
+
+	void DecreaseCoin(int amount);
 };

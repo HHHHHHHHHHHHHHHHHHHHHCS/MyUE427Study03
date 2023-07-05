@@ -90,6 +90,8 @@ ACharacterBase::ACharacterBase()
 	ReadData();
 	currentLevel = 1;
 
+	currentCoin = 0;
+
 	//Keys
 	{
 		keysPerRow = 9;
@@ -723,4 +725,22 @@ void ACharacterBase::OnOverloaded()
 void ACharacterBase::OnOverloadEnd()
 {
 	GetCharacterMovement()->MaxWalkSpeed = defaultSpeed;
+}
+
+void ACharacterBase::IncreaseCoin(int amount)
+{
+	if (amount > 0)
+	{
+		currentCoin += amount;
+		mainUI->inventoryWidget->UpdateCoin(currentCoin);
+	}
+}
+
+void ACharacterBase::DecreaseCoin(int amount)
+{
+	if (amount > 0)
+	{
+		currentCoin = FMath::Max(currentCoin - amount, 0.0f);
+		mainUI->inventoryWidget->UpdateCoin(currentCoin);
+	}
 }

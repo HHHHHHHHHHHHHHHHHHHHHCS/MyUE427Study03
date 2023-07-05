@@ -118,3 +118,8 @@ void UUI_Inventory::UpdateWeight(float currWeight, float totalWeight)
 		Text_TotalWeight->SetColorAndOpacity(FLinearColor::White);
 	}
 }
+
+void UUI_Inventory::UpdateCoin(int amount)
+{
+	Text_Coin->SetText(FText::AsNumber(amount));
+}

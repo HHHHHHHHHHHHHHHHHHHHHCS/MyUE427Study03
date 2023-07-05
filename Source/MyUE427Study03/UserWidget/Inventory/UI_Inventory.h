@@ -74,4 +74,6 @@ public:
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 
 	void UpdateWeight(float currWeight, float totalWeight);
+
+	void UpdateCoin(int amount);
 };
