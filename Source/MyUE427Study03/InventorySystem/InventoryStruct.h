@@ -52,6 +52,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	TArray<FInventorySlot> recipes; //合成这个物体所需要的信息(物品和数量)
+
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	int price;
 };
 
 
