@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MyUE427Study03/InventorySystem/InventoryStruct.h"
 #include "UI_OfferedItem.generated.h"
 
 /**
@@ -32,4 +33,29 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	class USlider* Slider_Amount;
+
+	UPROPERTY(EditAnywhere, Category=ItemInfo)
+	int maxAmount = 99;
+
+public:
+	class AInventory* inventory;
+
+	TSubclassOf<class AItemBase> assignedItem;
+
+	FItemInfo itemInfo;
+
+	int currentAmount = 1;
+
+public :
+	virtual void NativeConstruct() override;
+
+	void UpdatePrice();
+
+	void Init(TSubclassOf<AItemBase> item);
+
+	UFUNCTION()
+	void OnSliderChanged(float value);
+
+	UFUNCTION()
+	void OnClickButtonBuy();
 };
