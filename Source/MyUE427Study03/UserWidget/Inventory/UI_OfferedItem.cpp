@@ -16,24 +16,10 @@ void UUI_OfferedItem::NativeConstruct()
 	Button_Buy->OnClicked.AddDynamic(this, &UUI_OfferedItem::UUI_OfferedItem::OnClickButtonBuy);
 }
 
-void UUI_OfferedItem::UpdatePrice()
-{
-	int needCoin = itemInfo.price * currentAmount;
-	Text_Price->SetText(FText::AsNumber(needCoin));
-	if (inventory->playerChar->GetCurrentCoin() >= needCoin)
-	{
-		Button_Buy->SetIsEnabled(true);
-		Text_Price->SetColorAndOpacity(FLinearColor(1.0f, 0.48f, 0.0f, 1.0f));
-	}
-	else
-	{
-		Button_Buy->SetIsEnabled(false);
-		Text_Price->SetColorAndOpacity(FLinearColor::Red);
-	}
-}
 
-void UUI_OfferedItem::Init(TSubclassOf<AItemBase> item)
+void UUI_OfferedItem::Init(TSubclassOf<AItemBase> item, class AInventory* _inventory)
 {
+	inventory = _inventory;
 	assignedItem = item;
 	itemInfo = assignedItem->GetDefaultObject<AItemBase>()->itemInfo;
 	Image_Icon->SetBrushFromTexture(itemInfo.icon);
@@ -56,6 +42,23 @@ void UUI_OfferedItem::Init(TSubclassOf<AItemBase> item)
 
 	UpdatePrice();
 }
+
+void UUI_OfferedItem::UpdatePrice()
+{
+	int needCoin = itemInfo.price * currentAmount;
+	Text_Price->SetText(FText::AsNumber(needCoin));
+	if (inventory->playerChar->GetCurrentCoin() >= needCoin)
+	{
+		Button_Buy->SetIsEnabled(true);
+		Text_Price->SetColorAndOpacity(FLinearColor(1.0f, 0.48f, 0.0f, 1.0f));
+	}
+	else
+	{
+		Button_Buy->SetIsEnabled(false);
+		Text_Price->SetColorAndOpacity(FLinearColor::Red);
+	}
+}
+
 
 void UUI_OfferedItem::OnSliderChanged(float value)
 {

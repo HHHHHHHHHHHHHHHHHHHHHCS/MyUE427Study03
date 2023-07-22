@@ -14,6 +14,9 @@ class MYUE427STUDY03_API ANPC_Merchant : public ANPCBase
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditAnywhere, Category="Item")
+	TArray<TSubclassOf<class AItemBase>> offeredItems;
 
 public:
 	virtual void OnInteractWith(ACharacterBase* character) override;

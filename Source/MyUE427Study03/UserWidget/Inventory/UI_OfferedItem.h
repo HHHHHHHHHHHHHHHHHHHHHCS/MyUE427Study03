@@ -49,9 +49,9 @@ public:
 public :
 	virtual void NativeConstruct() override;
 
+	void Init(TSubclassOf<AItemBase> item, class AInventory* _inventory);
+	
 	void UpdatePrice();
-
-	void Init(TSubclassOf<AItemBase> item);
 
 	UFUNCTION()
 	void OnSliderChanged(float value);

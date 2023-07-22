@@ -12,6 +12,7 @@
 #include "MyUE427Study03/InventorySystem/InventoryStruct.h"
 #include "UI_SellItem.generated.h"
 
+class UUI_Shop;
 /**
  * 
  */
@@ -50,6 +51,7 @@ public:
 	int maxAmount; //插槽的数量
 	int currentIndex;
 	class AInventory* inventoryRef;
+	class UUI_Shop* shopWidget;
 	FItemInfo itemInfo;
 	int clickCount;
 
