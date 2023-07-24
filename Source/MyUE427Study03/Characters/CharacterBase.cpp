@@ -23,8 +23,6 @@
 #include "MyUE427Study03/Skill/SkillBuff.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
-#include "MyUE427Study03/UserWidget/Inventory/UI_SellItem.h"
-#include "MyUE427Study03/UserWidget/Inventory/UI_Shop.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -165,10 +163,6 @@ void ACharacterBase::BeginPlay()
 
 	mainUI->craftMenuWidget->InitCraftMenu(inventoryRef);
 
-	mainUI->shopWidget->UpdateCoin();
-	mainUI->shopWidget->GenerateItemList();
-	mainUI->shopWidget->UI_SellItem->inventoryRef = inventoryRef;
-	mainUI->shopWidget->UI_SellItem->shopWidget = mainUI->shopWidget;
 }
 
 

@@ -5,14 +5,12 @@
 
 #include "SkillDragOperation.h"
 #include "UI_HotkeyRow.h"
-#include "Components/CanvasPanelSlot.h"
 #include "Components/OverlaySlot.h"
 #include "Components/ScrollBoxSlot.h"
 #include "Components/WrapBox.h"
 #include "Inventory/UI_CraftMenu.h"
 #include "Inventory/UI_ItemDragDropOperation.h"
 #include "Inventory/UI_ItemObtain.h"
-#include "Inventory/UI_Shop.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "Quest/UI_Quest_Journal.h"
 #include "Quest/UI_Quest_Quest.h"
@@ -70,8 +68,6 @@ bool UUserWidget_Main::Initialize()
 	readableContainer = Cast<UBorder>(GetWidgetFromName("Border_ReadableContainer"));
 
 	craftMenuWidget = Cast<UUI_CraftMenu>(GetWidgetFromName("UI_CraftMenu"));
-
-	shopWidget =Cast<UUI_Shop>(GetWidgetFromName("UI_Shop"));
 
 	return true;
 }

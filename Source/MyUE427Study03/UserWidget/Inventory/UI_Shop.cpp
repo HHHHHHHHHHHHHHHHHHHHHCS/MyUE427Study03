@@ -34,5 +34,5 @@ void UUI_Shop::GenerateItemList()
 
 void UUI_Shop::Click_ButtonClose()
 {
-	SetVisibility(ESlateVisibility::Hidden);
+	this->RemoveFromParent();
 }

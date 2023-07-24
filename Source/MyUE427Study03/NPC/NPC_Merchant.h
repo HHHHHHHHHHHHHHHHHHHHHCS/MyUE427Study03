@@ -18,6 +18,13 @@ public:
 	UPROPERTY(EditAnywhere, Category="Item")
 	TArray<TSubclassOf<class AItemBase>> offeredItems;
 
+	class ACharacterBase* playerChar;
+
+	class UUI_Shop* shopWidget;
+	
 public:
+
+	virtual void BeginPlay() override;
+	
 	virtual void OnInteractWith(ACharacterBase* character) override;
 };

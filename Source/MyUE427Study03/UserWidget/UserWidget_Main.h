@@ -86,8 +86,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	class UUI_CraftMenu* craftMenuWidget;
-
-	class UUI_Shop* shopWidget;
 	
 public:
 	bool bQuestUIVisibility = false;
