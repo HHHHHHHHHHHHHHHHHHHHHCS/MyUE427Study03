@@ -27,4 +27,6 @@ public:
 	virtual void BeginPlay() override;
 	
 	virtual void OnInteractWith(ACharacterBase* character) override;
+
+	virtual void OnLeavePlayerRadius(ACharacterBase* character) override;
 };

@@ -13,13 +13,22 @@ void ANPC_Merchant::BeginPlay()
 	Super::BeginPlay();
 
 	playerChar = Cast<ACharacterBase>(UGameplayStatics::GetPlayerPawn(this, 0));
-
+	auto cls = LoadClass<UUI_Shop>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_Shop.UI_Shop_C'"));
+	shopWidget = CreateWidget<UUI_Shop>(GetWorld(), cls);
+	shopWidget->AddToViewport(3);
+	shopWidget->SetVisibility(ESlateVisibility::Hidden);
+	shopWidget->SetDesiredSizeInViewport(FVector2D(500, 700));
+	shopWidget->SetAnchorsInViewport(FAnchors(0.5, 0.5, 0.5, 0.5));
+	shopWidget->SetAlignmentInViewport(FVector2D(0.5, 0.5));
 }
 
 void ANPC_Merchant::OnInteractWith(ACharacterBase* character)
 {
-	auto cls = LoadClass<UUI_Shop>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_Shop.UI_Shop_C'"));
-	shopWidget = CreateWidget<UUI_Shop>(GetWorld(), cls);
+	if (shopWidget->Visibility == ESlateVisibility::Visible)
+	{
+		shopWidget->SetVisibility(ESlateVisibility::Hidden);
+		return;
+	}
 
 	shopWidget->merchant = this;
 	shopWidget->playerChar = playerChar;
@@ -29,6 +38,12 @@ void ANPC_Merchant::OnInteractWith(ACharacterBase* character)
 	shopWidget->UpdateCoin();
 	shopWidget->GenerateItemList();
 
-	shopWidget->AddToViewport();
-	shopWidget->SetDesiredSizeInViewport(FVector2D(500, 700));
+
+	shopWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void ANPC_Merchant::OnLeavePlayerRadius(ACharacterBase* character)
+{
+	Super::OnLeavePlayerRadius(character);
+	shopWidget->SetVisibility(ESlateVisibility::Hidden);
 }
