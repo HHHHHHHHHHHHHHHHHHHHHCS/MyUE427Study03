@@ -46,10 +46,12 @@ public:
 
 	int currentAmount = 1;
 
+	class UUI_Shop* shopWidget;
+
 public :
 	virtual void NativeConstruct() override;
 
-	void Init(TSubclassOf<AItemBase> item, class AInventory* _inventory);
+	void Init(TSubclassOf<AItemBase> item, class AInventory* _inventory,class UUI_Shop* _shopWidget);
 	
 	void UpdatePrice();
 

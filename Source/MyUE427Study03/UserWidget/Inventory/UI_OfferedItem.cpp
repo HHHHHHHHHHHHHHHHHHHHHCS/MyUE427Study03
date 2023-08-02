@@ -3,6 +3,7 @@
 
 #include "UI_OfferedItem.h"
 
+#include "UI_Shop.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
@@ -17,9 +18,10 @@ void UUI_OfferedItem::NativeConstruct()
 }
 
 
-void UUI_OfferedItem::Init(TSubclassOf<AItemBase> item, class AInventory* _inventory)
+void UUI_OfferedItem::Init(TSubclassOf<AItemBase> item, class AInventory* _inventory, UUI_Shop* _shopWidget)
 {
 	inventory = _inventory;
+	shopWidget = _shopWidget;
 	assignedItem = item;
 	itemInfo = assignedItem->GetDefaultObject<AItemBase>()->itemInfo;
 	Image_Icon->SetBrushFromTexture(itemInfo.icon);
@@ -82,5 +84,7 @@ void UUI_OfferedItem::OnClickButtonBuy()
 		{
 			inventory->playerChar->DecreaseCoin(itemInfo.price * (currentAmount - remainedCount));
 		}
+		UpdatePrice();
+		shopWidget->UpdateAllItems();
 	}
 }

@@ -45,4 +45,6 @@ public:
 
 	UFUNCTION()
 	void Click_ButtonClose();
+
+	void UpdateAllItems();
 };

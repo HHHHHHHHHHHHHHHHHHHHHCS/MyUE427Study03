@@ -22,11 +22,13 @@ void UUI_Shop::UpdateCoin()
 
 void UUI_Shop::GenerateItemList()
 {
+	offeredItemWidgets.Empty();
+	UGrid_OfferedItem->ClearChildren();
 	for (int i = 0; i < merchant->offeredItems.Num(); i++)
 	{
 		auto cls = LoadClass<UUI_OfferedItem>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_OfferedItem.UI_OfferedItem_C'"));
 		auto widget = CreateWidget<UUI_OfferedItem>(GetWorld(), cls);
-		widget->Init(merchant->offeredItems[i], playerChar->inventoryRef);
+		widget->Init(merchant->offeredItems[i], playerChar->inventoryRef, this);
 		offeredItemWidgets.Add(widget);
 		UGrid_OfferedItem->AddChildToUniformGrid(widget, i / 2, i % 2);
 	}
@@ -35,4 +37,12 @@ void UUI_Shop::GenerateItemList()
 void UUI_Shop::Click_ButtonClose()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UUI_Shop::UpdateAllItems()
+{
+	for (auto& item : offeredItemWidgets)
+	{
+		item->UpdatePrice();
+	}
 }

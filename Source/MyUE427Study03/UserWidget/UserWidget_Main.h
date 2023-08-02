@@ -11,7 +11,6 @@
 #include "Components/ProgressBar.h"
 #include "Components/ScrollBox.h"
 #include "Components/SizeBox.h"
-#include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Inventory/UI_Inventory.h"
 #include "Inventory/UI_ThrowAway.h"
@@ -86,6 +85,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	class UUI_CraftMenu* craftMenuWidget;
+
+	class UUI_Shop* shopWidget;
 	
 public:
 	bool bQuestUIVisibility = false;

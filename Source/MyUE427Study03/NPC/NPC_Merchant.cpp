@@ -30,6 +30,11 @@ void ANPC_Merchant::OnInteractWith(ACharacterBase* character)
 		return;
 	}
 
+	if(playerChar&&playerChar->mainUI)
+	{
+		playerChar->mainUI->shopWidget = shopWidget;
+	}
+	
 	shopWidget->merchant = this;
 	shopWidget->playerChar = playerChar;
 	shopWidget->UI_SellItem->inventoryRef = playerChar->inventoryRef;
@@ -37,7 +42,6 @@ void ANPC_Merchant::OnInteractWith(ACharacterBase* character)
 
 	shopWidget->UpdateCoin();
 	shopWidget->GenerateItemList();
-
 
 	shopWidget->SetVisibility(ESlateVisibility::Visible);
 }

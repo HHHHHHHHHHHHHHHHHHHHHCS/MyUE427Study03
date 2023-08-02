@@ -23,6 +23,7 @@
 #include "MyUE427Study03/Skill/SkillBuff.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_Shop.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -162,7 +163,6 @@ void ACharacterBase::BeginPlay()
 	mainUI->throwAwayWidget->inventoryRef = inventoryRef;
 
 	mainUI->craftMenuWidget->InitCraftMenu(inventoryRef);
-
 }
 
 
@@ -729,18 +729,30 @@ void ACharacterBase::OnOverloadEnd()
 
 void ACharacterBase::IncreaseCoin(int amount)
 {
-	if (amount > 0)
+	if (amount <= 0)
 	{
-		currentCoin += amount;
-		mainUI->inventoryWidget->UpdateCoin(currentCoin);
+		return;
+	}
+	currentCoin += amount;
+	mainUI->inventoryWidget->UpdateCoin(currentCoin);
+
+	if (mainUI && mainUI->shopWidget)
+	{
+		mainUI->shopWidget->UpdateCoin();
 	}
 }
 
 void ACharacterBase::DecreaseCoin(int amount)
 {
-	if (amount > 0)
+	if (amount <= 0)
 	{
-		currentCoin = FMath::Max(currentCoin - amount, 0.0f);
-		mainUI->inventoryWidget->UpdateCoin(currentCoin);
+		return;
+	}
+	currentCoin = FMath::Max(currentCoin - amount, 0.0f);
+	mainUI->inventoryWidget->UpdateCoin(currentCoin);
+
+	if (mainUI && mainUI->shopWidget)
+	{
+		mainUI->shopWidget->UpdateCoin();
 	}
 }
