@@ -4,6 +4,8 @@
 #include "UI_SellItem.h"
 
 
+#include "UI_Shop.h"
+#include "Components/UniformGridPanel.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
@@ -132,8 +134,11 @@ void UUI_SellItem::OnConfirmButtonClicked()
 {
 	if (inventoryRef->RemoveItemAtIndex(currentIndex, sellCount))
 	{
+		inventoryRef->playerChar->IncreaseCoin(sellCount * itemInfo.price);
 		this->SetVisibility(ESlateVisibility::Hidden);
 		inventoryRef->playerChar->mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(true);
+		shopWidget->UGrid_OfferedItem->SetIsEnabled(true);
+		shopWidget->UpdateAllItems();
 	}
 }
 
@@ -141,6 +146,7 @@ void UUI_SellItem::OnCancelButtonClicked()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
 	inventoryRef->playerChar->mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(true);
+	shopWidget->UGrid_OfferedItem->SetIsEnabled(true);
 }
 
 void UUI_SellItem::SetClickCountToZero()

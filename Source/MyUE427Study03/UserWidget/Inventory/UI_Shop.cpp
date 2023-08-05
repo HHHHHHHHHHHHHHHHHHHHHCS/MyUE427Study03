@@ -69,6 +69,7 @@ bool UUI_Shop::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& I
 				if(playerChar->inventoryRef->RemoveItemAtIndex(slotUI->slotIndex, 1))
 				{
 					playerChar->IncreaseCoin(slotUI->itemInfo.price);
+					UpdateAllItems();
 					return true;
 				}
 				else
@@ -81,6 +82,7 @@ bool UUI_Shop::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& I
 				UI_SellItem->UpdateInfo(slotUI->slotIndex);
 				UI_SellItem->SetVisibility(Visibility);
 				playerChar->mainUI->inventoryWidget->WBOX_Inventory->SetIsEnabled(false);
+				this->UGrid_OfferedItem->SetIsEnabled(false);
 				return true;
 			}
 
