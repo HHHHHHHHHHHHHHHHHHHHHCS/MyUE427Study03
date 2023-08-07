@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/MyUE427Study03.h"
+#include "MyUE427Study03/Game/RPGSaveGame.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemStaff.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
@@ -755,4 +756,21 @@ void ACharacterBase::DecreaseCoin(int amount)
 	{
 		mainUI->shopWidget->UpdateCoin();
 	}
+}
+
+void ACharacterBase::SaveGame()
+{
+	if (!saveGameInstance)
+	{
+		saveGameInstance = Cast<URPGSaveGame>(UGameplayStatics::CreateSaveGameObject(URPGSaveGame::StaticClass()));
+	}
+
+	saveGameInstance->savedName = currentName;
+	saveGameInstance->savedHp = currentHp;
+	saveGameInstance->savedMp = currentMp;
+	saveGameInstance->savedExp = currentMp;
+	saveGameInstance->savedLevel = currentLevel;
+	saveGameInstance->savedCoin = currentCoin;
+
+	UGameplayStatics::SaveGameToSlot(saveGameInstance, saveSlotName, 0);
 }

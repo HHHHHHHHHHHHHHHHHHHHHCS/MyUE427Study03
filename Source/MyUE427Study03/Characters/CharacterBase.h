@@ -136,6 +136,11 @@ protected:
 
 	class AItemStaff* staff;
 
+public:
+	class URPGSaveGame* saveGameInstance;
+
+	FString saveSlotName = "RPGSaveData";
+	
 protected:
 	bool bMouseRightHold;
 
@@ -317,4 +322,6 @@ public:
 	void IncreaseCoin(int amount);
 
 	void DecreaseCoin(int amount);
+
+	void SaveGame();
 };
