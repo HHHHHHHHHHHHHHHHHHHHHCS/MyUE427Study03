@@ -324,4 +324,6 @@ public:
 	void DecreaseCoin(int amount);
 
 	void SaveGame();
+
+	void LoadGame();
 };

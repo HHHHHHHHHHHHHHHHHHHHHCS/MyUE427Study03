@@ -89,10 +89,17 @@ ACharacterBase::ACharacterBase()
 	bMouseMoving = false;
 	bCanFindKey = true;
 
-	ReadData();
-	currentLevel = 1;
+	if(UGameplayStatics::DoesSaveGameExist(saveSlotName, 0))
+	{
+		LoadGame();
+	}
+	else
+	{
+		ReadData();
+		currentLevel = 1;
+		currentCoin = 0;
+	}
 
-	currentCoin = 0;
 
 	//Keys
 	{
@@ -464,8 +471,7 @@ void ACharacterBase::CancelMoveToCursor()
 void ACharacterBase::ReadData()
 {
 	UDataTable* characterInfo = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(),NULL,
-	                                                              TEXT(
-		                                                              "DataTable'/Game/Blueprints/Info/CharacterInfoDataTable.CharacterInfoDataTable'")));
+	                                                              TEXT("DataTable'/Game/Blueprints/Info/CharacterInfoDataTable.CharacterInfoDataTable'")));
 	if (characterInfo == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("CharacterInfo is not find!"));
@@ -773,4 +779,19 @@ void ACharacterBase::SaveGame()
 	saveGameInstance->savedCoin = currentCoin;
 
 	UGameplayStatics::SaveGameToSlot(saveGameInstance, saveSlotName, 0);
+}
+
+void ACharacterBase::LoadGame()
+{
+	if (!saveGameInstance)
+	{
+		UGameplayStatics::LoadGameFromSlot(saveSlotName, 0);
+	}
+
+	currentName = saveGameInstance->savedName;
+	currentHp = saveGameInstance->savedHp;
+	currentMp = saveGameInstance->savedMp;
+	currentMp = saveGameInstance->savedExp;
+	currentLevel = saveGameInstance->savedLevel;
+	currentCoin = saveGameInstance->savedCoin;
 }
