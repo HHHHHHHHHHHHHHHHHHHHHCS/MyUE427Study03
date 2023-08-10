@@ -89,17 +89,8 @@ ACharacterBase::ACharacterBase()
 	bMouseMoving = false;
 	bCanFindKey = true;
 
-	if(UGameplayStatics::DoesSaveGameExist(saveSlotName, 0))
-	{
-		LoadGame();
-	}
-	else
-	{
-		ReadData();
-		currentLevel = 1;
-		currentCoin = 0;
-	}
-
+	currentLevel = 1;
+	currentCoin = 0;
 
 	//Keys
 	{
@@ -138,6 +129,15 @@ void ACharacterBase::BeginPlay()
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	params.Owner = this;
 
+	if (UGameplayStatics::DoesSaveGameExist(saveSlotName, 0))
+	{
+		LoadGame();
+	}
+	else
+	{
+		ReadData();
+	}
+
 	playerController = Cast<APlayerController>(GetController());
 	playerController->bShowMouseCursor = true;
 
@@ -145,8 +145,7 @@ void ACharacterBase::BeginPlay()
 
 	//查找UserWidget这种 需要在路径地址末尾加_C
 	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
-		                                        this,TEXT(
-			                                        "WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
+		                                        this,TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
 	mainUI->AddToViewport();
 	mainUI->GenerateHotkeys(keys, keysPerRow);
 	mainUI->questManager = questManager;
@@ -171,6 +170,8 @@ void ACharacterBase::BeginPlay()
 	mainUI->throwAwayWidget->inventoryRef = inventoryRef;
 
 	mainUI->craftMenuWidget->InitCraftMenu(inventoryRef);
+
+	mainUI->inventoryWidget->UpdateCoin(GetCurrentCoin());
 }
 
 
@@ -773,7 +774,9 @@ void ACharacterBase::SaveGame()
 
 	saveGameInstance->savedName = currentName;
 	saveGameInstance->savedHp = currentHp;
+	saveGameInstance->totalHp = totalHp;
 	saveGameInstance->savedMp = currentMp;
+	saveGameInstance->savedMp = totalMp;
 	saveGameInstance->savedExp = currentMp;
 	saveGameInstance->savedLevel = currentLevel;
 	saveGameInstance->savedCoin = currentCoin;
@@ -785,13 +788,18 @@ void ACharacterBase::LoadGame()
 {
 	if (!saveGameInstance)
 	{
-		UGameplayStatics::LoadGameFromSlot(saveSlotName, 0);
+		saveGameInstance = Cast<URPGSaveGame>(UGameplayStatics::LoadGameFromSlot(saveSlotName, 0));
 	}
 
-	currentName = saveGameInstance->savedName;
-	currentHp = saveGameInstance->savedHp;
-	currentMp = saveGameInstance->savedMp;
-	currentMp = saveGameInstance->savedExp;
-	currentLevel = saveGameInstance->savedLevel;
-	currentCoin = saveGameInstance->savedCoin;
+	if (saveGameInstance)
+	{
+		currentName = saveGameInstance->savedName;
+		currentHp = saveGameInstance->savedHp;
+		totalHp = saveGameInstance->totalHp;
+		currentMp = saveGameInstance->savedMp;
+		totalMp = saveGameInstance->totalMp;
+		currentExp = saveGameInstance->savedExp;
+		currentLevel = saveGameInstance->savedLevel;
+		currentCoin = saveGameInstance->savedCoin;
+	}
 }

@@ -15,10 +15,27 @@ class MYUE427STUDY03_API URPGSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
 	FString savedName;
+
+	UPROPERTY()
 	float savedHp;
+
+	UPROPERTY()
+	float totalHp;
+	
+	UPROPERTY()
 	float savedMp;
+
+	UPROPERTY()
+	float totalMp;
+	
+	UPROPERTY()
 	int savedExp;
+
+	UPROPERTY()
 	int savedLevel;
+
+	UPROPERTY()
 	int savedCoin;
 };

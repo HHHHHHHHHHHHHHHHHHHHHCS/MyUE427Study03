@@ -83,10 +83,14 @@ public:
 
 	UButton* inventoryButton;
 
+	UButton* settingsButton;
+
 	UPROPERTY(BlueprintReadOnly)
 	class UUI_CraftMenu* craftMenuWidget;
 
 	class UUI_Shop* shopWidget;
+
+	class UUI_Settings* settingsWidget;
 	
 public:
 	bool bQuestUIVisibility = false;
@@ -135,4 +139,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnObtainMessageEnd();
+
+	UFUNCTION()
+	void OnSettingsButtonClicked();
 };

@@ -5,6 +5,7 @@
 
 #include "SkillDragOperation.h"
 #include "UI_HotkeyRow.h"
+#include "UI_Settings.h"
 #include "Components/OverlaySlot.h"
 #include "Components/ScrollBoxSlot.h"
 #include "Components/WrapBox.h"
@@ -61,6 +62,9 @@ bool UUserWidget_Main::Initialize()
 	inventoryButton = Cast<UButton>(GetWidgetFromName("Button_Inventory"));
 	inventoryButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnInventoryButtonClicked);
 
+	settingsButton = Cast<UButton>(GetWidgetFromName("Button_Settings"));
+	settingsButton->OnClicked.AddDynamic(this, &UUserWidget_Main::OnSettingsButtonClicked);
+
 	throwAwayWidget = Cast<UUI_ThrowAway>(GetWidgetFromName("UI_ThrowAway"));
 
 	obtainContainer = Cast<UBorder>(GetWidgetFromName("Border_ObtainContainer"));
@@ -68,6 +72,8 @@ bool UUserWidget_Main::Initialize()
 	readableContainer = Cast<UBorder>(GetWidgetFromName("Border_ReadableContainer"));
 
 	craftMenuWidget = Cast<UUI_CraftMenu>(GetWidgetFromName("UI_CraftMenu"));
+
+	settingsWidget = Cast<UUI_Settings>(GetWidgetFromName("UI_Settings"));
 
 	return true;
 }
@@ -287,5 +293,17 @@ void UUserWidget_Main::OnObtainMessageEnd()
 		obtainedItemQueue.Peek(slot);
 		itemObtain->OnInit(slot.itemClass, slot.amount, this);
 		obtainContainer->AddChild(itemObtain);
+	}
+}
+
+void UUserWidget_Main::OnSettingsButtonClicked()
+{
+	if (settingsWidget->Visibility == ESlateVisibility::Visible)
+	{
+		settingsWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		settingsWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }

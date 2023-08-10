@@ -18,4 +18,12 @@ class MYUE427STUDY03_API UUI_Settings : public UUserWidget
 public:
 	UPROPERTY(VisibleAnywhere, meta=(BindWidget))
 	UButton* Button_Save;
+
+	class ACharacterBase* player;
+	
+public:
+	virtual void NativeConstruct() override;
+	
+	UFUNCTION()
+	void OnSaveButtonClick();
 };
