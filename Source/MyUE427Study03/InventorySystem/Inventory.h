@@ -34,6 +34,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="Item")
 	TArray<TSubclassOf<AItemBase>> craftItems;
 
+	TArray<FSavedPickup> lootedPickups;
+	
 public:
 	// Sets default values for this actor's properties
 	AInventory();

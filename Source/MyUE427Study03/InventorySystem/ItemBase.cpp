@@ -70,7 +70,18 @@ void AItemBase::OnInteractWith(ACharacterBase* character)
 	}
 	if (remainder <= 0)
 	{
+		if (id >= 0)
+		{
+			inventoryRef->lootedPickups.Add(FSavedPickup{id, 0});
+		}
 		Destroy();
+		}
+	else
+	{
+		if (id >= 0)
+		{
+			inventoryRef->lootedPickups.Add(FSavedPickup{id, remainder});
+		}
 	}
 }
 

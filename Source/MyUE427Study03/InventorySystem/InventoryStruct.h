@@ -57,6 +57,15 @@ public:
 	int price;
 };
 
+USTRUCT()
+struct FSavedPickup
+{
+	GENERATED_BODY()
+
+	int id; // 场景中所有要保存的物体ID, 同一类不同物品ID不同, 如果该物体不需要保存 id = -1
+	int restAmount;
+};
+
 
 /**
  * 

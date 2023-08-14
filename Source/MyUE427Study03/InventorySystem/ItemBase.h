@@ -36,6 +36,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="Item")
 	int amount;
 
+	UPROPERTY(EditAnywhere, Category="Item")
+	int id = -1;
+
 	int index;
 
 	class AInventory* inventoryRef;
