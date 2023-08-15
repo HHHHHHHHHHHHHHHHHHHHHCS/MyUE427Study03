@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Inventory.h"
 #include "ItemBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
@@ -455,8 +456,64 @@ bool AInventory::RemoveItem(TSubclassOf<AItemBase> item, int amount)
 void AInventory::UpdateCraftMenu()
 {
 	auto item = playerChar->mainUI->craftMenuWidget->currentItem;
-	if(item)
+	if (item)
 	{
 		playerChar->mainUI->craftMenuWidget->UpdateDetailWindow(item);
+	}
+}
+
+void AInventory::SaveGame()
+{
+	if (!inventorySaveInst)
+	{
+		inventorySaveInst = Cast<UInventorySave>(UGameplayStatics::CreateSaveGameObject(UInventorySave::StaticClass()));
+	}
+
+	inventorySaveInst->saveWeight = currentWeight;
+	inventorySaveInst->savedSlots = slots;
+	inventorySaveInst->SavedPickups = lootedPickups;
+
+	UGameplayStatics::SaveGameToSlot(inventorySaveInst, savedSlotName, 0);
+}
+
+bool AInventory::IsContainsID(int itemID, int& rest)
+{
+	for (auto& item : lootedPickups)
+	{
+		if (item.id == itemID)
+		{
+			rest = item.restAmount;
+			return true;
+		}
+	}
+	return false;
+}
+
+void AInventory::LoadPickups()
+{
+	TArray<AActor*> founderActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AItemBase::StaticClass(), founderActors);
+
+	for (AActor* actor : founderActors)
+	{
+		AItemBase* item = Cast<AItemBase>(actor);
+		if (item)
+		{
+			if (item->id >= 0)
+			{
+				int restAmount;
+				if (IsContainsID(item->id, restAmount))
+				{
+					if(restAmount>0)
+					{
+						item->amount = restAmount;
+					}
+					else
+					{
+						item->Destroy();
+					}
+				}
+			}
+		}
 	}
 }

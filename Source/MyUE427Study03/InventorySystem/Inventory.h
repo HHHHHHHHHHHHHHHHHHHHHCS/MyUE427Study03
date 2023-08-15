@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InventoryStruct.h"
 #include "GameFramework/Actor.h"
+#include "MyUE427Study03/Game/InventorySave.h"
 #include "Inventory.generated.h"
 
 UCLASS()
@@ -35,6 +36,9 @@ public:
 	TArray<TSubclassOf<AItemBase>> craftItems;
 
 	TArray<FSavedPickup> lootedPickups;
+
+	UInventorySave* inventorySaveInst;
+	FString savedSlotName = "InventorySave";
 	
 public:
 	// Sets default values for this actor's properties
@@ -103,4 +107,10 @@ public:
 	bool RemoveItem(TSubclassOf<AItemBase> item, int amount);
 
 	void UpdateCraftMenu();
+
+	void SaveGame();
+
+	bool IsContainsID(int itemID, int &rest);
+
+	void LoadPickups();
 };
