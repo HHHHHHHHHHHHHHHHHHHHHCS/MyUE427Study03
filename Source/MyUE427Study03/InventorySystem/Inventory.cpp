@@ -20,8 +20,14 @@ AInventory::AInventory()
 void AInventory::BeginPlay()
 {
 	Super::BeginPlay();
+
 	playerChar = Cast<ACharacterBase>(GetOwner());
 	slots.SetNum(amountOfSlots);
+
+	if (UGameplayStatics::DoesSaveGameExist(savedSlotName, 0))
+	{
+		LoadInventory();
+	}
 }
 
 // Called every frame
@@ -365,7 +371,10 @@ TArray<FInventorySlot> AInventory::BubbleSortArray(TArray<FInventorySlot> inputA
 
 void AInventory::UpdateWeight()
 {
-	playerChar->mainUI->inventoryWidget->UpdateWeight(currentWeight, totalWeight);
+	if(playerChar->mainUI)
+	{
+		playerChar->mainUI->inventoryWidget->UpdateWeight(currentWeight, totalWeight);
+	}
 }
 
 void AInventory::AddWeight(float weight)
@@ -462,7 +471,7 @@ void AInventory::UpdateCraftMenu()
 	}
 }
 
-void AInventory::SaveGame()
+void AInventory::SaveInventory()
 {
 	if (!inventorySaveInst)
 	{
@@ -504,7 +513,7 @@ void AInventory::LoadPickups()
 				int restAmount;
 				if (IsContainsID(item->id, restAmount))
 				{
-					if(restAmount>0)
+					if (restAmount > 0)
 					{
 						item->amount = restAmount;
 					}
@@ -516,4 +525,19 @@ void AInventory::LoadPickups()
 			}
 		}
 	}
+}
+
+void AInventory::LoadInventory()
+{
+	if (!inventorySaveInst)
+	{
+		inventorySaveInst = Cast<UInventorySave>(UGameplayStatics::LoadGameFromSlot(savedSlotName, 0));
+	}
+
+	currentWeight = inventorySaveInst->saveWeight;
+	slots = inventorySaveInst->savedSlots;
+	lootedPickups = inventorySaveInst->SavedPickups;
+
+	LoadPickups();
+	AddWeight(0); // 刷新UI和状态
 }

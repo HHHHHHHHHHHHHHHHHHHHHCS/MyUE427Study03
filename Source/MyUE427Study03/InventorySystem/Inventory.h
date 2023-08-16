@@ -108,9 +108,11 @@ public:
 
 	void UpdateCraftMenu();
 
-	void SaveGame();
+	void SaveInventory();
 
 	bool IsContainsID(int itemID, int &rest);
 
 	void LoadPickups();
+
+	void LoadInventory();
 };

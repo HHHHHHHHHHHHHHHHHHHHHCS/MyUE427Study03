@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
+#include "MyUE427Study03/InventorySystem/Inventory.h"
 
 void UUI_Settings::NativeConstruct()
 {
@@ -19,4 +20,9 @@ void UUI_Settings::OnSaveButtonClick()
 		player = Cast<ACharacterBase>(UGameplayStatics::GetPlayerPawn(this, 0));
 	}
 	player->SaveGame();
+
+	if(player && player->inventoryRef)
+	{
+		player->inventoryRef->SaveInventory();
+	}
 }

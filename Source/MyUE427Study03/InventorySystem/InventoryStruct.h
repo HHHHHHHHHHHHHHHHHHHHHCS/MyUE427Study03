@@ -10,6 +10,7 @@ USTRUCT()
 struct FInventorySlot
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	TSubclassOf<class AItemBase> itemClass;
@@ -22,6 +23,7 @@ USTRUCT()
 struct FItemInfo
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere, Category="ItemInfo")
 	FText name;
@@ -62,7 +64,11 @@ struct FSavedPickup
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY()
 	int id; // 场景中所有要保存的物体ID, 同一类不同物品ID不同, 如果该物体不需要保存 id = -1
+
+	UPROPERTY()
 	int restAmount;
 };
 
