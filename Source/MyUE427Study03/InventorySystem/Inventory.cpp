@@ -371,7 +371,7 @@ TArray<FInventorySlot> AInventory::BubbleSortArray(TArray<FInventorySlot> inputA
 
 void AInventory::UpdateWeight()
 {
-	if(playerChar->mainUI)
+	if (playerChar->mainUI)
 	{
 		playerChar->mainUI->inventoryWidget->UpdateWeight(currentWeight, totalWeight);
 	}
@@ -540,4 +540,28 @@ void AInventory::LoadInventory()
 
 	LoadPickups();
 	AddWeight(0); // 刷新UI和状态
+}
+
+bool AInventory::AddItemToIndex(int index, TSubclassOf<AItemBase> item, int amount)
+{
+	if (IsSlotEmpty(index) && amount < maxStackSize)
+	{
+		slots[index] = FInventorySlot{item, amount};
+		AddWeightForItem(item, amount);
+		UpdateSlotByIndex(index);
+		return true;
+	}
+	return false;
+}
+
+bool AInventory::IncreaseAmountAtIndex(int index, int amount)
+{
+	if (!IsSlotEmpty(index) && (GetAmountAtIndex(index) + amount) <= maxStackSize)
+	{
+		slots[index].amount += amount;
+		AddWeightForItem(slots[index].itemClass, slots[index].amount);
+		UpdateSlotByIndex(index);
+		return true;
+	}
+	return false;
 }

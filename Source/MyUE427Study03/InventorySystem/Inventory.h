@@ -115,4 +115,8 @@ public:
 	void LoadPickups();
 
 	void LoadInventory();
+
+	bool AddItemToIndex(int index, TSubclassOf<AItemBase> item, int amount);
+
+	bool IncreaseAmountAtIndex(int index, int amount);
 };
