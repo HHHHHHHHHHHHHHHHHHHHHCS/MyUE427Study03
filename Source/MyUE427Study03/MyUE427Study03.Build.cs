@@ -11,7 +11,7 @@ public class MyUE427Study03 : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 			{ "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "UMG", "NavigationSystem", "Paper2D" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] { "MovieSceneCapture" });
 
 		// Uncomment if you are using Slate UI
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

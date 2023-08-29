@@ -15,7 +15,6 @@
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
 
-
 void UUI_InventorySlot::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -79,7 +78,6 @@ void UUI_InventorySlot::OnButtonSlotClicked()
 		inventoryRef->playerChar->mainUI->inventoryWidget->actionMenu->SetVisibility(ESlateVisibility::Hidden);
 		GetWorld()->GetTimerManager().ClearTimer(timerHandle_CountToZero);
 	}
-
 }
 
 // FReply UUI_InventorySlot::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
