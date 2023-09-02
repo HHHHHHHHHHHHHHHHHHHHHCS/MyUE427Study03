@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "Storage.generated.h"
 
+
 UCLASS()
 class MYUE427STUDY03_API AStorage : public AActor
 {
@@ -27,12 +28,11 @@ public:
 
 	bool isOverload;
 
-	UPROPERTY(EditAnywhere, Category="Item")
-	TArray<TSubclassOf<AItemBase>> craftItems;
-
 	TArray<FSavedPickup> lootedPickups;
 
 	class UStorageSave* storageSaveInst;
+
+	class UUI_Storage* storageWidget;
 
 	FString savedSlotName = "StorageSave";
 

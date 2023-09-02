@@ -3,9 +3,11 @@
 
 #include "Storage.h"
 
+#include "Inventory.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/Game/StorageSave.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_Storage.h"
 
 // Sets default values
 AStorage::AStorage()
@@ -20,6 +22,9 @@ AStorage::AStorage()
 void AStorage::BeginPlay()
 {
 	Super::BeginPlay();
+	playerChar = Cast<ACharacterBase>(UGameplayStatics::GetPlayerCharacter(this, 0));
+	storageWidget = playerChar->mainUI->storageWidget;
+	slots.SetNum(amountOfSlots);
 }
 
 // Called every frame
@@ -132,7 +137,7 @@ AItemBase* AStorage::GetItemByIndex(int index)
 
 void AStorage::UpdateSlotByIndex(int index)
 {
-	playerChar->mainUI->inventoryWidget->inventorySlots[index]->UpdateSlot();
+	storageWidget->storageSlotArray[index]->UpdateSlot();
 }
 
 int AStorage::GetAmountAtIndex(int index)
@@ -229,18 +234,38 @@ bool AStorage::IncreaseAmountAtIndex(int index, int amount)
 
 void AStorage::OpenStorage()
 {
-	// TODO:
+	storageWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AStorage::CloseStorage()
 {
-	// TODO:
+	storageWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 bool AStorage::MoveFromInvToStorageByIndex(AInventory* inventory, int inventoryIndex, int storageIndex)
 {
-	// TODO:
-	return true;
+	if (IsSlotEmpty(storageIndex))
+	{
+		int addAmount = inventory->GetAmountAtIndex(inventoryIndex);
+		if (AddItemToIndex(storageIndex, inventory->slots[inventoryIndex].itemClass, addAmount))
+		{
+			inventory->RemoveItemAtIndex(inventoryIndex, addAmount);
+			return true;
+		}
+		return false;
+	}
+	if (slots[storageIndex].itemClass == inventory->slots[inventoryIndex].itemClass
+		&& GetItemByIndex(storageIndex)->itemInfo.canStacked
+		&& GetAmountAtIndex(storageIndex) < maxStackSize)
+	{
+		int wantAmount = inventory->GetAmountAtIndex(inventoryIndex);
+		int nowAmount = GetAmountAtIndex(storageIndex);
+		int addAmount = FMath::Min(maxStackSize - nowAmount, wantAmount);
+		inventory->RemoveItemAtIndex(inventoryIndex, addAmount);
+		IncreaseAmountAtIndex(storageIndex, addAmount);
+		return maxStackSize - nowAmount >= wantAmount;
+	}
+	return false;
 }
 
 void AStorage::SaveStorage()

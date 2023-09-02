@@ -101,9 +101,15 @@ public:
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	TSubclassOf<class AInventory> inventoryClass;
 
+	UPROPERTY(EditAnywhere, Category="Inventory")
+	TSubclassOf<class AStorage> storageClass;
+
 	UPROPERTY(BlueprintReadOnly)
 	class AInventory* inventoryRef;
 
+	UPROPERTY(BlueprintReadOnly)
+	class AStorage* storageRef;
+	
 	bool isShiftDown;
 
 protected:

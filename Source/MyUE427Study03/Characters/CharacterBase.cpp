@@ -15,6 +15,7 @@
 #include "MyUE427Study03/Game/RPGSaveGame.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemStaff.h"
+#include "MyUE427Study03/InventorySystem/Storage.h"
 #include "MyUE427Study03/Others/StaticLibrary.h"
 #include "MyUE427Study03/NPC/InteractionInterface.h"
 #include "MyUE427Study03/NPC/NPCBase.h"
@@ -25,6 +26,7 @@
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_Shop.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_Storage.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_QuestList_Entry.h"
 #include "MyUE427Study03/UserWidget/Quest/UI_Quest_Journal.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -143,6 +145,8 @@ void ACharacterBase::BeginPlay()
 
 	inventoryRef = GetWorld()->SpawnActor<AInventory>(inventoryClass, params);
 
+	storageRef = GetWorld()->SpawnActor<AStorage>(storageClass, params);
+
 	//查找UserWidget这种 需要在路径地址末尾加_C
 	mainUI = CreateWidget<UUserWidget_Main>(GetWorld(), LoadClass<UUserWidget_Main>(
 		                                        this,TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/UI_Main.UI_Main_C'")));
@@ -172,6 +176,8 @@ void ACharacterBase::BeginPlay()
 	mainUI->craftMenuWidget->InitCraftMenu(inventoryRef);
 
 	mainUI->inventoryWidget->UpdateCoin(GetCurrentCoin());
+
+	mainUI->storageWidget->GenerateSlot(storageRef);
 }
 
 

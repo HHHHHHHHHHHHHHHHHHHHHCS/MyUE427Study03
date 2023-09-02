@@ -12,6 +12,7 @@
 #include "Inventory/UI_CraftMenu.h"
 #include "Inventory/UI_ItemDragDropOperation.h"
 #include "Inventory/UI_ItemObtain.h"
+#include "Inventory/UI_Storage.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "Quest/UI_Quest_Journal.h"
 #include "Quest/UI_Quest_Quest.h"
@@ -74,6 +75,8 @@ bool UUserWidget_Main::Initialize()
 	craftMenuWidget = Cast<UUI_CraftMenu>(GetWidgetFromName("UI_CraftMenu"));
 
 	settingsWidget = Cast<UUI_Settings>(GetWidgetFromName("UI_Settings"));
+
+	storageWidget = Cast<UUI_Storage>(GetWidgetFromName("UI_Storage"));
 
 	return true;
 }

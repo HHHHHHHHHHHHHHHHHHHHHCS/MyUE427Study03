@@ -91,6 +91,8 @@ public:
 	class UUI_Shop* shopWidget;
 
 	class UUI_Settings* settingsWidget;
+
+	class UUI_Storage* storageWidget;
 	
 public:
 	bool bQuestUIVisibility = false;
