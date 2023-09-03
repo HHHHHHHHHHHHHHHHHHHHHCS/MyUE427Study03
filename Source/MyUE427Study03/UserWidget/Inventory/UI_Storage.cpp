@@ -4,6 +4,7 @@
 #include "UI_Storage.h"
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
+#include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/Storage.h"
 
 void UUI_Storage::NativeConstruct()
@@ -32,4 +33,18 @@ void UUI_Storage::GenerateSlot(AStorage* storage)
 void UUI_Storage::OnCloseButtonClick()
 {
 	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UUI_Storage::OnSlotClicked(int index)
+{
+	int amountToRemove = storageRef->slots[index].amount;
+	int remainderAmount = inventoryRef->AddItem(storageRef->slots[index].itemClass, amountToRemove);
+	if (remainderAmount > 0)
+	{
+		storageRef->RemoveItemAtIndex(index, amountToRemove - remainderAmount);
+	}
+	else
+	{
+		storageRef->RemoveItemAtIndex(index, amountToRemove);
+	}
 }

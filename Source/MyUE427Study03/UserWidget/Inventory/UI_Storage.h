@@ -37,4 +37,7 @@ public:
 	
 	UFUNCTION()
 	void OnCloseButtonClick();
+
+	UFUNCTION()
+	void OnSlotClicked(int index);
 };

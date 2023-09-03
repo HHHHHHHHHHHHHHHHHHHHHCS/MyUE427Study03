@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Inventory.h"
 #include "ItemBase.h"
+#include "Storage.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
@@ -562,6 +563,32 @@ bool AInventory::IncreaseAmountAtIndex(int index, int amount)
 		AddWeightForItem(slots[index].itemClass, slots[index].amount);
 		UpdateSlotByIndex(index);
 		return true;
+	}
+	return false;
+}
+
+bool AInventory::MoveFromStorageToInventoryByIndex(AStorage* storage, int storageIndex, int inventoryIndex)
+{
+	if (IsSlotEmpty(inventoryIndex))
+	{
+		int addAmount = storage->GetAmountAtIndex(storageIndex);
+		if (AddItemToIndex(inventoryIndex, storage->slots[storageIndex].itemClass, addAmount))
+		{
+			storage->RemoveItemAtIndex(storageIndex, addAmount);
+			return true;
+		}
+		return false;
+	}
+	if (slots[inventoryIndex].itemClass == storage->slots[storageIndex].itemClass
+		&& GetItemByIndex(inventoryIndex)->itemInfo.canStacked
+		&& GetAmountAtIndex(inventoryIndex) < maxStackSize)
+	{
+		int wantAmount = storage->GetAmountAtIndex(storageIndex);
+		int nowAmount = GetAmountAtIndex(inventoryIndex);
+		int addAmount = FMath::Min(maxStackSize - nowAmount, wantAmount);
+		storage->RemoveItemAtIndex(storageIndex, addAmount);
+		IncreaseAmountAtIndex(inventoryIndex, addAmount);
+		return maxStackSize - nowAmount >= wantAmount;
 	}
 	return false;
 }

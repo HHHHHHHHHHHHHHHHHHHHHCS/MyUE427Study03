@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/DragDropOperation.h"
-#include "UI_StorageDragDropOperation.generated.h"
+#include "StorageSlotDragDropOperation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MYUE427STUDY03_API UUI_StorageDragDropOperation : public UDragDropOperation
+class MYUE427STUDY03_API UStorageSlotDragDropOperation : public UDragDropOperation
 {
 	GENERATED_BODY()
-	
+
 public:
-	class UUI_StorageSlot* uiDragSlot;
+	class UUI_StorageSlot* slot;
 };

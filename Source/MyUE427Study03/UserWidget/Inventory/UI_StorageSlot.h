@@ -35,6 +35,7 @@ public:
 	int slotIndex;
 	int amount;
 	class AStorage* storageRef;
+	class UUI_Storage* storageWidget;
 	FItemInfo itemInfo;
 	bool bDraggedOver;
 	class UUI_ItemDetail* itemDetail;

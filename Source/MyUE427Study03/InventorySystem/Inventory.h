@@ -119,4 +119,6 @@ public:
 	bool AddItemToIndex(int index, TSubclassOf<AItemBase> item, int amount);
 
 	bool IncreaseAmountAtIndex(int index, int amount);
+
+	bool MoveFromStorageToInventoryByIndex(class AStorage* storage, int storageIndex, int inventoryIndex);
 };

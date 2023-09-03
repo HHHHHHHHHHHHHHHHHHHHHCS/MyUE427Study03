@@ -3,11 +3,12 @@
 
 #include "UI_StorageSlot.h"
 
+#include "StorageSlotDragDropOperation.h"
 #include "UI_DragItem.h"
 #include "UI_InventoryActionMenu.h"
 #include "UI_ItemDetail.h"
 #include "UI_ItemDragDropOperation.h"
-#include "UI_StorageDragDropOperation.h"
+#include "UI_Storage.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
@@ -63,7 +64,7 @@ void UUI_StorageSlot::UpdateSlot()
 
 void UUI_StorageSlot::OnButtonSlotClicked()
 {
-	storageRef->UpdateSlotByIndex(slotIndex);
+	storageWidget->OnSlotClicked(slotIndex);
 }
 
 FReply UUI_StorageSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -91,11 +92,11 @@ void UUI_StorageSlot::NativeOnDragDetected(const FGeometry& InGeometry, const FP
 		tempOp->DefaultDragVisual = itemDrag;
 		OutOperation = tempOp;
 
-		UUI_StorageDragDropOperation* dragDropOp = Cast<UUI_StorageDragDropOperation>(OutOperation);
+		UStorageSlotDragDropOperation* dragDropOp = Cast<UStorageSlotDragDropOperation>(OutOperation);
 
 		if (dragDropOp)
 		{
-			dragDropOp->uiDragSlot = this;
+			dragDropOp->slot = this;
 		}
 	}
 }
@@ -114,8 +115,8 @@ bool UUI_StorageSlot::NativeOnDragOver(const FGeometry& InGeometry, const FDragD
 		return true;
 	}
 
-	auto dragOp = Cast<UUI_StorageDragDropOperation>(InOperation);
-	if (dragOp && dragOp->uiDragSlot != this)
+	auto dragOp = Cast<UStorageSlotDragDropOperation>(InOperation);
+	if (dragOp && dragOp->slot != this)
 	{
 		bDraggedOver = true;
 		Border_Base->SetBrushColor(FLinearColor(1.0f, 0.82f, 0.0f, 0.5f));
@@ -143,16 +144,16 @@ bool UUI_StorageSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 {
 	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 
-	auto storageDragOp = Cast<UUI_StorageDragDropOperation>(InOperation);
+	auto storageDragOp = Cast<UStorageSlotDragDropOperation>(InOperation);
 
 	if (storageDragOp)
 	{
-		if (storageRef->AddToIndex(storageDragOp->uiDragSlot->slotIndex, slotIndex))
+		if (storageRef->AddToIndex(storageDragOp->slot->slotIndex, slotIndex))
 		{
 			return true;
 		}
 		// 如果尝试添加失败  那就直接交换
-		return storageRef->SwapSlot(storageDragOp->uiDragSlot->slotIndex, slotIndex);
+		return storageRef->SwapSlot(storageDragOp->slot->slotIndex, slotIndex);
 	}
 
 	auto itemDragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
