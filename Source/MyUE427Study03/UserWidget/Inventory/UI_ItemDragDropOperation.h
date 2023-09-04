@@ -15,6 +15,6 @@ class MYUE427STUDY03_API UUI_ItemDragDropOperation : public UDragDropOperation
 	GENERATED_BODY()
 
 public:
-	class UUI_InventorySlot* uiDragSlot;
+	class UUI_InventorySlot* slot;
 	bool isShiftDown;
 };

@@ -57,7 +57,7 @@ bool UUI_Shop::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& I
 	auto itemOp = Cast<UUI_ItemDragDropOperation>(InOperation);
 	if (itemOp)
 	{
-		auto slotUI = itemOp->uiDragSlot;
+		auto slotUI = itemOp->slot;
 		if (slotUI->itemInfo.category == EItemCategories::QuestItem)
 		{
 			return false;

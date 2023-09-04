@@ -191,7 +191,7 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
 	if (dragDropOp)
 	{
-		UUI_InventorySlot* slot = dragDropOp->uiDragSlot;
+		UUI_InventorySlot* slot = dragDropOp->slot;
 		if (!slot->itemInfo.canStacked && slot->amount > 0)
 		{
 			inventoryWidget->inventoryRef->RemoveItemAtIndex(slot->slotIndex, 1);

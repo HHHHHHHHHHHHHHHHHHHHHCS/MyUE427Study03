@@ -242,7 +242,7 @@ void AStorage::CloseStorage()
 	storageWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
-bool AStorage::MoveFromInvToStorageByIndex(AInventory* inventory, int inventoryIndex, int storageIndex)
+bool AStorage::MoveFromInventoryToStorageByIndex(AInventory* inventory, int inventoryIndex, int storageIndex)
 {
 	if (IsSlotEmpty(storageIndex))
 	{

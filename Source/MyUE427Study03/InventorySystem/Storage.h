@@ -76,7 +76,7 @@ public:
 
 	void CloseStorage();
 
-	bool MoveFromInvToStorageByIndex(class AInventory* inventory, int inventoryIndex, int storageIndex);
+	bool MoveFromInventoryToStorageByIndex(class AInventory* inventory, int inventoryIndex, int storageIndex);
 
 	void SaveStorage();
 

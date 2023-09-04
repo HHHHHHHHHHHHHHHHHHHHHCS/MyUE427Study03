@@ -108,15 +108,18 @@ bool UUI_StorageSlot::NativeOnDragOver(const FGeometry& InGeometry, const FDragD
 	{
 		return true;
 	}
-	if (Cast<UUI_ItemDragDropOperation>(InOperation))
+
+	auto itemDragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+
+	if (itemDragOp)
 	{
 		bDraggedOver = true;
 		Border_Base->SetBrushColor(FLinearColor(1.0f, 0.82f, 0.0f, 0.5f));
 		return true;
 	}
 
-	auto dragOp = Cast<UStorageSlotDragDropOperation>(InOperation);
-	if (dragOp && dragOp->slot != this)
+	auto storageDragOp = Cast<UStorageSlotDragDropOperation>(InOperation);
+	if (storageDragOp && storageDragOp->slot != this)
 	{
 		bDraggedOver = true;
 		Border_Base->SetBrushColor(FLinearColor(1.0f, 0.82f, 0.0f, 0.5f));
@@ -131,8 +134,10 @@ void UUI_StorageSlot::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, U
 
 	if (bDraggedOver)
 	{
-		auto dragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
-		if (dragOp)
+		auto itemDragOp = Cast<UUI_ItemDragDropOperation>(InOperation);
+		auto storageDragOp = Cast<UStorageSlotDragDropOperation>(InOperation);
+
+		if (itemDragOp || storageDragOp)
 		{
 			Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
 			bDraggedOver = false;
@@ -160,8 +165,8 @@ bool UUI_StorageSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 	if (itemDragOp)
 	{
-		return storageRef->MoveFromInvToStorageByIndex(itemDragOp->uiDragSlot->inventoryRef,
-		                                               itemDragOp->uiDragSlot->slotIndex, slotIndex);
+		return storageRef->MoveFromInventoryToStorageByIndex(itemDragOp->slot->inventoryRef,
+		                                               itemDragOp->slot->slotIndex, slotIndex);
 	}
 
 
