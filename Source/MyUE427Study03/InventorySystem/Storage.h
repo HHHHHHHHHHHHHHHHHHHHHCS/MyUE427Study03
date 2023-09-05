@@ -32,8 +32,6 @@ public:
 
 	class UStorageSave* storageSaveInst;
 
-	class UUI_Storage* storageWidget;
-
 	FString savedSlotName = "StorageSave";
 
 protected:
@@ -47,8 +45,8 @@ public:
 public:
 	int SearchEmptySlot();
 
-	int SearchFreeStack(TSubclassOf< AItemBase> item);
-	
+	int SearchFreeStack(TSubclassOf<AItemBase> item);
+
 	//返回的是剩下的数量
 	int AddItem(TSubclassOf<AItemBase>, int amount);
 
@@ -72,6 +70,8 @@ public:
 
 	bool IncreaseAmountAtIndex(int index, int amount);
 
+	class UUI_Storage* GetStorageWidget();
+
 	void OpenStorage();
 
 	void CloseStorage();
@@ -81,5 +81,4 @@ public:
 	void SaveStorage();
 
 	void LoadStorage();
-
 };

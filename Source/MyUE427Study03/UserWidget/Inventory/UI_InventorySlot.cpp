@@ -207,6 +207,9 @@ bool UUI_InventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 
 	if (itemDragOp)
 	{
+		Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
+		bDraggedOver = false;
+
 		auto slot = itemDragOp->slot;
 		if (slot != this)
 		{
@@ -237,6 +240,8 @@ bool UUI_InventorySlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDro
 
 	if (storageDragOp)
 	{
+		Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
+		bDraggedOver = false;
 		return inventoryRef->MoveFromStorageToInventoryByIndex(storageDragOp->slot->storageRef,
 		                                                       storageDragOp->slot->slotIndex, slotIndex);
 	}

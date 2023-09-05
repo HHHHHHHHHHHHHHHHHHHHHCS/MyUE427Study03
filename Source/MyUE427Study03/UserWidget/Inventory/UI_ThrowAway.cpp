@@ -4,7 +4,6 @@
 #include "UI_ThrowAway.h"
 
 #include "Components/WrapBox.h"
-#include "Kismet/KismetStringLibrary.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "MyUE427Study03/InventorySystem/ItemBase.h"
@@ -31,7 +30,7 @@ void UUI_ThrowAway::NativeConstruct()
 
 void UUI_ThrowAway::UpdateInfo(int index)
 {
-	if (inventoryRef->IsSlotEmpty(currentIndex))
+	if (inventoryRef->IsSlotEmpty(index))
 	{
 		return;
 	}

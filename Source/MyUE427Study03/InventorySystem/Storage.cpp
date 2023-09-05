@@ -13,7 +13,7 @@
 AStorage::AStorage()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	amountOfSlots = 40;
 	maxStackSize = 99;
 }
@@ -22,8 +22,7 @@ AStorage::AStorage()
 void AStorage::BeginPlay()
 {
 	Super::BeginPlay();
-	playerChar = Cast<ACharacterBase>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	storageWidget = playerChar->mainUI->storageWidget;
+	playerChar = Cast<ACharacterBase>(GetOwner());
 	slots.SetNum(amountOfSlots);
 }
 
@@ -137,7 +136,7 @@ AItemBase* AStorage::GetItemByIndex(int index)
 
 void AStorage::UpdateSlotByIndex(int index)
 {
-	storageWidget->storageSlotArray[index]->UpdateSlot();
+	GetStorageWidget()->storageSlotArray[index]->UpdateSlot();
 }
 
 int AStorage::GetAmountAtIndex(int index)
@@ -232,15 +231,21 @@ bool AStorage::IncreaseAmountAtIndex(int index, int amount)
 	return false;
 }
 
+UUI_Storage* AStorage::GetStorageWidget()
+{
+	return playerChar->mainUI->storageWidget;
+}
+
 void AStorage::OpenStorage()
 {
-	storageWidget->SetVisibility(ESlateVisibility::Visible);
+	GetStorageWidget()->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AStorage::CloseStorage()
 {
-	storageWidget->SetVisibility(ESlateVisibility::Hidden);
+	GetStorageWidget()->SetVisibility(ESlateVisibility::Hidden);
 }
+
 
 bool AStorage::MoveFromInventoryToStorageByIndex(AInventory* inventory, int inventoryIndex, int storageIndex)
 {

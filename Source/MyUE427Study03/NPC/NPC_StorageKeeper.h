@@ -16,6 +16,6 @@ class MYUE427STUDY03_API ANPC_StorageKeeper : public ANPCBase
 
 public:
 	virtual void OnInteractWith(ACharacterBase* character) override;
-	
+
 	virtual void OnLeavePlayerRadius(ACharacterBase* character) override;
 };

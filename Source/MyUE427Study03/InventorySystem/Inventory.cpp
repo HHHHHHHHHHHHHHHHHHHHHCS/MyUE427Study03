@@ -11,7 +11,7 @@
 AInventory::AInventory()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	amountOfSlots = 40;
 	maxStackSize = 99;
 	totalWeight = 250;
@@ -125,24 +125,22 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 		}
 		return 0;
 	}
-	else
+	
+	//如果物品不能被堆积
+	for (int i = 0; i < amount; i++)
 	{
-		//如果物品不能被堆积
-		for (int i = 0; i < amount; i++)
+		int idx = SearchEmptySlot();
+		if (SearchEmptySlot() < 0)
 		{
-			int idx = SearchEmptySlot();
-			if (SearchEmptySlot() < 0)
-			{
-				return amount - i;
-			}
-			//找到了空的插槽
-			slots[idx] = FInventorySlot{item, 1};
-			AddWeightForItem(item, amount);
-			UpdateCraftMenu();
-			UpdateSlotByIndex(idx);
+			return amount - i;
 		}
-		return 0;
+		//找到了空的插槽
+		slots[idx] = FInventorySlot{item, 1};
+		AddWeightForItem(item, amount);
+		UpdateCraftMenu();
+		UpdateSlotByIndex(idx);
 	}
+	return 0;
 }
 
 void AInventory::UpdateSlotByIndex(int index)

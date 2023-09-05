@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI_StorageSlot.h"
 #include "Blueprint/UserWidget.h"
+#include "MyUE427Study03/InventorySystem/Inventory.h"
 #include "UI_Storage.generated.h"
 
 /**
@@ -33,7 +34,7 @@ public:
 public:
 	virtual void NativeConstruct() override;
 
-	void GenerateSlot(AStorage* storage);
+	void GenerateSlot(AStorage* storage, AInventory* Inventory);
 	
 	UFUNCTION()
 	void OnCloseButtonClick();

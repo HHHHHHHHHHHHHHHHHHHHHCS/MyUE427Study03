@@ -177,7 +177,7 @@ void ACharacterBase::BeginPlay()
 
 	mainUI->inventoryWidget->UpdateCoin(GetCurrentCoin());
 
-	mainUI->storageWidget->GenerateSlot(storageRef);
+	mainUI->storageWidget->GenerateSlot(storageRef, inventoryRef);
 }
 
 

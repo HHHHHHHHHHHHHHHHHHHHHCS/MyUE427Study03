@@ -64,7 +64,7 @@ void UUI_StorageSlot::UpdateSlot()
 
 void UUI_StorageSlot::OnButtonSlotClicked()
 {
-	storageWidget->OnSlotClicked(slotIndex);
+	storageRef->GetStorageWidget()->OnSlotClicked(slotIndex);
 }
 
 FReply UUI_StorageSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -139,8 +139,7 @@ void UUI_StorageSlot::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, U
 
 		if (itemDragOp || storageDragOp)
 		{
-			Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
-			bDraggedOver = false;
+			CancelOverColor();
 		}
 	}
 }
@@ -153,6 +152,7 @@ bool UUI_StorageSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 	if (storageDragOp)
 	{
+		CancelOverColor();
 		if (storageRef->AddToIndex(storageDragOp->slot->slotIndex, slotIndex))
 		{
 			return true;
@@ -165,10 +165,17 @@ bool UUI_StorageSlot::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 	if (itemDragOp)
 	{
+		CancelOverColor();
 		return storageRef->MoveFromInventoryToStorageByIndex(itemDragOp->slot->inventoryRef,
-		                                               itemDragOp->slot->slotIndex, slotIndex);
+		                                                     itemDragOp->slot->slotIndex, slotIndex);
 	}
 
 
 	return false;
+}
+
+void UUI_StorageSlot::CancelOverColor()
+{
+	Border_Base->SetBrushColor(FLinearColor(1, 1, 1, 0));
+	bDraggedOver = false;
 }

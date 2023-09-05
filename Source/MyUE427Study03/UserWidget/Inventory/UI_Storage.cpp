@@ -2,6 +2,7 @@
 
 
 #include "UI_Storage.h"
+
 #include "Components/Button.h"
 #include "Components/WrapBox.h"
 #include "MyUE427Study03/InventorySystem/Inventory.h"
@@ -13,9 +14,10 @@ void UUI_Storage::NativeConstruct()
 	Button_Close->OnClicked.AddDynamic(this, &UUI_Storage::OnCloseButtonClick);
 }
 
-void UUI_Storage::GenerateSlot(AStorage* storage)
+void UUI_Storage::GenerateSlot(AStorage* storage, AInventory* inventory)
 {
 	storageRef = storage;
+	inventoryRef = inventory;
 	WBOX_Storage->ClearChildren();
 	storageSlotArray.Empty();
 	auto* slotCls = LoadClass<UUI_StorageSlot>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_StorageSlot.UI_StorageSlot_C'"));
@@ -47,4 +49,5 @@ void UUI_Storage::OnSlotClicked(int index)
 	{
 		storageRef->RemoveItemAtIndex(index, amountToRemove);
 	}
+	storageRef->GetStorageWidget()->storageSlotArray[index]->CancelOverColor();
 }

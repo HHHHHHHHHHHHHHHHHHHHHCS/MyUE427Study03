@@ -35,7 +35,6 @@ public:
 	int slotIndex;
 	int amount;
 	class AStorage* storageRef;
-	class UUI_Storage* storageWidget;
 	FItemInfo itemInfo;
 	bool bDraggedOver;
 	class UUI_ItemDetail* itemDetail;
@@ -61,4 +60,6 @@ public:
 	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	void CancelOverColor();
 };
