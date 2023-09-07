@@ -192,15 +192,18 @@ bool UUserWidget_Main::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 	if (dragDropOp)
 	{
 		UUI_InventorySlot* slot = dragDropOp->slot;
-		if (!slot->itemInfo.canStacked && slot->amount > 0)
+		if(!slot->bDraggedOver)
 		{
-			inventoryWidget->inventoryRef->RemoveItemAtIndex(slot->slotIndex, 1);
-		}
-		else
-		{
-			throwAwayWidget->UpdateInfo(slot->slotIndex);
-			throwAwayWidget->SetVisibility(ESlateVisibility::Visible);
-			inventoryWidget->WBOX_Inventory->SetIsEnabled(false);
+			if (!slot->itemInfo.canStacked && slot->amount > 0)
+			{
+				inventoryWidget->inventoryRef->RemoveItemAtIndex(slot->slotIndex, 1);
+			}
+			else
+			{
+				throwAwayWidget->UpdateInfo(slot->slotIndex);
+				throwAwayWidget->SetVisibility(ESlateVisibility::Visible);
+				inventoryWidget->WBOX_Inventory->SetIsEnabled(false);
+			}
 		}
 		return true;
 	}

@@ -23,6 +23,10 @@ void AStorage::BeginPlay()
 {
 	Super::BeginPlay();
 	playerChar = Cast<ACharacterBase>(GetOwner());
+	if(UGameplayStatics::DoesSaveGameExist(savedSlotName, 0))
+	{
+		LoadStorage();
+	}
 	slots.SetNum(amountOfSlots);
 }
 
