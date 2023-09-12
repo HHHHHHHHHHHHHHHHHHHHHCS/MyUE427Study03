@@ -13,7 +13,7 @@ void UUI_ItemHotKey::UpdateInfo()
 	if (isEmpty)
 	{
 		Image_Icon->SetVisibility(ESlateVisibility::Hidden);
-		Text_Amount->SetVisibility(ESlateVisibility::Hidden);
+		HBOX_Amount->SetVisibility(ESlateVisibility::Hidden);
 		isDragOver = false;
 		Border_Bg->SetBrushColor(defaultTint);
 	}
@@ -23,7 +23,7 @@ void UUI_ItemHotKey::UpdateInfo()
 		if (item == nullptr)
 		{
 			Image_Icon->SetVisibility(ESlateVisibility::Hidden);
-			Text_Amount->SetVisibility(ESlateVisibility::Hidden);
+			HBOX_Amount->SetVisibility(ESlateVisibility::Hidden);
 			isDragOver = false;
 			Border_Bg->SetBrushColor(defaultTint);
 		}
@@ -32,7 +32,7 @@ void UUI_ItemHotKey::UpdateInfo()
 			Image_Icon->SetBrushFromTexture(item->itemInfo.icon);
 			Image_Icon->SetVisibility(ESlateVisibility::Visible);
 			Text_Amount->SetText(FText::AsNumber(item->amount));
-			Text_Amount->SetVisibility(ESlateVisibility::Visible);
+			HBOX_Amount->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Border.h"
+#include "Components/HorizontalBox.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "UI_ItemHotKey.generated.h"
@@ -24,6 +25,9 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UImage* Image_Icon;
 
+	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* HBOX_Amount;
+	
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* Text_Amount;
 
