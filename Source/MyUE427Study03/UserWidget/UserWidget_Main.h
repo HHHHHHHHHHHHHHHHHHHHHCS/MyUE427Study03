@@ -74,7 +74,7 @@ public:
 	UBorder* obtainContainer;
 
 	UBorder* readableContainer;
-	
+
 	class UUI_Quest_Journal* questJournal;
 
 	UButton* questButton;
@@ -93,13 +93,19 @@ public:
 	class UUI_Settings* settingsWidget;
 
 	class UUI_Storage* storageWidget;
-	
+
+	UHorizontalBox* HBOX_ItemHotKey;
+
 public:
 	bool bQuestUIVisibility = false;
 	bool bSkillTreeShow = false;
 
 public:
+	AInventory* inventoryRef;
+
 	TQueue<FInventorySlot> obtainedItemQueue;
+
+	TArray<class UUI_HotKey*> hotkeyArray;
 
 public:
 	virtual bool Initialize() override;
@@ -144,4 +150,6 @@ public:
 
 	UFUNCTION()
 	void OnSettingsButtonClicked();
+
+	void GenerateItemHotkeys(TArray<FKey> itemKeysToGenerate);
 };

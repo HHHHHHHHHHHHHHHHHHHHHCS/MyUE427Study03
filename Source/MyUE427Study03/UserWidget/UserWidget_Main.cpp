@@ -10,6 +10,7 @@
 #include "Components/ScrollBoxSlot.h"
 #include "Components/WrapBox.h"
 #include "Inventory/UI_CraftMenu.h"
+#include "Inventory/UI_HotKey.h"
 #include "Inventory/UI_ItemDragDropOperation.h"
 #include "Inventory/UI_ItemObtain.h"
 #include "Inventory/UI_Storage.h"
@@ -77,6 +78,8 @@ bool UUserWidget_Main::Initialize()
 	settingsWidget = Cast<UUI_Settings>(GetWidgetFromName("UI_Settings"));
 
 	storageWidget = Cast<UUI_Storage>(GetWidgetFromName("UI_Storage"));
+
+	HBOX_ItemHotKey = Cast<UHorizontalBox>(GetWidgetFromName("HBOX_ItemHotKey"));
 
 	return true;
 }
@@ -311,5 +314,20 @@ void UUserWidget_Main::OnSettingsButtonClicked()
 	else
 	{
 		settingsWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UUserWidget_Main::GenerateItemHotkeys(TArray<FKey> itemKeysToGenerate)
+{
+	hotkeyArray.Empty();
+	HBOX_ItemHotKey->ClearChildren();
+
+	for(FKey key : itemKeysToGenerate)
+	{
+		auto cls =  LoadClass<UUI_HotKey>(GetWorld(), TEXT("WidgetBlueprint'/Game/Blueprints/UserWidget/Inventory/UI_HotKey.UI_HotKey_C'"));
+		auto widget = CreateWidget<UUI_HotKey>(GetWorld(), cls);
+		widget->Init(key, inventoryRef);
+		hotkeyArray.Add(widget);
+		HBOX_ItemHotKey->AddChild(widget);
 	}
 }

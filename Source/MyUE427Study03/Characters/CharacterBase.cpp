@@ -163,6 +163,8 @@ void ACharacterBase::BeginPlay()
 	questManager = GetWorld()->SpawnActor<AQuestManager>(questManagerCls, params);
 	questManager->OnInit(this, mainUI);
 
+	mainUI->inventoryRef = inventoryRef;
+	
 	inventoryRef->UpdateWeight();
 
 	mainUI->questJournal->Initialize(questManager);
@@ -178,6 +180,8 @@ void ACharacterBase::BeginPlay()
 	mainUI->inventoryWidget->UpdateCoin(GetCurrentCoin());
 
 	mainUI->storageWidget->GenerateSlot(storageRef, inventoryRef);
+
+	mainUI->GenerateItemHotkeys(itemKeys);
 }
 
 

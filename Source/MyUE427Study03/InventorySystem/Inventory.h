@@ -121,4 +121,8 @@ public:
 	bool IncreaseAmountAtIndex(int index, int amount);
 
 	bool MoveFromStorageToInventoryByIndex(class AStorage* storage, int storageIndex, int inventoryIndex);
+
+	void UpdateHotKeyByIndex(int index);
+
+	void HandleItemHotKeyPress(FKey key);
 };

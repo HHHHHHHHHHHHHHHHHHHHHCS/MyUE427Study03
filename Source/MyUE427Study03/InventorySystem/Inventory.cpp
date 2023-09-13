@@ -5,7 +5,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyUE427Study03/Characters/CharacterBase.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_CraftMenu.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_HotKey.h"
 #include "MyUE427Study03/UserWidget/Inventory/UI_InventoryActionMenu.h"
+#include "MyUE427Study03/UserWidget/Inventory/UI_ItemHotKey.h"
 
 // Sets default values
 AInventory::AInventory()
@@ -589,4 +591,26 @@ bool AInventory::MoveFromStorageToInventoryByIndex(AStorage* storage, int storag
 		return maxStackSize - nowAmount >= wantAmount;
 	}
 	return false;
+}
+
+void AInventory::UpdateHotKeyByIndex(int index)
+{
+	for(auto hotKey : playerChar->mainUI->hotkeyArray)
+	{
+		if(!hotKey->ItemHotKeySlot->isEmpty && hotKey->ItemHotKeySlot->inventoryIndex == index)
+		{
+			hotKey->ItemHotKeySlot->UpdateInfo();
+		}
+	}
+}
+
+void AInventory::HandleItemHotKeyPress(FKey key)
+{
+	for(auto hotKey : playerChar->mainUI->hotkeyArray)
+	{
+		if(!hotKey->ItemHotKeySlot->isEmpty && hotKey->key == key)
+		{
+			UseItemAtIndex(hotKey->ItemHotKeySlot->inventoryIndex);
+		}
+	}
 }

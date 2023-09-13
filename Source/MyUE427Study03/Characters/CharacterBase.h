@@ -97,6 +97,9 @@ public:
 
 	TArray<TSubclassOf<class AQuestPropBase>> obtainedProps;
 
+	UPROPERTY(EditAnywhere, Category="ItemInfo")
+	TArray<FKey> itemKeys;
+
 public:
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	TSubclassOf<class AInventory> inventoryClass;
@@ -109,7 +112,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	class AStorage* storageRef;
-	
+
 	bool isShiftDown;
 
 protected:
@@ -146,7 +149,7 @@ public:
 	class URPGSaveGame* saveGameInstance;
 
 	FString saveSlotName = "RPGSaveData";
-	
+
 protected:
 	bool bMouseRightHold;
 
