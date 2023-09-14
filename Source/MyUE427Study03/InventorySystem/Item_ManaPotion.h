@@ -13,5 +13,11 @@ UCLASS()
 class MYUE427STUDY03_API AItem_ManaPotion : public AItemBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category="ItemInfo")
+	int mpValue;
+
+public:
+	virtual void OnUsed() override;
 };

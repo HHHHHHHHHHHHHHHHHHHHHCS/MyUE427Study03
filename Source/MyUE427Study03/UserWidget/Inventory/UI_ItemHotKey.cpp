@@ -31,7 +31,7 @@ void UUI_ItemHotKey::UpdateInfo()
 		{
 			Image_Icon->SetBrushFromTexture(item->itemInfo.icon);
 			Image_Icon->SetVisibility(ESlateVisibility::Visible);
-			Text_Amount->SetText(FText::AsNumber(item->amount));
+			Text_Amount->SetText(FText::AsNumber(inventory->slots[inventoryIndex].amount));
 			HBOX_Amount->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
@@ -76,6 +76,7 @@ bool UUI_ItemHotKey::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEv
 	{
 		auto slot = dragOp->slot;
 		inventoryIndex = slot->slotIndex;
+		inventory = slot->inventoryRef;
 		isEmpty = false;
 		UpdateInfo();
 		isDragOver = false;

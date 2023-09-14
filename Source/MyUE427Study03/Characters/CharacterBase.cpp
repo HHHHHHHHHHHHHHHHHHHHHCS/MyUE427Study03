@@ -377,6 +377,9 @@ void ACharacterBase::OnAnyKeyPressed(FKey key)
 				}
 			}
 		}
+
+		inventoryRef->HandleItemHotKeyPress(key);
+		
 		bCanFindKey = true;
 	}
 }

@@ -35,7 +35,7 @@ public:
 	bool isEmpty = true;
 	int inventoryIndex; // 拖过来的物品在背包的哪个插槽上
 	class AInventory* inventory;
-	FLinearColor defaultTint = FLinearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	FLinearColor defaultTint = FLinearColor(0.0862f, 0.0862f, 0.0862f, 1.0f);
 	FLinearColor dragOverTint = FLinearColor(1.0f, 0.47f, 0.0f, 1.0f);
 	bool isDragOver;
 

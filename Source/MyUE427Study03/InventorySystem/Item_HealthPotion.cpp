@@ -9,7 +9,7 @@
 void AItem_HealthPotion::OnUsed()
 {
 	auto player = inventoryRef->playerChar;
-	if (player->GetCurrentHP() >= player->GetTotalMP())
+	if (player->GetCurrentHP() >= player->GetTotalHP())
 	{
 		Destroy();
 		return;

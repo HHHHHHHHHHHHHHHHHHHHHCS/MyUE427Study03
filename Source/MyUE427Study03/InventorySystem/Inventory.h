@@ -125,4 +125,6 @@ public:
 	void UpdateHotKeyByIndex(int index);
 
 	void HandleItemHotKeyPress(FKey key);
+
+	void HandleSwapForHotKeys(int idx1, int idx2);
 };

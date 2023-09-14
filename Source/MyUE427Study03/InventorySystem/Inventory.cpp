@@ -127,7 +127,7 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 		}
 		return 0;
 	}
-	
+
 	//如果物品不能被堆积
 	for (int i = 0; i < amount; i++)
 	{
@@ -148,6 +148,8 @@ int AInventory::AddItem(TSubclassOf<AItemBase> item, int amount)
 void AInventory::UpdateSlotByIndex(int index)
 {
 	playerChar->mainUI->inventoryWidget->inventorySlots[index]->UpdateSlot();
+	UpdateHotKeyByIndex(index);
+
 }
 
 
@@ -175,10 +177,7 @@ bool AInventory::RemoveItemAtIndex(int index, int amount)
 		UpdateSlotByIndex(index);
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 bool AInventory::SwapSlot(int index1, int index2)
@@ -193,6 +192,7 @@ bool AInventory::SwapSlot(int index1, int index2)
 	slots[index2] = tempSlot;
 	UpdateSlotByIndex(index1);
 	UpdateSlotByIndex(index2);
+	HandleSwapForHotKeys(index1, index2);
 	return true;
 }
 
@@ -595,9 +595,9 @@ bool AInventory::MoveFromStorageToInventoryByIndex(AStorage* storage, int storag
 
 void AInventory::UpdateHotKeyByIndex(int index)
 {
-	for(auto hotKey : playerChar->mainUI->hotkeyArray)
+	for (auto hotKey : playerChar->mainUI->hotkeyArray)
 	{
-		if(!hotKey->ItemHotKeySlot->isEmpty && hotKey->ItemHotKeySlot->inventoryIndex == index)
+		if (!hotKey->ItemHotKeySlot->isEmpty && hotKey->ItemHotKeySlot->inventoryIndex == index)
 		{
 			hotKey->ItemHotKeySlot->UpdateInfo();
 		}
@@ -606,11 +606,29 @@ void AInventory::UpdateHotKeyByIndex(int index)
 
 void AInventory::HandleItemHotKeyPress(FKey key)
 {
-	for(auto hotKey : playerChar->mainUI->hotkeyArray)
+	for (auto hotKey : playerChar->mainUI->hotkeyArray)
 	{
-		if(!hotKey->ItemHotKeySlot->isEmpty && hotKey->key == key)
+		if (!hotKey->ItemHotKeySlot->isEmpty && hotKey->key == key)
 		{
 			UseItemAtIndex(hotKey->ItemHotKeySlot->inventoryIndex);
+		}
+	}
+}
+
+void AInventory::HandleSwapForHotKeys(int idx1, int idx2)
+{
+	for (UUI_HotKey* hotkey : playerChar->mainUI->hotkeyArray)
+	{
+		if (!hotkey->ItemHotKeySlot->isEmpty)
+		{
+			if (hotkey->ItemHotKeySlot->inventoryIndex == idx1)
+			{
+				hotkey->ItemHotKeySlot->inventoryIndex = idx2;
+			}
+			else if (hotkey->ItemHotKeySlot->inventoryIndex == idx2)
+			{
+				hotkey->ItemHotKeySlot->inventoryIndex = idx1;
+			}
 		}
 	}
 }
